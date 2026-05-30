@@ -3,1502 +3,1896 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nouvelle Chance | Plateforme d'insertion professionnelle France</title>
-    <meta name="description" content="Plateforme d'insertion professionnelle pour migrants en France. Offres d'emploi sécurisées, formations gratuites, accompagnement juridique RGPD.">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            olive: '#1B4332',
-                            oliveLight: '#E8F5E9',
-                            oliveDark: '#0F2A1E',
-                            sky: '#E3F2FD',
-                            beige: '#FDFBF7',
-                            accent: '#E67E22',
-                            accentLight: '#FDF2E9',
-                            dark: '#1E293B',
-                            admin: '#6C5CE7',
-                            adminLight: '#EDE9FE'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Cairo', 'sans-serif'],
-                        display: ['Inter', 'Cairo', 'sans-serif']
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 3s ease-in-out infinite',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                        'slide-down': 'slideDown 0.3s ease-out',
-                        'fade-in': 'fadeIn 0.5s ease-out',
-                        'scale-in': 'scaleIn 0.3s ease-out'
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' }
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        },
-                        slideDown: {
-                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' }
-                        },
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' }
-                        },
-                        scaleIn: {
-                            '0%': { transform: 'scale(0.9)', opacity: '0' },
-                            '100%': { transform: 'scale(1)', opacity: '1' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
+    <title>Horizons d'Avenir - Opportunités pour Réfugiés en France</title>
+    <meta name="description" content="Plateforme de formation et d'emploi pour réfugiés et migrants en France. Conforme au droit français et européen.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        html { scroll-behavior: smooth; }
-        
+        :root {
+            --primary: #1a237e;
+            --primary-light: #283593;
+            --secondary: #0d47a1;
+            --accent: #2196f3;
+            --danger: #d32f2f;
+            --success: #2e7d32;
+            --warning: #f57c00;
+            --white: #ffffff;
+            --light-bg: #f5f7fa;
+            --border: #e0e0e0;
+            --text: #333333;
+            --text-light: #666666;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(180deg, #FDFBF7 0%, #E8F5E9 50%, #FDFBF7 100%);
-            font-family: 'Inter', 'Cairo', sans-serif;
-            transition: all 0.5s ease;
-            opacity: 1;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--light-bg);
+            direction: ltr;
+            transition: direction 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        
-        body.dark-mode {
-            background: linear-gradient(180deg, #1a202c 0%, #1E293B 50%, #1a202c 100%);
-            color: #e2e8f0;
+
+        body[dir="rtl"] {
+            direction: rtl;
         }
-        
-        body.dark-mode .bg-white { background: #2d3748 !important; }
-        body.dark-mode .text-gray-500, body.dark-mode .text-gray-600, body.dark-mode .text-gray-700 { color: #cbd5e0 !important; }
-        body.dark-mode .border, body.dark-mode .border-gray-100, body.dark-mode .border-gray-200 { border-color: #4a5568 !important; }
-        body.dark-mode .bg-gray-50, body.dark-mode .bg-gray-100 { background: #4a5568 !important; color: #e2e8f0; }
-        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #4a5568 !important; color: #e2e8f0 !important; border-color: #718096 !important; }
-        body.dark-mode .bg-brand-oliveLight { background: #1a3a2a !important; }
-        body.dark-mode .bg-brand-sky { background: #1a2744 !important; }
-        
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #FDFBF7; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #1B4332, #2d6a4f); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #1B4332; }
-        
-        *:focus-visible { outline: 3px solid #1B4332; outline-offset: 2px; border-radius: 8px; }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+
+        /* RTL Support */
+        body[dir="rtl"] .navbar .logo {
+            flex-direction: row-reverse;
         }
-        
-        body.dark-mode .glass-effect {
-            background: rgba(45, 55, 72, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+
+        body[dir="rtl"] .btn {
+            flex-direction: row-reverse;
         }
-        
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        body[dir="rtl"] .footer-content {
+            text-align: right;
         }
-        
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-        }
-        
-        body.dark-mode .card-hover:hover {
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-        }
-        
-        .gradient-text {
-            background: linear-gradient(135deg, #1B4332, #2d6a4f, #40916c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #1B4332, #2d6a4f);
-            color: white;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn-primary:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 40px rgba(27, 67, 50, 0.4);
-        }
-        
-        .admin-sidebar {
-            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .admin-nav-btn {
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-        
-        .admin-nav-btn.active {
-            background: rgba(108, 92, 231, 0.2) !important;
-            border-left-color: #6C5CE7;
-        }
-        
-        .admin-nav-btn:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+
+        body[dir="rtl"] .disclaimer-banner .disclaimer-text.ar {
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: #d32f2f;
         }
-        
-        .status-pending { background: #FEF3C7; color: #92400E; }
-        .status-approved { background: #D1FAE5; color: #065F46; }
-        .status-rejected { background: #FEE2E2; color: #991B1B; }
-        
-        .modal-backdrop {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
+
+        body[dir="rtl"] .disclaimer-banner .disclaimer-text.fr,
+        body[dir="rtl"] .disclaimer-banner .disclaimer-text.en {
+            display: none;
         }
-        
-        .toast-notification {
-            animation: toastIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+        body[dir="ltr"] .disclaimer-banner .disclaimer-text.fr {
+            font-weight: 600;
+            color: #d32f2f;
+            display: block;
         }
-        
-        @keyframes toastIn {
-            0% { transform: translateX(100px) scale(0.8); opacity: 0; }
-            100% { transform: translateX(0) scale(1); opacity: 1; }
+
+        body[dir="ltr"] .disclaimer-banner .disclaimer-text.ar,
+        body[dir="ltr"] .disclaimer-banner .disclaimer-text.en {
+            display: block;
+            color: #e65100;
+            font-weight: normal;
         }
-        
-        .pulse-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+
+        main {
+            flex: 1;
         }
-        
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+
+        /* Navbar */
+        .navbar {
+            background: var(--white);
+            padding: 15px 30px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
         }
-        
-        .rtl { direction: rtl; text-align: right; }
-        .rtl .admin-nav-btn { border-left: none; border-right: 3px solid transparent; }
-        .rtl .admin-nav-btn.active { border-right-color: #6C5CE7; }
-        
+
+        .navbar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .navbar .logo i {
+            font-size: 30px;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+            background: #e3f2fd;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* Language Selector */
+        .lang-selector select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            background: var(--white);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-selector select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-google {
+            background: #db4437;
+            color: white;
+        }
+
+        .btn-google:hover {
+            background: #c53929;
+        }
+
+        .btn-facebook {
+            background: #1877f2;
+            color: white;
+        }
+
+        .btn-facebook:hover {
+            background: #1565c0;
+        }
+
+        .btn-phone {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-phone:hover {
+            background: #1b5e20;
+        }
+
+        .btn-social {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            padding: 14px 24px;
+            font-size: 15px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+        }
+
+        .section h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .form-group select,
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: var(--white);
+            font-family: inherit;
+        }
+
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.1);
+        }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: var(--white);
+            cursor: pointer;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 14px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #e3f2fd;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Job Card */
+        .job-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            transition: var(--transition);
+        }
+
+        .job-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .job-card h4 {
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-city {
+            background: #e3f2fd;
+            color: var(--primary);
+        }
+
+        .badge-contract {
+            background: #e8f5e9;
+            color: var(--success);
+        }
+
+        .badge-lang {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* Platform Card */
+        .platform-card {
+            text-align: center;
+            padding: 30px 20px;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .platform-card i {
+            font-size: 50px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .platform-card h4 {
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        /* Video Card */
+        .video-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .video-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 50px;
+        }
+
+        .video-info {
+            padding: 15px;
+        }
+
+        .video-info h4 {
+            margin-bottom: 5px;
+        }
+
+        /* Poster Card */
+        .poster-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .poster-card:hover {
+            transform: scale(1.03);
+        }
+
+        .poster-img {
+            height: 250px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 60px;
+        }
+
+        .poster-info {
+            padding: 15px;
+        }
+
+        /* Disclaimer Banner in Footer */
+        .disclaimer-banner {
+            background: #fff3e0;
+            border-top: 3px solid var(--warning);
+            border-bottom: 3px solid var(--warning);
+            padding: 20px 30px;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .disclaimer-banner .warning-icon {
+            font-size: 24px;
+            color: var(--warning);
+            margin-bottom: 10px;
+        }
+
+        .disclaimer-banner h3 {
+            color: var(--danger);
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .disclaimer-banner .disclaimer-text {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #e65100;
+            max-width: 800px;
+            margin: 5px auto;
+            line-height: 1.6;
+        }
+
+        .disclaimer-banner .disclaimer-text.fr {
+            font-weight: 600;
+            color: #d32f2f;
+        }
+
+        .disclaimer-banner .disclaimer-text.ar {
+            direction: rtl;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: left;
+        }
+
+        body[dir="rtl"] .footer-content {
+            text-align: right;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            color: #90caf9;
+            font-size: 18px;
+        }
+
+        .footer-section p, .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 2;
+            display: block;
+            cursor: pointer;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .footer-bottom a {
+            color: #90caf9;
+            text-decoration: none;
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        body[dir="rtl"] .toast-container {
+            right: auto;
+            left: 30px;
+        }
+
+        .toast {
+            background: var(--success);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+            font-weight: 600;
+            min-width: 250px;
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .toast.warning {
+            background: var(--warning);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        body[dir="rtl"] @keyframes slideIn {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Search bar */
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 25px;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .search-bar input:focus,
+        .search-bar select:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Welcome section */
+        .welcome-text {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--text-light);
+        }
+
+        /* Admin panel styles */
+        .admin-panel {
+            background: #fff;
+            border: 2px dashed var(--accent);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin-top: 20px;
+        }
+
+        .admin-panel h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .admin-sidebar { width: 100% !important; height: auto !important; }
+            .navbar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+
+            .section {
+                padding: 20px 15px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .disclaimer-banner {
+                padding: 15px;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen antialiased">
+<body>
 
-    <!-- Toast Container -->
-    <div class="fixed bottom-6 right-6 z-[10000] space-y-3" id="toast-container"></div>
-
-    <!-- Admin Panel -->
-    <div id="admin-panel" class="fixed inset-0 z-[9999] hidden bg-gray-100 dark:bg-gray-900">
-        <div class="flex h-full flex-col lg:flex-row">
-            <!-- Admin Sidebar -->
-            <div class="admin-sidebar w-full lg:w-72 flex-shrink-0 text-white overflow-y-auto">
-                <div class="p-6 border-b border-white/10">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-brand-admin to-purple-400 rounded-xl flex items-center justify-center shadow-lg">
-                            <i data-lucide="shield-check" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg">Admin Panel</h3>
-                            <p class="text-xs text-gray-400" id="admin-name-display">Administrateur</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <nav class="p-4 space-y-2">
-                    <button onclick="switchAdminTab('dashboard')" class="admin-nav-btn active w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-dashboard">
-                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
-                        <span>Tableau de bord</span>
-                        <span class="ml-auto text-xs bg-white/10 px-2 py-0.5 rounded-full" id="total-users-count">0</span>
-                    </button>
-                    
-                    <button onclick="switchAdminTab('jobs')" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-jobs">
-                        <i data-lucide="briefcase-business" class="w-5 h-5"></i>
-                        <span>Offres d'emploi</span>
-                    </button>
-                    
-                    <button onclick="switchAdminTab('users')" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-users">
-                        <i data-lucide="users" class="w-5 h-5"></i>
-                        <span>Utilisateurs</span>
-                        <span class="ml-auto bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full hidden" id="pending-users-badge">0</span>
-                    </button>
-                    
-                    <button onclick="switchAdminTab('applications')" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-applications">
-                        <i data-lucide="file-check" class="w-5 h-5"></i>
-                        <span>Candidatures</span>
-                        <span class="ml-auto bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full hidden" id="pending-apps-badge">0</span>
-                    </button>
-                    
-                    <button onclick="switchAdminTab('volunteers')" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-volunteers">
-                        <i data-lucide="heart-handshake" class="w-5 h-5"></i>
-                        <span>Bénévoles</span>
-                    </button>
-                    
-                    <button onclick="switchAdminTab('privacy')" class="admin-nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition" id="admin-nav-privacy">
-                        <i data-lucide="shield-alert" class="w-5 h-5"></i>
-                        <span>Politique & RGPD</span>
-                    </button>
-                </nav>
-                
-                <div class="p-4 mt-auto border-t border-white/10">
-                    <button onclick="closeAdminPanel()" class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/20 hover:bg-red-500/30 rounded-xl text-sm font-medium transition">
-                        <i data-lucide="log-out" class="w-5 h-5"></i>
-                        Fermer l'administration
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Admin Content -->
-            <div class="flex-1 overflow-y-auto">
-                <div class="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b px-6 py-4 flex items-center justify-between shadow-sm">
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800 dark:text-white" id="admin-page-title">Tableau de bord</h2>
-                        <p class="text-sm text-gray-500 dark:text-gray-400" id="admin-page-subtitle">Vue d'ensemble de la plateforme</p>
-                    </div>
-                    <button onclick="closeAdminPanel()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
-                </div>
-                
-                <div class="p-6" id="admin-content-area"></div>
-            </div>
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-globe-europe"></i>
+            <span data-i18n="site_name">Horizons d'Avenir</span>
         </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center modal-backdrop" style="display: none;">
-        <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-scale-in">
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 bg-gradient-to-br from-brand-olive to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <i data-lucide="lock" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white" id="auth-modal-title">Connexion sécurisée</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Vos données sont protégées (RGPD)</p>
+        <div class="nav-links">
+            <a onclick="scrollToSection('home')" data-i18n="nav_home">Accueil</a>
+            <a onclick="scrollToSection('jobs-section')" data-i18n="nav_jobs">Emplois</a>
+            <a onclick="scrollToSection('training-section')" data-i18n="nav_training">Formations</a>
+            <a onclick="scrollToSection('resources-section')" data-i18n="nav_resources">Ressources</a>
+            <a onclick="scrollToSection('legal-section')" data-i18n="nav_legal">Droit</a>
+        </div>
+        <div class="nav-actions">
+            <div class="lang-selector">
+                <select id="langSelect" onchange="changeLanguage(this.value)">
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="ar">🇸🇦 العربية</option>
+                    <option value="en">🇬🇧 English</option>
+                </select>
             </div>
-            <div id="auth-modal-body" class="space-y-4"></div>
-            <p class="text-center text-xs text-gray-400 mt-6">
-                🔒 Connexion chiffrée • Conforme RGPD
+            <button class="btn btn-outline" id="loginBtn" onclick="showLoginModal()">
+                <i class="fas fa-sign-in-alt"></i> <span data-i18n="login">Connexion</span>
+            </button>
+            <button class="btn btn-primary" id="registerBtn" onclick="scrollToSection('register-section')">
+                <i class="fas fa-user-plus"></i> <span data-i18n="register">S'inscrire</span>
+            </button>
+            <button class="btn btn-outline hidden" id="logoutBtn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Déconnexion</span>
+            </button>
+            <span id="userBadge" class="hidden" style="font-weight:600; color:var(--primary);"></span>
+        </div>
+    </nav>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main id="mainContent">
+        <!-- HOME SECTION -->
+        <section class="section" id="home">
+            <h2 data-i18n="welcome_title">Bienvenue sur Horizons d'Avenir</h2>
+            <p class="welcome-text" data-i18n="welcome_desc">
+                Plateforme dédiée à l'insertion professionnelle des réfugiés et migrants en France. 
+                Découvrez des offres d'emploi, des formations, et des ressources légales pour vous accompagner.
             </p>
-        </div>
+            <div class="grid-3">
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-briefcase" style="font-size:40px; color:var(--accent); margin-bottom:15px;"></i>
+                    <h4 data-i18n="card_jobs">Offres d'Emploi</h4>
+                    <p data-i18n="card_jobs_desc">Consultez les offres dans votre ville</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-graduation-cap" style="font-size:40px; color:var(--accent); margin-bottom:15px;"></i>
+                    <h4 data-i18n="card_training">Formations</h4>
+                    <p data-i18n="card_training_desc">Accédez à Coursera, LinkedIn Learning et plus</p>
+                </div>
+                <div class="card" style="text-align:center;">
+                    <i class="fas fa-balance-scale" style="font-size:40px; color:var(--accent); margin-bottom:15px;"></i>
+                    <h4 data-i18n="card_legal">Droit des Réfugiés</h4>
+                    <p data-i18n="card_legal_desc">Informez-vous sur vos droits en France et en Europe</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTRATION SECTION -->
+        <section class="section" id="register-section">
+            <h2 data-i18n="register_title">Créez votre compte</h2>
+            <div class="grid-2" style="max-width:600px; margin:0 auto;">
+                <button class="btn btn-social btn-google" onclick="registerWithProvider('google')">
+                    <i class="fab fa-google"></i> <span data-i18n="google_signup">Google</span>
+                </button>
+                <button class="btn btn-social btn-facebook" onclick="registerWithProvider('facebook')">
+                    <i class="fab fa-facebook-f"></i> <span data-i18n="facebook_signup">Facebook</span>
+                </button>
+                <button class="btn btn-social btn-phone" onclick="registerWithProvider('phone')" style="grid-column:1/-1;">
+                    <i class="fas fa-mobile-alt"></i> <span data-i18n="phone_signup">+33 Téléphone</span>
+                </button>
+            </div>
+            <div class="card" style="max-width:600px; margin:30px auto; text-align:center;">
+                <p data-i18n="register_email_alt">Ou inscrivez-vous par email</p>
+                <form onsubmit="registerWithEmail(event)" style="margin-top:15px;">
+                    <div class="form-group">
+                        <input type="text" id="regName" data-i18n-placeholder="reg_name_placeholder" placeholder="Nom complet" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="regEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="regPassword" data-i18n-placeholder="reg_password_placeholder" placeholder="Mot de passe" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="register_btn">S'inscrire</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- PROFILE COMPLETION FORM -->
+        <section class="section hidden" id="profile-form-section">
+            <h2 data-i18n="profile_title">Complétez votre profil</h2>
+            <form id="profileForm" onsubmit="completeProfile(event)" style="max-width:600px; margin:0 auto;">
+                <div class="form-group">
+                    <label data-i18n="profile_status">Statut *</label>
+                    <select id="statusSelect" required>
+                        <option value="">-- <span data-i18n="select_option">Sélectionnez</span> --</option>
+                        <option value="jobseeker">🔍 <span data-i18n="status_jobseeker">Demandeur d'emploi</span></option>
+                        <option value="trainee">📚 <span data-i18n="status_trainee">Stagiaire / Formation</span></option>
+                        <option value="volunteer">🤝 <span data-i18n="status_volunteer">Bénévole</span></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="profile_city">Ville en France *</label>
+                    <select id="citySelect" required>
+                        <option value="">-- <span data-i18n="select_city">Sélectionnez votre ville</span> --</option>
+                        <option value="paris">Paris</option>
+                        <option value="lyon">Lyon</option>
+                        <option value="marseille">Marseille</option>
+                        <option value="lille">Lille</option>
+                        <option value="strasbourg">Strasbourg</option>
+                        <option value="toulouse">Toulouse</option>
+                        <option value="bordeaux">Bordeaux</option>
+                        <option value="nantes">Nantes</option>
+                        <option value="nice">Nice</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="profile_legal">Situation juridique (confidentielle)</label>
+                    <select id="legalStatus">
+                        <option value="prefer-not-say" data-i18n="legal_prefer_not">Je préfère ne pas répondre</option>
+                        <option value="asylum-seeker" data-i18n="legal_asylum">Demandeur d'asile</option>
+                        <option value="refugee" data-i18n="legal_refugee">Réfugié statutaire</option>
+                        <option value="temporary" data-i18n="legal_temporary">Titre de séjour temporaire</option>
+                        <option value="undocumented" data-i18n="legal_undocumented">Sans papiers</option>
+                    </select>
+                </div>
+                <div class="form-group" id="cvUploadGroup">
+                    <label data-i18n="profile_cv">Téléchargez votre CV (PDF) - pour demandeurs d'emploi</label>
+                    <input type="file" id="cvUpload" accept=".pdf">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:14px; font-size:16px;" data-i18n="profile_submit">
+                    ✓ Compléter l'inscription
+                </button>
+            </form>
+        </section>
+
+        <!-- JOBS SECTION -->
+        <section class="section" id="jobs-section">
+            <h2 data-i18n="jobs_title">Offres d'Emploi</h2>
+            <div class="search-bar">
+                <input type="text" id="jobSearch" data-i18n-placeholder="job_search_placeholder" placeholder="🔍 Rechercher un emploi..." oninput="filterJobs()">
+                <select id="jobCityFilter" onchange="filterJobs()">
+                    <option value="" data-i18n="all_cities">Toutes les villes</option>
+                </select>
+                <select id="jobContractFilter" onchange="filterJobs()">
+                    <option value="" data-i18n="all_contracts">Tous les contrats</option>
+                    <option value="CDI">CDI</option>
+                    <option value="CDD">CDD</option>
+                    <option value="Intérim" data-i18n="contract_interim">Intérim</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+            </div>
+            <div class="grid-2" id="jobsContainer"></div>
+        </section>
+
+        <!-- TRAINING SECTION -->
+        <section class="section" id="training-section">
+            <h2 data-i18n="training_title">Formations et Apprentissage</h2>
+            <div class="grid-3">
+                <div class="platform-card">
+                    <i class="fas fa-university"></i>
+                    <h4>Coursera for Refugees</h4>
+                    <p data-i18n="coursera_desc">Cours gratuits pour les réfugiés</p>
+                    <a href="https://www.coursera.org/refugees" target="_blank" class="btn btn-primary" style="margin-top:10px;" data-i18n="access_btn">Accéder →</a>
+                </div>
+                <div class="platform-card">
+                    <i class="fab fa-linkedin"></i>
+                    <h4>LinkedIn Learning</h4>
+                    <p data-i18n="linkedin_desc">Compétences professionnelles</p>
+                    <a href="https://www.linkedin.com/learning" target="_blank" class="btn btn-primary" style="margin-top:10px;" data-i18n="access_btn">Accéder →</a>
+                </div>
+                <div class="platform-card">
+                    <i class="fas fa-building"></i>
+                    <h4>Pôle Emploi</h4>
+                    <p data-i18n="poleemploi_desc">Formations officielles France</p>
+                    <a href="https://www.pole-emploi.fr" target="_blank" class="btn btn-primary" style="margin-top:10px;" data-i18n="access_btn">Accéder →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESOURCES SECTION (Videos + Posters) -->
+        <section class="section" id="resources-section">
+            <h2 data-i18n="resources_title">Ressources Éducatives</h2>
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchResourceTab('videos', this)" data-i18n="tab_videos">🎬 Vidéos</button>
+                <button class="tab-btn" onclick="switchResourceTab('posters', this)" data-i18n="tab_posters">🖼️ Affiches</button>
+                <button class="tab-btn" onclick="switchResourceTab('volunteering', this)" data-i18n="tab_volunteering">🤝 Bénévolat</button>
+            </div>
+            <div class="tab-panel active" id="panel-videos">
+                <div class="grid-3" id="videosContainer"></div>
+            </div>
+            <div class="tab-panel" id="panel-posters">
+                <div class="grid-3" id="postersContainer"></div>
+            </div>
+            <div class="tab-panel" id="panel-volunteering">
+                <div class="grid-2" id="volunteeringContainer"></div>
+            </div>
+        </section>
+
+        <!-- LEGAL SECTION -->
+        <section class="section" id="legal-section">
+            <h2 data-i18n="legal_title">Cadre Juridique</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h4>🇫🇷 <span data-i18n="legal_france">Loi Immigration France</span></h4>
+                    <p data-i18n="legal_france_desc">Code de l'entrée et du séjour des étrangers et du droit d'asile (CESEDA)</p>
+                    <a href="https://www.legifrance.gouv.fr/codes/texte_lc/LEGITEXT000006070158/" target="_blank" class="btn btn-outline" style="margin-top:10px;" data-i18n="consult_btn">Consulter →</a>
+                </div>
+                <div class="card">
+                    <h4>🇪🇺 <span data-i18n="legal_europe">Politique Européenne</span></h4>
+                    <p data-i18n="legal_europe_desc">Système Européen Commun d'Asile (CEAS)</p>
+                    <a href="https://home-affairs.ec.europa.eu/policies/migration-and-asylum_en" target="_blank" class="btn btn-outline" style="margin-top:10px;" data-i18n="consult_btn">Consulter →</a>
+                </div>
+                <div class="card">
+                    <h4>🌍 <span data-i18n="legal_geneva">Convention de Genève</span></h4>
+                    <p data-i18n="legal_geneva_desc">Convention relative au statut des réfugiés (1951)</p>
+                    <a href="https://www.unhcr.org/fr/convention-geneve" target="_blank" class="btn btn-outline" style="margin-top:10px;" data-i18n="consult_btn">Consulter →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN SECTION -->
+        <section class="section hidden" id="admin-section">
+            <h2 data-i18n="admin_title">🔧 Panneau d'Administration</h2>
+            <div class="admin-panel">
+                <h3 data-i18n="admin_add_job">Ajouter une offre d'emploi</h3>
+                <form onsubmit="addJob(event)">
+                    <div class="form-group">
+                        <input type="text" id="adminJobTitle" data-i18n-placeholder="admin_job_title_placeholder" placeholder="Titre du poste" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="adminJobCity" data-i18n-placeholder="admin_job_city_placeholder" placeholder="Ville" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="adminJobContract">
+                            <option value="CDI">CDI</option>
+                            <option value="CDD">CDD</option>
+                            <option value="Intérim">Intérim</option>
+                            <option value="Freelance">Freelance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="adminJobDesc" data-i18n-placeholder="admin_job_desc_placeholder" placeholder="Description du poste" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="admin_add_btn">Ajouter l'offre</button>
+                </form>
+            </div>
+            <div class="admin-panel" style="margin-top:20px;">
+                <h3 data-i18n="admin_add_video">Ajouter une vidéo éducative</h3>
+                <form onsubmit="addVideo(event)">
+                    <div class="form-group">
+                        <input type="text" id="adminVideoTitle" data-i18n-placeholder="admin_video_title_placeholder" placeholder="Titre de la vidéo" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="adminVideoCategory">
+                            <option value="legal" data-i18n="category_legal">Juridique</option>
+                            <option value="emploi" data-i18n="category_emploi">Emploi</option>
+                            <option value="social" data-i18n="category_social">Social</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="adminVideoLang">
+                            <option value="fr">Français</option>
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" data-i18n="admin_add_btn_video">Ajouter la vidéo</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== DISCLAIMER BANNER ========== -->
+    <div class="disclaimer-banner">
+        <div class="warning-icon">⚠️</div>
+        <h3 data-i18n="disclaimer_title">Information Importante / Important Information / معلومات هامة</h3>
+        <p class="disclaimer-text fr" data-i18n="disclaimer_fr">
+            Nous ne soutenons ni n'encourageons l'immigration illégale. Notre mission est de fournir des informations légales et un soutien à l'intégration conformément au droit français et européen.
+        </p>
+        <p class="disclaimer-text en" data-i18n="disclaimer_en">
+            We do not support or encourage illegal immigration. Our mission is to provide legal information and integration support in accordance with French and European law.
+        </p>
+        <p class="disclaimer-text ar" data-i18n="disclaimer_ar">
+            نحن لا ندعم أو نشجع الهجرة غير الشرعية. مهمتنا هي تقديم المعلومات القانونية والدعم للاندماج وفقًا للقانون الفرنسي والأوروبي.
+        </p>
     </div>
 
-    <!-- Header -->
-    <header class="sticky top-0 z-40 glass-effect border-b border-gray-200/50 dark:border-gray-700/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gradient-to-br from-brand-olive to-green-600 rounded-2xl flex items-center justify-center text-white shadow-lg transform hover:rotate-12 transition">
-                    <i data-lucide="hand-helping" class="w-7 h-7"></i>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-black gradient-text tracking-tight">Nouvelle Chance</h1>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Dignité & Travail en France 🇫🇷</p>
-                </div>
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-i18n="footer_about">Horizons d'Avenir</h4>
+                <p data-i18n="footer_about_desc">Plateforme dédiée à l'insertion professionnelle des réfugiés et migrants en France.</p>
+                <p>📍 <span data-i18n="footer_location">Siège: Paris, France</span></p>
+                <p>📞 +33 1 23 45 67 89</p>
+                <p>📧 contact@horizonsdavenir.fr</p>
             </div>
-            
-            <nav class="hidden lg:flex items-center gap-8">
-                <a href="#jobs-section" class="text-gray-600 dark:text-gray-300 hover:text-brand-olive dark:hover:text-green-400 font-medium transition relative group">
-                    Offres
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-olive group-hover:w-full transition-all"></span>
-                </a>
-                <a href="#register-hub" class="text-gray-600 dark:text-gray-300 hover:text-brand-olive dark:hover:text-green-400 font-medium transition relative group">
-                    Inscription
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-olive group-hover:w-full transition-all"></span>
-                </a>
-                <a href="#resources" class="text-gray-600 dark:text-gray-300 hover:text-brand-olive dark:hover:text-green-400 font-medium transition relative group">
-                    Ressources
-                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-olive group-hover:w-full transition-all"></span>
-                </a>
-            </nav>
-
-            <div class="flex items-center gap-3">
-                <button onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition" title="Mode sombre">
-                    <i data-lucide="moon" class="w-5 h-5 text-gray-600 dark:text-gray-300" id="dark-mode-icon"></i>
-                </button>
-                
-                <div id="user-info-display" class="hidden items-center gap-2 text-sm font-semibold text-brand-olive dark:text-green-400">
-                    <i data-lucide="circle-user" class="w-5 h-5"></i>
-                    <span id="user-name-display"></span>
-                </div>
-                
-                <button onclick="openAuthModal()" id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg">
-                    <span class="relative z-10">Connexion</span>
-                </button>
-                
-                <button onclick="openAdminPanel()" id="admin-btn" class="hidden bg-gradient-to-r from-brand-admin to-purple-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg hover:shadow-xl transition">
-                    <span class="flex items-center gap-2">
-                        <i data-lucide="shield" class="w-4 h-4"></i> Admin
-                    </span>
-                </button>
-                
-                <button onclick="logout()" id="logout-btn" class="hidden bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                    Déconnexion
-                </button>
+            <div class="footer-section">
+                <h4 data-i18n="footer_links">Liens Rapides</h4>
+                <a onclick="scrollToSection('jobs-section')" data-i18n="footer_jobs">Offres d'Emploi</a>
+                <a onclick="scrollToSection('training-section')" data-i18n="footer_training">Formations</a>
+                <a onclick="scrollToSection('resources-section')" data-i18n="footer_resources">Ressources</a>
+                <a onclick="scrollToSection('legal-section')" data-i18n="footer_legal">Cadre Juridique</a>
+            </div>
+            <div class="footer-section">
+                <h4 data-i18n="footer_legal_title">Légal</h4>
+                <a href="#" data-i18n="footer_mentions">Mentions légales</a>
+                <a href="#" data-i18n="footer_privacy">Politique de confidentialité</a>
+                <a href="#" data-i18n="footer_terms">Conditions d'utilisation</a>
+                <a href="#" data-i18n="footer_rgpd">RGPD</a>
             </div>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden py-20 md:py-32">
-        <div class="absolute inset-0 bg-gradient-to-br from-brand-oliveLight via-white to-brand-sky dark:from-gray-800 dark:via-gray-900 dark:to-gray-800"></div>
-        <div class="absolute top-20 left-10 w-72 h-72 bg-brand-olive/5 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-brand-accent/5 rounded-full blur-3xl"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8 animate-slide-up">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border shadow-sm">
-                        <div class="pulse-dot bg-green-500"></div>
-                        <span class="text-sm font-semibold text-brand-olive dark:text-green-400">🔒 100% Conforme RGPD</span>
-                    </div>
-                    
-                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-black leading-tight">
-                        <span class="gradient-text">Votre nouvelle</span>
-                        <br>
-                        <span class="text-brand-dark dark:text-white">chance commence ici</span>
-                    </h1>
-                    
-                    <p class="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
-                        Nous connectons les talents avec des employeurs solidaires en France. 
-                        Sans discrimination, en toute confidentialité.
-                    </p>
-                    
-                    <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="#jobs-section" class="btn-primary px-8 py-4 rounded-2xl font-bold text-lg shadow-xl inline-flex items-center gap-3">
-                            <span class="relative z-10">Voir les offres</span>
-                            <i data-lucide="arrow-right" class="w-5 h-5 relative z-10"></i>
-                        </a>
-                        <a href="#register-hub" class="px-8 py-4 rounded-2xl font-bold text-lg border-2 border-brand-olive dark:border-green-500 text-brand-olive dark:text-green-400 hover:bg-brand-olive hover:text-white dark:hover:bg-green-500 transition inline-flex items-center gap-3">
-                            <i data-lucide="user-plus" class="w-5 h-5"></i>
-                            S'inscrire gratuitement
-                        </a>
-                    </div>
-                    
-                    <div class="flex items-center gap-8 pt-4">
-                        <div class="flex -space-x-3">
-                            <div class="w-10 h-10 rounded-full bg-brand-olive flex items-center justify-center text-white text-sm font-bold border-2 border-white">JD</div>
-                            <div class="w-10 h-10 rounded-full bg-brand-accent flex items-center justify-center text-white text-sm font-bold border-2 border-white">FM</div>
-                            <div class="w-10 h-10 rounded-full bg-brand-admin flex items-center justify-center text-white text-sm font-bold border-2 border-white">AK</div>
-                            <div class="w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white text-xs font-bold border-2 border-white">+150</div>
-                        </div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            <strong class="text-brand-olive dark:text-green-400">+150 personnes</strong> accompagnées
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="hidden lg:flex justify-center animate-float">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-brand-olive to-green-600 rounded-[3rem] transform rotate-6 opacity-20 blur-xl"></div>
-                        <div class="relative bg-white dark:bg-gray-800 rounded-[3rem] shadow-2xl p-8 border">
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-brand-oliveLight dark:bg-gray-700 p-6 rounded-2xl text-center">
-                                    <div class="text-3xl font-black text-brand-olive dark:text-green-400" id="hero-jobs-count">0</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-300">Offres actives</div>
-                                </div>
-                                <div class="bg-brand-sky dark:bg-gray-700 p-6 rounded-2xl text-center">
-                                    <div class="text-3xl font-black text-blue-600 dark:text-blue-400">100%</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-300">Sécurisé RGPD</div>
-                                </div>
-                                <div class="bg-brand-accentLight dark:bg-gray-700 p-6 rounded-2xl text-center">
-                                    <div class="text-3xl font-black text-brand-accent">15+</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-300">Partenaires</div>
-                                </div>
-                                <div class="bg-brand-adminLight dark:bg-gray-700 p-6 rounded-2xl text-center">
-                                    <div class="text-3xl font-black text-brand-admin">24/7</div>
-                                    <div class="text-sm text-gray-600 dark:text-gray-300">Support</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Jobs Section -->
-    <section id="jobs-section" class="py-20 bg-white dark:bg-gray-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-black gradient-text mb-4">Offres d'emploi disponibles</h2>
-                <p class="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-                    Des entreprises engagées qui recrutent des talents sans discrimination
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="jobs-container"></div>
-            
-            <div id="no-jobs-message" class="hidden text-center py-16">
-                <i data-lucide="search" class="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4"></i>
-                <h3 class="text-2xl font-bold text-gray-400 dark:text-gray-500">Aucune offre pour le moment</h3>
-                <p class="text-gray-400 dark:text-gray-500 mt-2">Revenez bientôt pour de nouvelles opportunités</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Registration Hub -->
-    <section id="register-hub" class="py-20 bg-gradient-to-b from-brand-oliveLight/50 to-white dark:from-gray-900 dark:to-gray-800">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 rounded-[3rem] shadow-2xl overflow-hidden border dark:border-gray-700">
-                <div class="bg-gradient-to-r from-brand-olive to-brand-oliveDark p-10 text-white text-center">
-                    <h2 class="text-3xl md:text-4xl font-black mb-3">Espace d'inscription sécurisé</h2>
-                    <p class="text-brand-sky text-lg">Choisissez votre parcours en toute confidentialité</p>
-                    
-                    <div class="flex flex-wrap justify-center gap-3 mt-8">
-                        <button onclick="switchTab('seeker')" id="tab-seeker" class="px-6 py-3 rounded-2xl font-bold bg-white text-brand-olive shadow-lg transition">
-                            🎯 Candidat
-                        </button>
-                        <button onclick="switchTab('learning')" id="tab-learning" class="px-6 py-3 rounded-2xl font-bold text-white border-2 border-white/30 hover:bg-white/10 transition">
-                            📚 Formation
-                        </button>
-                        <button onclick="switchTab('volunteer')" id="tab-volunteer" class="px-6 py-3 rounded-2xl font-bold text-white border-2 border-white/30 hover:bg-white/10 transition">
-                            🤝 Bénévolat
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="p-10">
-                    <!-- Seeker Panel -->
-                    <div id="panel-seeker">
-                        <form id="seeker-form" onsubmit="return handleFormSubmit(event, 'seeker')" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Nom complet *</label>
-                                    <input type="text" id="seeker-name" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-brand-olive dark:focus:ring-green-500 transition" placeholder="Votre nom">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Téléphone *</label>
-                                    <input type="tel" id="seeker-phone" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-brand-olive transition" placeholder="+33 6 XX XX XX XX">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Compétences *</label>
-                                    <input type="text" id="seeker-skills" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-brand-olive transition" placeholder="Ex: plomberie, cuisine, ménage...">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Ville *</label>
-                                    <select id="seeker-city" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl focus:ring-2 focus:ring-brand-olive transition">
-                                        <option value="">Sélectionnez une ville</option>
-                                        <option>Paris</option><option>Lyon</option><option>Marseille</option><option>Lille</option><option>Bordeaux</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <label class="flex items-start gap-3 cursor-pointer">
-                                <input type="checkbox" id="seeker-agree" required class="mt-1 w-5 h-5 text-brand-olive rounded">
-                                <span class="text-sm text-gray-600 dark:text-gray-400">Je certifie l'exactitude des informations et j'accepte la politique de confidentialité (RGPD)</span>
-                            </label>
-                            <button type="submit" class="btn-primary w-full py-4 rounded-2xl font-bold text-lg shadow-xl">
-                                ✉️ Envoyer ma candidature
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <!-- Learning Panel -->
-                    <div id="panel-learning" class="hidden">
-                        <form id="learning-form" onsubmit="return handleFormSubmit(event, 'learning')" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Nom complet *</label>
-                                    <input type="text" id="learning-name" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl" placeholder="Votre nom">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Formation souhaitée *</label>
-                                    <select id="learning-course" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl">
-                                        <option value="">Choisissez une formation</option>
-                                        <option>Plomberie / Chauffage</option><option>Cuisine professionnelle</option><option>Informatique / Web</option><option>Français FLE</option><option>Électricité</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Téléphone *</label>
-                                    <input type="tel" id="learning-phone" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Objectif professionnel</label>
-                                    <input type="text" id="learning-goal" class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl" placeholder="Votre objectif">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn-primary w-full py-4 rounded-2xl font-bold text-lg shadow-xl">
-                                📚 S'inscrire à la formation
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <!-- Volunteer Panel -->
-                    <div id="panel-volunteer" class="hidden">
-                        <form id="volunteer-form" onsubmit="return handleFormSubmit(event, 'volunteer')" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Nom complet *</label>
-                                    <input type="text" id="volunteer-name" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl" placeholder="Votre nom">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Domaine *</label>
-                                    <select id="volunteer-role" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl">
-                                        <option value="">Choisissez un domaine</option>
-                                        <option>Soutien juridique</option><option>Cours de français</option><option>Accompagnement social</option><option>Aide administrative</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Téléphone *</label>
-                                    <input type="tel" id="volunteer-phone" required class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Disponibilité (h/semaine)</label>
-                                    <input type="number" id="volunteer-hours" min="1" max="40" class="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl" placeholder="Ex: 5">
-                                </div>
-                            </div>
-                            <button type="submit" class="btn-primary w-full py-4 rounded-2xl font-bold text-lg shadow-xl">
-                                🤝 Devenir bénévole
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gradient-to-r from-brand-olive to-brand-oliveDark text-white py-16">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-10">
-                <div>
-                    <h4 class="text-2xl font-black mb-4">Nouvelle Chance</h4>
-                    <p class="text-gray-300 text-sm">Plateforme solidaire d'insertion professionnelle conforme au droit français.</p>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-4">Liens rapides</h5>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#jobs-section" class="hover:text-white transition">Offres d'emploi</a></li>
-                        <li><a href="#register-hub" class="hover:text-white transition">Inscription</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-4">Légal</h5>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" onclick="showPrivacyPolicy()" class="hover:text-white transition">Politique de confidentialité</a></li>
-                        <li><a href="#" onclick="showTerms()" class="hover:text-white transition">Conditions d'utilisation</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-4">Contact</h5>
-                    <p class="text-sm text-gray-300">📞 01 53 59 22 22</p>
-                    <p class="text-sm text-gray-300">✉️ contact@nouvellechance.fr</p>
-                </div>
-            </div>
-            <div class="border-t border-white/10 pt-8 text-center text-sm text-gray-400">
-                <p>© 2026 Nouvelle Chance - Tous droits réservés - Conformité RGPD (UE 2016/679)</p>
-            </div>
+        <div class="footer-bottom">
+            <p data-i18n="footer_copyright">© 2024 Horizons d'Avenir. Cette plateforme respecte le droit français et européen.</p>
+            <p data-i18n="footer_hosting">Hébergement conforme RGPD | Données stockées en France</p>
         </div>
     </footer>
 
+    <!-- ========== TOAST CONTAINER ========== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ========== SCRIPTS ========== -->
     <script>
-        // ==================== COMPLETE APPLICATION LOGIC ====================
-        
-        const CONFIG = {
-            APP_NAME: 'Nouvelle Chance',
-            ADMIN_EMAIL: 'admin@nouvellechance.fr',
-            STORAGE_KEYS: {
-                USERS: 'nc_users_v2',
-                CURRENT_USER: 'nc_current_user_v2',
-                JOBS: 'nc_jobs_v2',
-                APPLICATIONS: 'nc_applications_v2',
-                SUBMISSIONS: 'nc_submissions_v2',
-                PRIVACY: 'nc_privacy_v2',
-                TERMS: 'nc_terms_v2',
-                SETTINGS: 'nc_settings_v2',
-                DARK_MODE: 'nc_dark_mode_v2'
+        // ============ TRANSLATION SYSTEM ============
+        const translations = {
+            fr: {
+                site_name: 'Horizons d\'Avenir',
+                nav_home: 'Accueil',
+                nav_jobs: 'Emplois',
+                nav_training: 'Formations',
+                nav_resources: 'Ressources',
+                nav_legal: 'Droit',
+                login: 'Connexion',
+                register: 'S\'inscrire',
+                logout: 'Déconnexion',
+                welcome_title: 'Bienvenue sur Horizons d\'Avenir',
+                welcome_desc: 'Plateforme dédiée à l\'insertion professionnelle des réfugiés et migrants en France. Découvrez des offres d\'emploi, des formations, et des ressources légales pour vous accompagner.',
+                card_jobs: 'Offres d\'Emploi',
+                card_jobs_desc: 'Consultez les offres dans votre ville',
+                card_training: 'Formations',
+                card_training_desc: 'Accédez à Coursera, LinkedIn Learning et plus',
+                card_legal: 'Droit des Réfugiés',
+                card_legal_desc: 'Informez-vous sur vos droits en France et en Europe',
+                register_title: 'Créez votre compte',
+                google_signup: 'Google',
+                facebook_signup: 'Facebook',
+                phone_signup: '+33 Téléphone',
+                register_email_alt: 'Ou inscrivez-vous par email',
+                reg_name_placeholder: 'Nom complet',
+                reg_password_placeholder: 'Mot de passe',
+                register_btn: 'S\'inscrire',
+                profile_title: 'Complétez votre profil',
+                profile_status: 'Statut *',
+                select_option: 'Sélectionnez',
+                status_jobseeker: 'Demandeur d\'emploi',
+                status_trainee: 'Stagiaire / Formation',
+                status_volunteer: 'Bénévole',
+                profile_city: 'Ville en France *',
+                select_city: 'Sélectionnez votre ville',
+                profile_legal: 'Situation juridique (confidentielle)',
+                legal_prefer_not: 'Je préfère ne pas répondre',
+                legal_asylum: 'Demandeur d\'asile',
+                legal_refugee: 'Réfugié statutaire',
+                legal_temporary: 'Titre de séjour temporaire',
+                legal_undocumented: 'Sans papiers',
+                profile_cv: 'Téléchargez votre CV (PDF) - pour demandeurs d\'emploi',
+                profile_submit: '✓ Compléter l\'inscription',
+                jobs_title: 'Offres d\'Emploi',
+                job_search_placeholder: '🔍 Rechercher un emploi...',
+                all_cities: 'Toutes les villes',
+                all_contracts: 'Tous les contrats',
+                contract_interim: 'Intérim',
+                no_jobs_found: 'Aucune offre trouvée.',
+                published_on: 'Publié le',
+                apply_btn: 'Postuler',
+                training_title: 'Formations et Apprentissage',
+                coursera_desc: 'Cours gratuits pour les réfugiés',
+                linkedin_desc: 'Compétences professionnelles',
+                poleemploi_desc: 'Formations officielles France',
+                access_btn: 'Accéder →',
+                resources_title: 'Ressources Éducatives',
+                tab_videos: '🎬 Vidéos',
+                tab_posters: '🖼️ Affiches',
+                tab_volunteering: '🤝 Bénévolat',
+                no_videos: 'Aucune vidéo disponible.',
+                volunteer_btn: 'Devenir bénévole',
+                legal_title: 'Cadre Juridique',
+                legal_france: 'Loi Immigration France',
+                legal_france_desc: 'Code de l\'entrée et du séjour des étrangers et du droit d\'asile (CESEDA)',
+                legal_europe: 'Politique Européenne',
+                legal_europe_desc: 'Système Européen Commun d\'Asile (CEAS)',
+                legal_geneva: 'Convention de Genève',
+                legal_geneva_desc: 'Convention relative au statut des réfugiés (1951)',
+                consult_btn: 'Consulter →',
+                admin_title: '🔧 Panneau d\'Administration',
+                admin_add_job: 'Ajouter une offre d\'emploi',
+                admin_job_title_placeholder: 'Titre du poste',
+                admin_job_city_placeholder: 'Ville',
+                admin_job_desc_placeholder: 'Description du poste',
+                admin_add_btn: 'Ajouter l\'offre',
+                admin_add_video: 'Ajouter une vidéo éducative',
+                admin_video_title_placeholder: 'Titre de la vidéo',
+                category_legal: 'Juridique',
+                category_emploi: 'Emploi',
+                category_social: 'Social',
+                admin_add_btn_video: 'Ajouter la vidéo',
+                disclaimer_title: 'Information Importante / Important Information / معلومات هامة',
+                disclaimer_fr: 'Nous ne soutenons ni n\'encourageons l\'immigration illégale. Notre mission est de fournir des informations légales et un soutien à l\'intégration conformément au droit français et européen.',
+                disclaimer_en: 'We do not support or encourage illegal immigration. Our mission is to provide legal information and integration support in accordance with French and European law.',
+                disclaimer_ar: 'نحن لا ندعم أو نشجع الهجرة غير الشرعية. مهمتنا هي تقديم المعلومات القانونية والدعم للاندماج وفقًا للقانون الفرنسي والأوروبي.',
+                footer_about: 'Horizons d\'Avenir',
+                footer_about_desc: 'Plateforme dédiée à l\'insertion professionnelle des réfugiés et migrants en France.',
+                footer_location: 'Siège: Paris, France',
+                footer_links: 'Liens Rapides',
+                footer_jobs: 'Offres d\'Emploi',
+                footer_training: 'Formations',
+                footer_resources: 'Ressources',
+                footer_legal: 'Cadre Juridique',
+                footer_legal_title: 'Légal',
+                footer_mentions: 'Mentions légales',
+                footer_privacy: 'Politique de confidentialité',
+                footer_terms: 'Conditions d\'utilisation',
+                footer_rgpd: 'RGPD',
+                footer_copyright: '© 2024 Horizons d\'Avenir. Cette plateforme respecte le droit français et européen.',
+                footer_hosting: 'Hébergement conforme RGPD | Données stockées en France',
+                toast_login_required: '⚠️ Veuillez vous connecter d\'abord',
+                toast_profile_required: '⚠️ Veuillez compléter votre profil d\'abord',
+                toast_register_success: '✅ Compte créé! Complétez votre profil.',
+                toast_profile_success: '✅ Profil complété avec succès!',
+                toast_login_success: '✅ Connecté avec succès!',
+                toast_login_error: '❌ Email ou mot de passe incorrect',
+                toast_logout_success: '👋 Déconnecté avec succès',
+                toast_job_apply: '✅ Candidature envoyée pour:',
+                toast_job_added: '✅ Offre d\'emploi ajoutée!',
+                toast_video_added: '✅ Vidéo ajoutée!',
+                toast_volunteer: '✅ Inscription bénévole pour:',
+                lang_changed: '🌐 Langue changée'
+            },
+            en: {
+                site_name: 'Horizons d\'Avenir',
+                nav_home: 'Home',
+                nav_jobs: 'Jobs',
+                nav_training: 'Training',
+                nav_resources: 'Resources',
+                nav_legal: 'Law',
+                login: 'Login',
+                register: 'Register',
+                logout: 'Logout',
+                welcome_title: 'Welcome to Horizons d\'Avenir',
+                welcome_desc: 'Platform dedicated to the professional integration of refugees and migrants in France. Discover job offers, training, and legal resources to support you.',
+                card_jobs: 'Job Offers',
+                card_jobs_desc: 'Browse offers in your city',
+                card_training: 'Training',
+                card_training_desc: 'Access Coursera, LinkedIn Learning and more',
+                card_legal: 'Refugee Rights',
+                card_legal_desc: 'Learn about your rights in France and Europe',
+                register_title: 'Create your account',
+                google_signup: 'Google',
+                facebook_signup: 'Facebook',
+                phone_signup: '+33 Phone',
+                register_email_alt: 'Or register by email',
+                reg_name_placeholder: 'Full name',
+                reg_password_placeholder: 'Password',
+                register_btn: 'Register',
+                profile_title: 'Complete your profile',
+                profile_status: 'Status *',
+                select_option: 'Select',
+                status_jobseeker: 'Job seeker',
+                status_trainee: 'Trainee / Training',
+                status_volunteer: 'Volunteer',
+                profile_city: 'City in France *',
+                select_city: 'Select your city',
+                profile_legal: 'Legal situation (confidential)',
+                legal_prefer_not: 'Prefer not to answer',
+                legal_asylum: 'Asylum seeker',
+                legal_refugee: 'Statutory refugee',
+                legal_temporary: 'Temporary residence permit',
+                legal_undocumented: 'Undocumented',
+                profile_cv: 'Upload your CV (PDF) - for job seekers',
+                profile_submit: '✓ Complete registration',
+                jobs_title: 'Job Offers',
+                job_search_placeholder: '🔍 Search for a job...',
+                all_cities: 'All cities',
+                all_contracts: 'All contracts',
+                contract_interim: 'Temporary',
+                no_jobs_found: 'No jobs found.',
+                published_on: 'Published on',
+                apply_btn: 'Apply',
+                training_title: 'Training and Learning',
+                coursera_desc: 'Free courses for refugees',
+                linkedin_desc: 'Professional skills',
+                poleemploi_desc: 'Official French training',
+                access_btn: 'Access →',
+                resources_title: 'Educational Resources',
+                tab_videos: '🎬 Videos',
+                tab_posters: '🖼️ Posters',
+                tab_volunteering: '🤝 Volunteering',
+                no_videos: 'No videos available.',
+                volunteer_btn: 'Become a volunteer',
+                legal_title: 'Legal Framework',
+                legal_france: 'French Immigration Law',
+                legal_france_desc: 'Code of entry and stay of foreigners and right of asylum (CESEDA)',
+                legal_europe: 'European Policy',
+                legal_europe_desc: 'Common European Asylum System (CEAS)',
+                legal_geneva: 'Geneva Convention',
+                legal_geneva_desc: 'Convention relating to the Status of Refugees (1951)',
+                consult_btn: 'Consult →',
+                admin_title: '🔧 Administration Panel',
+                admin_add_job: 'Add a job offer',
+                admin_job_title_placeholder: 'Job title',
+                admin_job_city_placeholder: 'City',
+                admin_job_desc_placeholder: 'Job description',
+                admin_add_btn: 'Add offer',
+                admin_add_video: 'Add an educational video',
+                admin_video_title_placeholder: 'Video title',
+                category_legal: 'Legal',
+                category_emploi: 'Employment',
+                category_social: 'Social',
+                admin_add_btn_video: 'Add video',
+                disclaimer_title: 'Important Information / Information Importante / معلومات هامة',
+                disclaimer_fr: 'Nous ne soutenons ni n\'encourageons l\'immigration illégale. Notre mission est de fournir des informations légales et un soutien à l\'intégration conformément au droit français et européen.',
+                disclaimer_en: 'We do not support or encourage illegal immigration. Our mission is to provide legal information and integration support in accordance with French and European law.',
+                disclaimer_ar: 'نحن لا ندعم أو نشجع الهجرة غير الشرعية. مهمتنا هي تقديم المعلومات القانونية والدعم للاندماج وفقًا للقانون الفرنسي والأوروبي.',
+                footer_about: 'Horizons d\'Avenir',
+                footer_about_desc: 'Platform dedicated to the professional integration of refugees and migrants in France.',
+                footer_location: 'Headquarters: Paris, France',
+                footer_links: 'Quick Links',
+                footer_jobs: 'Job Offers',
+                footer_training: 'Training',
+                footer_resources: 'Resources',
+                footer_legal: 'Legal Framework',
+                footer_legal_title: 'Legal',
+                footer_mentions: 'Legal notices',
+                footer_privacy: 'Privacy policy',
+                footer_terms: 'Terms of use',
+                footer_rgpd: 'GDPR',
+                footer_copyright: '© 2024 Horizons d\'Avenir. This platform respects French and European law.',
+                footer_hosting: 'GDPR compliant hosting | Data stored in France',
+                toast_login_required: '⚠️ Please login first',
+                toast_profile_required: '⚠️ Please complete your profile first',
+                toast_register_success: '✅ Account created! Complete your profile.',
+                toast_profile_success: '✅ Profile completed successfully!',
+                toast_login_success: '✅ Logged in successfully!',
+                toast_login_error: '❌ Incorrect email or password',
+                toast_logout_success: '👋 Logged out successfully',
+                toast_job_apply: '✅ Application sent for:',
+                toast_job_added: '✅ Job offer added!',
+                toast_video_added: '✅ Video added!',
+                toast_volunteer: '✅ Volunteer registration for:',
+                lang_changed: '🌐 Language changed'
+            },
+            ar: {
+                site_name: 'آفاق المستقبل',
+                nav_home: 'الرئيسية',
+                nav_jobs: 'وظائف',
+                nav_training: 'تدريبات',
+                nav_resources: 'موارد',
+                nav_legal: 'قانون',
+                login: 'تسجيل الدخول',
+                register: 'إنشاء حساب',
+                logout: 'تسجيل الخروج',
+                welcome_title: 'مرحباً بكم في آفاق المستقبل',
+                welcome_desc: 'منصة مخصصة للإدماج المهني للاجئين والمهاجرين في فرنسا. اكتشف عروض العمل والتدريبات والموارد القانونية لمساعدتك.',
+                card_jobs: 'عروض العمل',
+                card_jobs_desc: 'تصفح العروض في مدينتك',
+                card_training: 'التدريبات',
+                card_training_desc: 'الوصول إلى كورسيرا ولينكدإن والمزيد',
+                card_legal: 'حقوق اللاجئين',
+                card_legal_desc: 'تعرف على حقوقك في فرنسا وأوروبا',
+                register_title: 'إنشاء حسابك',
+                google_signup: 'جوجل',
+                facebook_signup: 'فيسبوك',
+                phone_signup: '+33 هاتف',
+                register_email_alt: 'أو التسجيل بالبريد الإلكتروني',
+                reg_name_placeholder: 'الاسم الكامل',
+                reg_password_placeholder: 'كلمة المرور',
+                register_btn: 'إنشاء حساب',
+                profile_title: 'أكمل ملفك الشخصي',
+                profile_status: 'الحالة *',
+                select_option: 'اختر',
+                status_jobseeker: 'باحث عن عمل',
+                status_trainee: 'متدرب / تدريب',
+                status_volunteer: 'متطوع',
+                profile_city: 'المدينة في فرنسا *',
+                select_city: 'اختر مدينتك',
+                profile_legal: 'الوضع القانوني (سري)',
+                legal_prefer_not: 'أفضل عدم الإجابة',
+                legal_asylum: 'طالب لجوء',
+                legal_refugee: 'لاجئ نظامي',
+                legal_temporary: 'إقامة مؤقتة',
+                legal_undocumented: 'بدون أوراق',
+                profile_cv: 'حمّل سيرتك الذاتية (PDF) - للباحثين عن عمل',
+                profile_submit: '✓ إكمال التسجيل',
+                jobs_title: 'عروض العمل',
+                job_search_placeholder: '🔍 ابحث عن وظيفة...',
+                all_cities: 'جميع المدن',
+                all_contracts: 'جميع العقود',
+                contract_interim: 'مؤقت',
+                no_jobs_found: 'لم يتم العثور على عروض.',
+                published_on: 'نُشر في',
+                apply_btn: 'تقديم',
+                training_title: 'التدريبات والتعلم',
+                coursera_desc: 'دورات مجانية للاجئين',
+                linkedin_desc: 'مهارات مهنية',
+                poleemploi_desc: 'تدريبات رسمية في فرنسا',
+                access_btn: 'الوصول ←',
+                resources_title: 'الموارد التعليمية',
+                tab_videos: '🎬 فيديوهات',
+                tab_posters: '🖼️ ملصقات',
+                tab_volunteering: '🤝 تطوع',
+                no_videos: 'لا توجد فيديوهات متاحة.',
+                volunteer_btn: 'كن متطوعاً',
+                legal_title: 'الإطار القانوني',
+                legal_france: 'قانون الهجرة الفرنسي',
+                legal_france_desc: 'قانون دخول وإقامة الأجانب وحق اللجوء (CESEDA)',
+                legal_europe: 'السياسة الأوروبية',
+                legal_europe_desc: 'نظام اللجوء الأوروبي المشترك (CEAS)',
+                legal_geneva: 'اتفاقية جنيف',
+                legal_geneva_desc: 'الاتفاقية الخاصة بوضع اللاجئين (1951)',
+                consult_btn: 'استشارة ←',
+                admin_title: '🔧 لوحة الإدارة',
+                admin_add_job: 'إضافة عرض عمل',
+                admin_job_title_placeholder: 'المسمى الوظيفي',
+                admin_job_city_placeholder: 'المدينة',
+                admin_job_desc_placeholder: 'وصف الوظيفة',
+                admin_add_btn: 'إضافة العرض',
+                admin_add_video: 'إضافة فيديو تعليمي',
+                admin_video_title_placeholder: 'عنوان الفيديو',
+                category_legal: 'قانوني',
+                category_emploi: 'توظيف',
+                category_social: 'اجتماعي',
+                admin_add_btn_video: 'إضافة الفيديو',
+                disclaimer_title: 'معلومات هامة / Important Information / Information Importante',
+                disclaimer_fr: 'Nous ne soutenons ni n\'encourageons l\'immigration illégale. Notre mission est de fournir des informations légales et un soutien à l\'intégration conformément au droit français et européen.',
+                disclaimer_en: 'We do not support or encourage illegal immigration. Our mission is to provide legal information and integration support in accordance with French and European law.',
+                disclaimer_ar: 'نحن لا ندعم أو نشجع الهجرة غير الشرعية. مهمتنا هي تقديم المعلومات القانونية والدعم للاندماج وفقًا للقانون الفرنسي والأوروبي.',
+                footer_about: 'آفاق المستقبل',
+                footer_about_desc: 'منصة مخصصة للإدماج المهني للاجئين والمهاجرين في فرنسا.',
+                footer_location: 'المقر: باريس، فرنسا',
+                footer_links: 'روابط سريعة',
+                footer_jobs: 'عروض العمل',
+                footer_training: 'التدريبات',
+                footer_resources: 'الموارد',
+                footer_legal: 'الإطار القانوني',
+                footer_legal_title: 'قانوني',
+                footer_mentions: 'إشعارات قانونية',
+                footer_privacy: 'سياسة الخصوصية',
+                footer_terms: 'شروط الاستخدام',
+                footer_rgpd: 'اللائحة العامة لحماية البيانات',
+                footer_copyright: '© 2024 آفاق المستقبل. هذه المنصة تحترم القانون الفرنسي والأوروبي.',
+                footer_hosting: 'استضافة متوافقة مع RGPD | البيانات مخزنة في فرنسا',
+                toast_login_required: '⚠️ يرجى تسجيل الدخول أولاً',
+                toast_profile_required: '⚠️ يرجى إكمال ملفك الشخصي أولاً',
+                toast_register_success: '✅ تم إنشاء الحساب! أكمل ملفك الشخصي.',
+                toast_profile_success: '✅ تم إكمال الملف الشخصي بنجاح!',
+                toast_login_success: '✅ تم تسجيل الدخول بنجاح!',
+                toast_login_error: '❌ بريد إلكتروني أو كلمة مرور غير صحيحة',
+                toast_logout_success: '👋 تم تسجيل الخروج بنجاح',
+                toast_job_apply: '✅ تم إرسال الطلب لـ:',
+                toast_job_added: '✅ تمت إضافة عرض العمل!',
+                toast_video_added: '✅ تمت إضافة الفيديو!',
+                toast_volunteer: '✅ تم التسجيل كمتطوع في:',
+                lang_changed: '🌐 تم تغيير اللغة'
             }
         };
 
-        // Default data
-        const DEFAULT_JOBS = [
-            { id: 'job_1', title: 'Plombier / Chauffagiste', company: 'Urban Énergie', city: 'Paris', type: 'CDI', salary: '2 100€/mois', skills: 'plomberie, chauffage', description: 'Poste en CDI avec accompagnement pour titre de séjour. Formation continue assurée.', status: 'active', createdAt: '2026-01-15' },
-            { id: 'job_2', title: 'Aide-cuisinier', company: 'Restaurant Solidaire', city: 'Lyon', type: 'CDD', salary: '11,88€/heure', skills: 'cuisine, restauration', description: 'Contrat d\'insertion de 6 mois renouvelable. Formation en interne.', status: 'active', createdAt: '2026-01-20' },
-            { id: 'job_3', title: 'Agent d\'entretien', company: 'Clean Service', city: 'Marseille', type: 'Intérim', salary: '11,65€/heure', skills: 'ménage, nettoyage', description: '20h/semaine avec horaires flexibles. Possibilité d\'évolution.', status: 'active', createdAt: '2026-02-01' },
-            { id: 'job_4', title: 'Développeur Web Junior', company: 'TechForGood', city: 'Paris', type: 'CDI', salary: '2 500€/mois', skills: 'HTML, CSS, JavaScript', description: 'Startup inclusive recherche développeur motivé. Télétravail possible.', status: 'active', createdAt: '2026-02-15' },
-            { id: 'job_5', title: 'Aide-soignant', company: 'EHPAD Les Bleuets', city: 'Lille', type: 'CDD', salary: '1 950€/mois', skills: 'soins, aide à la personne', description: 'Formation en interne assurée. Débutants acceptés.', status: 'active', createdAt: '2026-03-01' }
-        ];
+        let currentLanguage = localStorage.getItem('horizons_language') || 'fr';
 
-        const DEFAULT_PRIVACY = `POLITIQUE DE CONFIDENTIALITÉ - NOUVELLE CHANCE
-        Dernière mise à jour : Janvier 2026
+        // ============ APPLY TRANSLATION ============
+        function applyTranslation(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('horizons_language', lang);
 
-        1. ENGAGEMENT RGPD
-        Conformément au Règlement Général sur la Protection des Données (UE 2016/679), 
-        Nouvelle Chance s'engage à protéger vos données personnelles.
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
 
-        2. DONNÉES COLLECTÉES
-        - Nom et prénom (ou pseudonyme)
-        - Coordonnées (téléphone, email)
-        - Compétences professionnelles
-        - CV (optionnel)
-
-        3. UTILISATION DES DONNÉES
-        Vos données sont exclusivement utilisées pour :
-        - Vous mettre en relation avec des employeurs partenaires
-        - Vous proposer des formations adaptées
-        - Vous accompagner dans vos démarches d'insertion
-
-        4. NON-PARTAGE AVEC LES AUTORITÉS
-        Aucune donnée n'est partagée avec les autorités administratives 
-        ou policières sans votre consentement explicite et écrit.
-
-        5. VOS DROITS
-        - Droit d'accès à vos données
-        - Droit de rectification
-        - Droit à l'effacement
-        - Droit à la portabilité
-
-        6. CONTACT DPO
-        Délégué à la Protection des Données : dpo@nouvellechance.fr
-        Adresse : 75 rue de Lourmel, 75015 Paris`;
-
-        const DEFAULT_TERMS = `CONDITIONS D'UTILISATION - NOUVELLE CHANCE
-        Dernière mise à jour : Janvier 2026
-
-        1. OBJET
-        Nouvelle Chance est une plateforme d'insertion professionnelle 
-        destinée aux personnes migrantes en France.
-
-        2. INSCRIPTION
-        L'inscription est gratuite et confidentielle. Les informations 
-        fournies doivent être exactes.
-
-        3. SERVICES
-        - Mise en relation avec des employeurs solidaires
-        - Orientation vers des formations gratuites
-        - Accompagnement juridique
-
-        4. RESPONSABILITÉS
-        Nouvelle Chance agit comme intermédiaire et ne garantit pas 
-        l'obtention d'un emploi ou d'une formation.
-
-        5. LITIGES
-        En cas de litige, les parties s'engagent à rechercher une 
-        solution amiable avant toute action judiciaire.
-        Tribunal compétent : Tribunal Judiciaire de Paris`;
-
-        // ==================== STORAGE HELPERS ====================
-        const storage = {
-            get(key, def) {
-                try { const d = localStorage.getItem(key); return d ? JSON.parse(d) : def; }
-                catch(e) { return def; }
-            },
-            set(key, val) {
-                try { localStorage.setItem(key, JSON.stringify(val)); return true; }
-                catch(e) { console.error('Storage error:', e); return false; }
-            },
-            remove(key) {
-                try { localStorage.removeItem(key); return true; }
-                catch(e) { return false; }
-            }
-        };
-
-        // Initialize all data
-        function initData() {
-            if (!storage.get(CONFIG.STORAGE_KEYS.JOBS)) storage.set(CONFIG.STORAGE_KEYS.JOBS, DEFAULT_JOBS);
-            if (!storage.get(CONFIG.STORAGE_KEYS.PRIVACY)) storage.set(CONFIG.STORAGE_KEYS.PRIVACY, { content: DEFAULT_PRIVACY, updated: '2026-01-01' });
-            if (!storage.get(CONFIG.STORAGE_KEYS.TERMS)) storage.set(CONFIG.STORAGE_KEYS.TERMS, { content: DEFAULT_TERMS, updated: '2026-01-01' });
-            if (!storage.get(CONFIG.STORAGE_KEYS.USERS)) storage.set(CONFIG.STORAGE_KEYS.USERS, []);
-            if (!storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS)) storage.set(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            if (!storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS)) storage.set(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
-        }
-
-        // ==================== GLOBAL STATE ====================
-        let currentUser = storage.get(CONFIG.STORAGE_KEYS.CURRENT_USER, null);
-        let currentAdminTab = 'dashboard';
-
-        // ==================== UTILITY FUNCTIONS ====================
-        const escapeHtml = (s) => { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
-        const genId = () => 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        
-        function showToast(msg, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const colors = { success: 'bg-green-500', warning: 'bg-yellow-500 text-black', error: 'bg-red-500', info: 'bg-blue-500' };
-            const icons = { success: '✓', warning: '⚠', error: '✕', info: 'ℹ' };
-            
-            const toast = document.createElement('div');
-            toast.className = `toast-notification ${colors[type] || colors.success} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 font-semibold`;
-            toast.innerHTML = `<span class="text-xl">${icons[type] || icons.success}</span> ${escapeHtml(msg)}`;
-            container.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(100px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        }
-
-        // ==================== AUTH FUNCTIONS ====================
-        function openAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            modal.style.display = 'flex';
-            document.getElementById('auth-modal-body').innerHTML = `
-                <button onclick="socialLogin('google')" class="w-full flex items-center justify-center gap-3 px-5 py-4 border-2 border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition font-semibold">
-                    🔵 Continuer avec Google
-                </button>
-                <button onclick="socialLogin('facebook')" class="w-full flex items-center justify-center gap-3 px-5 py-4 border-2 border-gray-200 dark:border-gray-600 rounded-2xl hover:bg-gray-50 dark:hover:bg-gray-700 transition font-semibold">
-                    🔵 Continuer avec Facebook
-                </button>
-                <div class="relative my-4">
-                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t dark:border-gray-600"></div></div>
-                    <div class="relative flex justify-center"><span class="bg-white dark:bg-gray-800 px-4 text-sm text-gray-500">ou</span></div>
-                </div>
-                <button onclick="openEmailRegister()" class="w-full flex items-center justify-center gap-3 px-5 py-4 bg-gradient-to-r from-brand-olive to-green-700 text-white rounded-2xl hover:shadow-lg transition font-bold">
-                    📧 S'inscrire avec e-mail
-                </button>
-                <p class="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-                    Déjà un compte ? <a href="#" onclick="openEmailLogin()" class="text-brand-olive dark:text-green-400 font-bold hover:underline">Se connecter</a>
-                </p>
-            `;
-        }
-
-        function closeAuthModal() {
-            document.getElementById('auth-modal').style.display = 'none';
-        }
-
-        function openEmailRegister() {
-            document.getElementById('auth-modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <input type="email" id="reg-email" placeholder="Votre email *" class="w-full px-5 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:border-brand-olive dark:focus:border-green-500 transition" required>
-                    <input type="text" id="reg-name" placeholder="Votre nom complet *" class="w-full px-5 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:border-brand-olive transition" required>
-                    <input type="password" id="reg-password" placeholder="Mot de passe (optionnel)" class="w-full px-5 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:border-brand-olive transition">
-                    <label class="flex items-start gap-3 cursor-pointer">
-                        <input type="checkbox" id="reg-agree" required class="mt-1 w-5 h-5 text-brand-olive rounded">
-                        <span class="text-sm text-gray-600 dark:text-gray-400">J'accepte les conditions d'utilisation et la politique de confidentialité</span>
-                    </label>
-                    <button onclick="emailRegister()" class="btn-primary w-full py-4 rounded-2xl font-bold text-lg">Créer mon compte</button>
-                    <p class="text-center text-sm text-gray-500">Déjà inscrit ? <a href="#" onclick="openEmailLogin()" class="text-brand-olive font-bold">Se connecter</a></p>
-                </div>
-            `;
-        }
-
-        function openEmailLogin() {
-            document.getElementById('auth-modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <input type="email" id="login-email" placeholder="Votre email *" class="w-full px-5 py-3.5 border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:border-brand-olive transition" required>
-                    <button onclick="emailLogin()" class="btn-primary w-full py-4 rounded-2xl font-bold text-lg">Se connecter</button>
-                    <p class="text-center text-sm text-gray-500">Pas encore de compte ? <a href="#" onclick="openEmailRegister()" class="text-brand-olive font-bold">S'inscrire</a></p>
-                </div>
-            `;
-        }
-
-        function socialLogin(provider) {
-            const email = `${provider}_${Date.now()}@social.nouvellechance.fr`;
-            const name = provider.charAt(0).toUpperCase() + provider.slice(1) + ' User';
-            registerOrLogin({ email, name, provider, isSocialLogin: true });
-        }
-
-        function emailRegister() {
-            const email = document.getElementById('reg-email')?.value?.trim();
-            const name = document.getElementById('reg-name')?.value?.trim();
-            if (!email || !name) { showToast('Veuillez remplir tous les champs obligatoires', 'warning'); return; }
-            registerOrLogin({ email, name, provider: 'email', isSocialLogin: false });
-        }
-
-        function emailLogin() {
-            const email = document.getElementById('login-email')?.value?.trim();
-            if (!email) { showToast('Veuillez entrer votre email', 'warning'); return; }
-            
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-            
-            if (!user) {
-                showToast('Aucun compte trouvé avec cet email. Veuillez vous inscrire.', 'warning');
-                setTimeout(openEmailRegister, 2000);
-                return;
-            }
-            
-            storage.set(CONFIG.STORAGE_KEYS.CURRENT_USER, user);
-            currentUser = user;
-            updateAuthUI();
-            showToast('✅ Connecté avec succès !');
-            closeAuthModal();
-        }
-
-        function registerOrLogin(userData) {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            let user = users.find(u => u.email.toLowerCase() === userData.email.toLowerCase());
-            
-            if (!user) {
-                const isAdmin = userData.email === CONFIG.ADMIN_EMAIL;
-                user = {
-                    id: genId(),
-                    ...userData,
-                    role: isAdmin ? 'admin' : 'user',
-                    status: isAdmin ? 'approved' : 'pending',
-                    createdAt: new Date().toISOString()
-                };
-                users.push(user);
-                storage.set(CONFIG.STORAGE_KEYS.USERS, users);
-            }
-            
-            storage.set(CONFIG.STORAGE_KEYS.CURRENT_USER, user);
-            currentUser = user;
-            updateAuthUI();
-            
-            if (user.role === 'admin') {
-                showToast('🛡️ Connecté en tant qu\'Administrateur');
-            } else if (user.status === 'pending') {
-                showToast('✅ Compte créé ! En attente de validation par un administrateur.', 'info');
+            // Update direction
+            if (lang === 'ar') {
+                document.body.setAttribute('dir', 'rtl');
             } else {
-                showToast('✅ Connecté avec succès !');
+                document.body.setAttribute('dir', 'ltr');
             }
-            closeAuthModal();
-        }
 
-        function logout() {
-            storage.remove(CONFIG.STORAGE_KEYS.CURRENT_USER);
-            currentUser = null;
-            updateAuthUI();
-            showToast('👋 Vous avez été déconnecté');
-        }
-
-        function updateAuthUI() {
-            const loginBtn = document.getElementById('login-btn');
-            const logoutBtn = document.getElementById('logout-btn');
-            const adminBtn = document.getElementById('admin-btn');
-            const userInfoDisplay = document.getElementById('user-info-display');
-            const userNameDisplay = document.getElementById('user-name-display');
-            
-            if (currentUser) {
-                loginBtn.classList.add('hidden');
-                logoutBtn.classList.remove('hidden');
-                userInfoDisplay.classList.remove('hidden');
-                userInfoDisplay.classList.add('flex');
-                userNameDisplay.textContent = currentUser.name.split(' ')[0];
-                
-                if (currentUser.role === 'admin') {
-                    adminBtn.classList.remove('hidden');
-                } else {
-                    adminBtn.classList.add('hidden');
-                }
-            } else {
-                loginBtn.classList.remove('hidden');
-                logoutBtn.classList.add('hidden');
-                adminBtn.classList.add('hidden');
-                userInfoDisplay.classList.add('hidden');
-                userInfoDisplay.classList.remove('flex');
-            }
-            
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        // ==================== ADMIN PANEL ====================
-        function openAdminPanel() {
-            if (!currentUser || currentUser.role !== 'admin') {
-                showToast('⛔ Accès réservé aux administrateurs', 'error');
-                return;
-            }
-            document.getElementById('admin-panel').classList.remove('hidden');
-            document.getElementById('admin-name-display').textContent = currentUser.name;
-            updateAdminBadges();
-            switchAdminTab('dashboard');
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('admin-panel').classList.add('hidden');
-        }
-
-        function switchAdminTab(tab) {
-            currentAdminTab = tab;
-            
-            document.querySelectorAll('.admin-nav-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('admin-nav-' + tab);
-            if (activeBtn) activeBtn.classList.add('active');
-            
-            const titles = {
-                dashboard: ['Tableau de bord', 'Vue d\'ensemble de la plateforme'],
-                jobs: ['Gestion des offres', 'Créer, modifier, supprimer des offres'],
-                users: ['Gestion des utilisateurs', 'Approuver, rejeter, gérer les comptes'],
-                applications: ['Candidatures & Formations', 'Suivi des demandes'],
-                volunteers: ['Bénévoles', 'Gestion des inscriptions bénévoles'],
-                privacy: ['Politique & RGPD', 'Modifier les documents légaux']
-            };
-            
-            document.getElementById('admin-page-title').textContent = titles[tab]?.[0] || 'Admin';
-            document.getElementById('admin-page-subtitle').textContent = titles[tab]?.[1] || '';
-            
-            renderAdminContent(tab);
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        function renderAdminContent(tab) {
-            const area = document.getElementById('admin-content-area');
-            const renderers = {
-                dashboard: renderAdminDashboard,
-                jobs: renderAdminJobs,
-                users: renderAdminUsers,
-                applications: renderAdminApplications,
-                volunteers: renderAdminVolunteers,
-                privacy: renderAdminPrivacy
-            };
-            if (renderers[tab]) area.innerHTML = renderers[tab]();
-        }
-
-        function updateAdminBadges() {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            const applications = storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            const pendingUsers = users.filter(u => u.status === 'pending').length;
-            const pendingApps = applications.filter(a => a.status === 'pending').length;
-            
-            document.getElementById('total-users-count').textContent = users.length;
-            
-            const pendingUsersBadge = document.getElementById('pending-users-badge');
-            if (pendingUsersBadge) {
-                pendingUsersBadge.textContent = pendingUsers;
-                pendingUsersBadge.classList.toggle('hidden', pendingUsers === 0);
-            }
-            
-            const pendingAppsBadge = document.getElementById('pending-apps-badge');
-            if (pendingAppsBadge) {
-                pendingAppsBadge.textContent = pendingApps;
-                pendingAppsBadge.classList.toggle('hidden', pendingApps === 0);
-            }
-        }
-
-        function renderAdminDashboard() {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []).filter(j => j.status === 'active');
-            const applications = storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            const submissions = storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
-            
-            return `
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center"><i data-lucide="users" class="w-7 h-7 text-blue-600 dark:text-blue-400"></i></div>
-                            <div><div class="text-3xl font-black">${users.length}</div><div class="text-sm text-gray-500">Utilisateurs</div></div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-green-100 dark:bg-green-900/30 rounded-2xl flex items-center justify-center"><i data-lucide="briefcase" class="w-7 h-7 text-green-600 dark:text-green-400"></i></div>
-                            <div><div class="text-3xl font-black">${jobs.length}</div><div class="text-sm text-gray-500">Offres actives</div></div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-purple-100 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center"><i data-lucide="file-text" class="w-7 h-7 text-purple-600 dark:text-purple-400"></i></div>
-                            <div><div class="text-3xl font-black">${applications.length}</div><div class="text-sm text-gray-500">Candidatures</div></div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center"><i data-lucide="heart" class="w-7 h-7 text-orange-600 dark:text-orange-400"></i></div>
-                            <div><div class="text-3xl font-black">${submissions.filter(s=>s.type==='volunteer').length}</div><div class="text-sm text-gray-500">Bénévoles</div></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border dark:border-gray-700">
-                    <h3 class="text-xl font-bold mb-4">Actions rapides</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <button onclick="switchAdminTab('jobs')" class="p-6 border-2 border-dashed dark:border-gray-600 rounded-2xl hover:border-brand-olive dark:hover:border-green-500 transition text-left group">
-                            <i data-lucide="plus-circle" class="w-8 h-8 text-brand-olive dark:text-green-400 mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Publier une offre</p>
-                            <p class="text-sm text-gray-500">Ajouter une nouvelle offre d'emploi</p>
-                        </button>
-                        <button onclick="switchAdminTab('users')" class="p-6 border-2 border-dashed dark:border-gray-600 rounded-2xl hover:border-blue-500 transition text-left group">
-                            <i data-lucide="user-check" class="w-8 h-8 text-blue-600 mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Gérer les utilisateurs</p>
-                            <p class="text-sm text-gray-500">Approuver les inscriptions</p>
-                        </button>
-                        <button onclick="switchAdminTab('privacy')" class="p-6 border-2 border-dashed dark:border-gray-600 rounded-2xl hover:border-purple-500 transition text-left group">
-                            <i data-lucide="shield" class="w-8 h-8 text-purple-600 mb-3 group-hover:scale-110 transition"></i>
-                            <p class="font-bold">Documents légaux</p>
-                            <p class="text-sm text-gray-500">Modifier politique RGPD</p>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderAdminJobs() {
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-            let html = `
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
-                    <div class="p-6 border-b dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                        <h3 class="text-xl font-bold">Offres d'emploi (${jobs.length})</h3>
-                        <button onclick="showJobForm()" class="btn-primary px-6 py-3 rounded-xl font-bold text-sm">+ Nouvelle offre</button>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead><tr class="bg-gray-50 dark:bg-gray-700"><th class="px-6 py-4 text-left text-xs font-bold uppercase">Titre</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Entreprise</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Ville</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Type</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Salaire</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Actions</th></tr></thead>
-                            <tbody>`;
-            
-            jobs.forEach(j => {
-                html += `<tr class="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td class="px-6 py-4 font-semibold">${escapeHtml(j.title)}</td>
-                    <td class="px-6 py-4">${escapeHtml(j.company)}</td>
-                    <td class="px-6 py-4">${escapeHtml(j.city)}</td>
-                    <td class="px-6 py-4"><span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-bold">${escapeHtml(j.type)}</span></td>
-                    <td class="px-6 py-4 font-semibold text-brand-accent">${escapeHtml(j.salary)}</td>
-                    <td class="px-6 py-4">
-                        <button onclick="editJobForm('${j.id}')" class="text-blue-600 hover:underline mr-3 font-medium">Modifier</button>
-                        <button onclick="deleteJob('${j.id}')" class="text-red-600 hover:underline font-medium">Supprimer</button>
-                    </td>
-                </tr>`;
-            });
-            
-            html += '</tbody></table></div><div id="job-form-area" class="p-6 hidden border-t dark:border-gray-700"></div></div>';
-            return html;
-        }
-
-        function showJobForm() {
-            const area = document.getElementById('job-form-area');
-            if (!area) return;
-            area.classList.remove('hidden');
-            area.innerHTML = `
-                <h4 class="font-bold text-lg mb-4">Ajouter une nouvelle offre</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input type="text" id="job-title" placeholder="Titre du poste *" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="job-company" placeholder="Entreprise *" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="job-city" placeholder="Ville *" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <select id="job-type" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                        <option>CDI</option><option>CDD</option><option>Intérim</option>
-                    </select>
-                    <input type="text" id="job-salary" placeholder="Salaire *" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="job-skills" placeholder="Compétences requises" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <textarea id="job-desc" placeholder="Description du poste" class="w-full px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 mb-4" rows="3"></textarea>
-                <div class="flex gap-3">
-                    <button onclick="addJob()" class="btn-primary px-6 py-3 rounded-xl font-bold">Publier l'offre</button>
-                    <button onclick="document.getElementById('job-form-area').classList.add('hidden')" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-xl font-bold">Annuler</button>
-                </div>
-            `;
-        }
-
-        function addJob() {
-            const title = document.getElementById('job-title')?.value?.trim();
-            const company = document.getElementById('job-company')?.value?.trim();
-            if (!title || !company) { showToast('Titre et entreprise requis', 'warning'); return; }
-            
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-            jobs.push({
-                id: genId(), title, company,
-                city: document.getElementById('job-city')?.value || '',
-                type: document.getElementById('job-type')?.value || 'CDI',
-                salary: document.getElementById('job-salary')?.value || '',
-                skills: document.getElementById('job-skills')?.value || '',
-                description: document.getElementById('job-desc')?.value || '',
-                status: 'active', createdAt: new Date().toISOString()
-            });
-            storage.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
-            showToast('✅ Offre publiée avec succès');
-            switchAdminTab('jobs');
-            renderPublicJobs();
-        }
-
-        function editJobForm(jobId) {
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-            const job = jobs.find(j => j.id === jobId);
-            if (!job) return;
-            
-            const area = document.getElementById('job-form-area');
-            if (!area) return;
-            area.classList.remove('hidden');
-            area.innerHTML = `
-                <h4 class="font-bold text-lg mb-4">Modifier l'offre</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input type="text" id="edit-title" value="${escapeHtml(job.title)}" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="edit-company" value="${escapeHtml(job.company)}" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="edit-city" value="${escapeHtml(job.city)}" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <select id="edit-type" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                        <option ${job.type==='CDI'?'selected':''}>CDI</option>
-                        <option ${job.type==='CDD'?'selected':''}>CDD</option>
-                        <option ${job.type==='Intérim'?'selected':''}>Intérim</option>
-                    </select>
-                    <input type="text" id="edit-salary" value="${escapeHtml(job.salary)}" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                    <input type="text" id="edit-skills" value="${escapeHtml(job.skills||'')}" class="px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600">
-                </div>
-                <textarea id="edit-desc" class="w-full px-4 py-3 border rounded-xl dark:bg-gray-700 dark:border-gray-600 mb-4" rows="3">${escapeHtml(job.description||'')}</textarea>
-                <div class="flex gap-3">
-                    <button onclick="updateJob('${jobId}')" class="btn-primary px-6 py-3 rounded-xl font-bold">Enregistrer</button>
-                    <button onclick="document.getElementById('job-form-area').classList.add('hidden')" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-xl font-bold">Annuler</button>
-                </div>
-            `;
-        }
-
-        function updateJob(jobId) {
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-            const job = jobs.find(j => j.id === jobId);
-            if (!job) return;
-            Object.assign(job, {
-                title: document.getElementById('edit-title')?.value || job.title,
-                company: document.getElementById('edit-company')?.value || job.company,
-                city: document.getElementById('edit-city')?.value || job.city,
-                type: document.getElementById('edit-type')?.value || job.type,
-                salary: document.getElementById('edit-salary')?.value || job.salary,
-                skills: document.getElementById('edit-skills')?.value || job.skills,
-                description: document.getElementById('edit-desc')?.value || job.description,
-                updatedAt: new Date().toISOString()
-            });
-            storage.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
-            showToast('✅ Offre mise à jour');
-            switchAdminTab('jobs');
-            renderPublicJobs();
-        }
-
-        function deleteJob(jobId) {
-            if (confirm('Confirmer la suppression de cette offre ?')) {
-                let jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-                jobs = jobs.filter(j => j.id !== jobId);
-                storage.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
-                showToast('🗑️ Offre supprimée');
-                switchAdminTab('jobs');
-                renderPublicJobs();
-            }
-        }
-
-        function renderAdminUsers() {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            let html = `
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
-                    <div class="p-6 border-b dark:border-gray-700"><h3 class="text-xl font-bold">Utilisateurs (${users.length})</h3></div>
-                    <div class="overflow-x-auto"><table class="w-full">
-                        <thead><tr class="bg-gray-50 dark:bg-gray-700"><th class="px-6 py-4 text-left text-xs font-bold uppercase">Nom</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Email</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Rôle</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Statut</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Date</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Actions</th></tr></thead>
-                        <tbody>`;
-            
-            users.forEach(u => {
-                html += `<tr class="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                    <td class="px-6 py-4 font-semibold">${escapeHtml(u.name)}</td>
-                    <td class="px-6 py-4 text-sm">${escapeHtml(u.email)}</td>
-                    <td class="px-6 py-4">${u.role === 'admin' ? '🛡️ Admin' : '👤 User'}</td>
-                    <td class="px-6 py-4"><span class="status-badge status-${u.status}">${u.status}</span></td>
-                    <td class="px-6 py-4 text-sm">${new Date(u.createdAt).toLocaleDateString()}</td>
-                    <td class="px-6 py-4">
-                        ${u.status === 'pending' ? `<button onclick="approveUser('${u.id}')" class="text-green-600 hover:underline mr-3 font-medium">✅ Approuver</button><button onclick="rejectUser('${u.id}')" class="text-red-600 hover:underline mr-3 font-medium">❌ Rejeter</button>` : ''}
-                        <button onclick="deleteUser('${u.id}')" class="text-gray-600 hover:underline font-medium">🗑️</button>
-                    </td>
-                </tr>`;
-            });
-            
-            html += '</tbody></table></div></div>';
-            return html;
-        }
-
-        function approveUser(uid) {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            const user = users.find(u => u.id === uid);
-            if (user) { user.status = 'approved'; storage.set(CONFIG.STORAGE_KEYS.USERS, users); showToast('✅ Utilisateur approuvé'); switchAdminTab('users'); updateAdminBadges(); }
-        }
-
-        function rejectUser(uid) {
-            const users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-            const user = users.find(u => u.id === uid);
-            if (user) { user.status = 'rejected'; storage.set(CONFIG.STORAGE_KEYS.USERS, users); showToast('❌ Utilisateur rejeté'); switchAdminTab('users'); updateAdminBadges(); }
-        }
-
-        function deleteUser(uid) {
-            if (confirm('Supprimer définitivement cet utilisateur ?')) {
-                let users = storage.get(CONFIG.STORAGE_KEYS.USERS, []);
-                users = users.filter(u => u.id !== uid);
-                storage.set(CONFIG.STORAGE_KEYS.USERS, users);
-                showToast('🗑️ Utilisateur supprimé');
-                switchAdminTab('users');
-                updateAdminBadges();
-            }
-        }
-
-        function renderAdminApplications() {
-            const apps = storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            const subs = storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
-            const learningSubs = subs.filter(s => s.type === 'learning');
-            
-            let html = `<div class="space-y-6">
-                <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
-                    <div class="p-6 border-b dark:border-gray-700"><h3 class="text-xl font-bold">Candidatures emploi (${apps.length})</h3></div>
-                    <div class="overflow-x-auto"><table class="w-full">
-                        <thead><tr class="bg-gray-50 dark:bg-gray-700"><th class="px-6 py-4 text-left text-xs font-bold uppercase">Offre</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Candidat</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Date</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Statut</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Actions</th></tr></thead>
-                        <tbody>`;
-            
-            apps.forEach(a => {
-                html += `<tr class="border-t dark:border-gray-700"><td class="px-6 py-4 font-semibold">${escapeHtml(a.jobTitle||'N/A')}</td><td class="px-6 py-4">${escapeHtml(a.userEmail)}</td><td class="px-6 py-4 text-sm">${new Date(a.date).toLocaleDateString()}</td><td class="px-6 py-4"><span class="status-badge status-${a.status||'pending'}">${a.status||'pending'}</span></td><td class="px-6 py-4"><button onclick="updateAppStatus('${a.id}','approved')" class="text-green-600 hover:underline mr-3">✅</button><button onclick="updateAppStatus('${a.id}','rejected')" class="text-red-600 hover:underline">❌</button></td></tr>`;
-            });
-            
-            html += '</tbody></table></div></div>';
-            
-            html += `<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
-                <div class="p-6 border-b dark:border-gray-700"><h3 class="text-xl font-bold">Demandes formation (${learningSubs.length})</h3></div>
-                <div class="overflow-x-auto"><table class="w-full">
-                    <thead><tr class="bg-gray-50 dark:bg-gray-700"><th class="px-6 py-4 text-left text-xs font-bold uppercase">Nom</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Formation</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Date</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Statut</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Actions</th></tr></thead>
-                    <tbody>`;
-            
-            learningSubs.forEach(s => {
-                html += `<tr class="border-t dark:border-gray-700"><td class="px-6 py-4">${escapeHtml(s.name)}</td><td class="px-6 py-4">${escapeHtml(s.course||'N/A')}</td><td class="px-6 py-4 text-sm">${new Date(s.date).toLocaleDateString()}</td><td class="px-6 py-4"><span class="status-badge status-${s.status||'pending'}">${s.status||'pending'}</span></td><td class="px-6 py-4"><button onclick="updateSubStatus('${s.id}','approved')" class="text-green-600 hover:underline mr-3">✅</button><button onclick="updateSubStatus('${s.id}','rejected')" class="text-red-600 hover:underline">❌</button></td></tr>`;
-            });
-            
-            html += '</tbody></table></div></div></div>';
-            return html;
-        }
-
-        function renderAdminVolunteers() {
-            const volunteers = storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []).filter(s => s.type === 'volunteer');
-            let html = `<div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border dark:border-gray-700 overflow-hidden">
-                <div class="p-6 border-b dark:border-gray-700"><h3 class="text-xl font-bold">Bénévoles (${volunteers.length})</h3></div>
-                <div class="overflow-x-auto"><table class="w-full">
-                    <thead><tr class="bg-gray-50 dark:bg-gray-700"><th class="px-6 py-4 text-left text-xs font-bold uppercase">Nom</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Domaine</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Contact</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Date</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Statut</th><th class="px-6 py-4 text-left text-xs font-bold uppercase">Actions</th></tr></thead>
-                    <tbody>`;
-            
-            volunteers.forEach(s => {
-                html += `<tr class="border-t dark:border-gray-700"><td class="px-6 py-4 font-semibold">${escapeHtml(s.name)}</td><td class="px-6 py-4">${escapeHtml(s.role||'N/A')}</td><td class="px-6 py-4">${escapeHtml(s.phone)}</td><td class="px-6 py-4 text-sm">${new Date(s.date).toLocaleDateString()}</td><td class="px-6 py-4"><span class="status-badge status-${s.status||'pending'}">${s.status||'pending'}</span></td><td class="px-6 py-4"><button onclick="updateSubStatus('${s.id}','approved')" class="text-green-600 hover:underline mr-3">✅</button><button onclick="updateSubStatus('${s.id}','rejected')" class="text-red-600 hover:underline">❌</button></td></tr>`;
-            });
-            
-            html += '</tbody></table></div></div>';
-            return html;
-        }
-
-        function renderAdminPrivacy() {
-            const privacy = storage.get(CONFIG.STORAGE_KEYS.PRIVACY, { content: DEFAULT_PRIVACY, updated: '2026-01-01' });
-            const terms = storage.get(CONFIG.STORAGE_KEYS.TERMS, { content: DEFAULT_TERMS, updated: '2026-01-01' });
-            
-            return `
-                <div class="space-y-6">
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i data-lucide="shield-check" class="w-8 h-8 text-brand-olive dark:text-green-400"></i>
-                            <h3 class="text-xl font-bold">Politique de confidentialité (RGPD)</h3>
-                        </div>
-                        <p class="text-sm text-gray-500 mb-4">Dernière modification : ${new Date(privacy.updated).toLocaleDateString()}</p>
-                        <textarea id="privacy-editor" class="w-full px-5 py-4 border rounded-xl dark:bg-gray-700 dark:border-gray-600 font-mono text-sm" rows="15">${escapeHtml(privacy.content)}</textarea>
-                        <button onclick="savePrivacy()" class="btn-primary px-6 py-3 rounded-xl font-bold mt-4">💾 Enregistrer la politique</button>
-                    </div>
-                    <div class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm border dark:border-gray-700">
-                        <div class="flex items-center gap-3 mb-4">
-                            <i data-lucide="file-text" class="w-8 h-8 text-brand-admin"></i>
-                            <h3 class="text-xl font-bold">Conditions d'utilisation</h3>
-                        </div>
-                        <p class="text-sm text-gray-500 mb-4">Dernière modification : ${new Date(terms.updated).toLocaleDateString()}</p>
-                        <textarea id="terms-editor" class="w-full px-5 py-4 border rounded-xl dark:bg-gray-700 dark:border-gray-600 font-mono text-sm" rows="12">${escapeHtml(terms.content)}</textarea>
-                        <button onclick="saveTerms()" class="btn-primary px-6 py-3 rounded-xl font-bold mt-4">💾 Enregistrer les conditions</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function savePrivacy() {
-            const content = document.getElementById('privacy-editor')?.value;
-            if (content) {
-                storage.set(CONFIG.STORAGE_KEYS.PRIVACY, { content, updated: new Date().toISOString() });
-                showToast('✅ Politique de confidentialité mise à jour');
-            }
-        }
-
-        function saveTerms() {
-            const content = document.getElementById('terms-editor')?.value;
-            if (content) {
-                storage.set(CONFIG.STORAGE_KEYS.TERMS, { content, updated: new Date().toISOString() });
-                showToast('✅ Conditions d\'utilisation mises à jour');
-            }
-        }
-
-        function updateAppStatus(appId, status) {
-            const apps = storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            const app = apps.find(a => a.id === appId);
-            if (app) { app.status = status; storage.set(CONFIG.STORAGE_KEYS.APPLICATIONS, apps); showToast(status === 'approved' ? '✅ Candidature approuvée' : '❌ Candidature rejetée'); switchAdminTab('applications'); updateAdminBadges(); }
-        }
-
-        function updateSubStatus(subId, status) {
-            const subs = storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
-            const sub = subs.find(s => s.id === subId);
-            if (sub) { sub.status = status; storage.set(CONFIG.STORAGE_KEYS.SUBMISSIONS, subs); showToast(status === 'approved' ? '✅ Demande approuvée' : '❌ Demande rejetée'); switchAdminTab(currentAdminTab === 'volunteers' ? 'volunteers' : 'applications'); }
-        }
-
-        // ==================== FORM HANDLING ====================
-        function handleFormSubmit(event, type) {
-            event.preventDefault();
-            if (!currentUser) { showToast('Veuillez vous connecter d\'abord', 'warning'); openAuthModal(); return false; }
-            if (currentUser.status !== 'approved' && currentUser.role !== 'admin') { showToast('Votre compte est en attente de validation', 'warning'); return false; }
-            
-            const submission = {
-                id: genId(), type, userId: currentUser.id, userEmail: currentUser.email,
-                name: document.getElementById(`${type}-name`)?.value || currentUser.name,
-                phone: document.getElementById(`${type}-phone`)?.value || '',
-                date: new Date().toISOString(), status: 'pending'
-            };
-            
-            if (type === 'seeker') {
-                submission.city = document.getElementById('seeker-city')?.value || '';
-                submission.skills = document.getElementById('seeker-skills')?.value || '';
-            } else if (type === 'learning') {
-                submission.course = document.getElementById('learning-course')?.value || '';
-                submission.goal = document.getElementById('learning-goal')?.value || '';
-            } else if (type === 'volunteer') {
-                submission.role = document.getElementById('volunteer-role')?.value || '';
-                submission.hours = document.getElementById('volunteer-hours')?.value || '';
-            }
-            
-            const submissions = storage.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
-            submissions.push(submission);
-            storage.set(CONFIG.STORAGE_KEYS.SUBMISSIONS, submissions);
-            
-            showToast('✅ Votre demande a été enregistrée avec succès ! Un conseiller vous contactera.');
-            document.getElementById(`${type}-form`).reset();
-            return false;
-        }
-
-        function applyForJob(jobId) {
-            if (!currentUser) { showToast('Veuillez vous connecter pour postuler', 'warning'); openAuthModal(); return; }
-            
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []);
-            const job = jobs.find(j => j.id === jobId);
-            
-            const applications = storage.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-            applications.push({
-                id: genId(), jobId, jobTitle: job?.title || 'Offre',
-                userId: currentUser.id, userEmail: currentUser.email,
-                date: new Date().toISOString(), status: 'pending'
-            });
-            storage.set(CONFIG.STORAGE_KEYS.APPLICATIONS, applications);
-            
-            showToast('🎉 Candidature envoyée avec succès !');
-            updateAdminBadges();
-        }
-
-        // ==================== PUBLIC UI ====================
-        function renderPublicJobs() {
-            const container = document.getElementById('jobs-container');
-            if (!container) return;
-            
-            const jobs = storage.get(CONFIG.STORAGE_KEYS.JOBS, []).filter(j => j.status === 'active');
-            const noJobsMsg = document.getElementById('no-jobs-message');
-            
-            if (jobs.length === 0) {
-                container.innerHTML = '';
-                if (noJobsMsg) noJobsMsg.classList.remove('hidden');
-                return;
-            }
-            
-            if (noJobsMsg) noJobsMsg.classList.add('hidden');
-            
-            container.innerHTML = jobs.map(job => `
-                <div class="bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-sm border dark:border-gray-700 card-hover group">
-                    <div class="flex items-start justify-between mb-4">
-                        <h3 class="text-xl font-bold text-brand-olive dark:text-green-400 group-hover:text-brand-accent transition">${escapeHtml(job.title)}</h3>
-                        <span class="px-3 py-1 bg-brand-sky dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-bold">${escapeHtml(job.type)}</span>
-                    </div>
-                    <p class="text-gray-500 dark:text-gray-400 mb-2">🏢 ${escapeHtml(job.company)} • 📍 ${escapeHtml(job.city)}</p>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${escapeHtml(job.description || '')}</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        ${(job.skills || '').split(',').map(s => `<span class="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">${escapeHtml(s.trim())}</span>`).join('')}
-                    </div>
-                    <div class="flex items-center justify-between pt-4 border-t dark:border-gray-700">
-                        <span class="text-xl font-black text-brand-accent">💰 ${escapeHtml(job.salary)}</span>
-                        <button onclick="applyForJob('${job.id}')" class="btn-primary px-6 py-3 rounded-xl font-bold text-sm">Postuler</button>
-                    </div>
-                </div>
-            `).join('');
-            
-            const heroCount = document.getElementById('hero-jobs-count');
-            if (heroCount) heroCount.textContent = jobs.length;
-        }
-
-        function switchTab(tab) {
-            ['seeker', 'learning', 'volunteer'].forEach(t => {
-                const panel = document.getElementById(`panel-${t}`);
-                const btn = document.getElementById(`tab-${t}`);
-                if (panel) panel.classList.toggle('hidden', t !== tab);
-                if (btn) {
-                    if (t === tab) {
-                        btn.className = 'px-6 py-3 rounded-2xl font-bold bg-white text-brand-olive shadow-lg transition';
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    // Check if element has child elements (like spans with their own data-i18n)
+                    const childWithI18n = element.querySelector('[data-i18n]');
+                    if (childWithI18n) {
+                        // Only update text nodes, not child elements with their own data-i18n
+                        updateTextNodes(element, translations[lang][key], lang);
                     } else {
-                        btn.className = 'px-6 py-3 rounded-2xl font-bold text-white border-2 border-white/30 hover:bg-white/10 transition';
+                        element.textContent = translations[lang][key];
                     }
                 }
             });
-        }
 
-        function showPrivacyPolicy() {
-            const privacy = storage.get(CONFIG.STORAGE_KEYS.PRIVACY, { content: DEFAULT_PRIVACY });
-            alert('POLITIQUE DE CONFIDENTIALITÉ\n\n' + privacy.content.substring(0, 800) + '...');
-        }
-
-        function showTerms() {
-            const terms = storage.get(CONFIG.STORAGE_KEYS.TERMS, { content: DEFAULT_TERMS });
-            alert('CONDITIONS D\'UTILISATION\n\n' + terms.content.substring(0, 800) + '...');
-        }
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            storage.set(CONFIG.STORAGE_KEYS.DARK_MODE, isDark);
-            const icon = document.getElementById('dark-mode-icon');
-            if (icon) icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        }
-
-        // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', () => {
-            initData();
-            
-            // Restore dark mode
-            if (storage.get(CONFIG.STORAGE_KEYS.DARK_MODE, false)) {
-                document.body.classList.add('dark-mode');
-                const icon = document.getElementById('dark-mode-icon');
-                if (icon) icon.setAttribute('data-lucide', 'sun');
-            }
-            
-            // Restore user session
-            currentUser = storage.get(CONFIG.STORAGE_KEYS.CURRENT_USER, null);
-            
-            updateAuthUI();
-            renderPublicJobs();
-            updateAdminBadges();
-            
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-            
-            // Close modals on backdrop click
-            document.getElementById('auth-modal')?.addEventListener('click', function(e) {
-                if (e.target === this) closeAuthModal();
+            // Update placeholders
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(element => {
+                const key = element.getAttribute('data-i18n-placeholder');
+                if (translations[lang] && translations[lang][key]) {
+                    element.placeholder = translations[lang][key];
+                }
             });
-            
-            console.log('✅ Nouvelle Chance - Plateforme initialisée');
-            console.log('👤 Admin: ' + CONFIG.ADMIN_EMAIL);
-            console.log('📊 Offres chargées: ' + storage.get(CONFIG.STORAGE_KEYS.JOBS, []).length);
+
+            // Update select options with data-i18n
+            document.querySelectorAll('option[data-i18n]').forEach(option => {
+                const key = option.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    option.textContent = translations[lang][key];
+                }
+            });
+
+            // Update language selector
+            const langSelect = document.getElementById('langSelect');
+            if (langSelect) {
+                langSelect.value = lang;
+            }
+
+            // Reload dynamic content with translations
+            loadJobs();
+            loadVideos();
+            loadPosters();
+            loadVolunteering();
+            populateCityFilter();
+        }
+
+        function updateTextNodes(element, translation, lang) {
+            // For elements that contain child elements with their own data-i18n
+            const children = Array.from(element.childNodes);
+            children.forEach(child => {
+                if (child.nodeType === Node.TEXT_NODE) {
+                    child.textContent = translation;
+                }
+            });
+        }
+
+        function changeLanguage(lang) {
+            applyTranslation(lang);
+            showToast(translations[lang].lang_changed);
+        }
+
+        // ============ GLOBAL STATE ============
+        let currentUser = null;
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem('horizons_users') || '[]');
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('horizons_users', JSON.stringify(users));
+        }
+
+        function getJobs() {
+            return JSON.parse(localStorage.getItem('horizons_jobs') || '[]');
+        }
+
+        function saveJobs(jobs) {
+            localStorage.setItem('horizons_jobs', JSON.stringify(jobs));
+        }
+
+        function getVideos() {
+            return JSON.parse(localStorage.getItem('horizons_videos') || '[]');
+        }
+
+        function saveVideos(videos) {
+            localStorage.setItem('horizons_videos', JSON.stringify(videos));
+        }
+
+        function initDefaultData() {
+            if (getJobs().length === 0) {
+                const defaultJobs = [
+                    { id: 1, title: 'Aide Cuisinier', title_ar: 'مساعد طباخ', title_en: 'Kitchen Assistant', city: 'paris', contract: 'CDI', description: 'Restaurant recherche aide cuisinier. Formation assurée.', description_ar: 'مطعم يبحث عن مساعد طباخ. التدريب مضمون.', description_en: 'Restaurant looking for kitchen assistant. Training provided.', date: '2024-01-15' },
+                    { id: 2, title: 'Agent d\'entretien', title_ar: 'عامل نظافة', title_en: 'Maintenance Agent', city: 'lyon', contract: 'CDD', description: 'Nettoyage bureaux. Débutant accepté.', description_ar: 'تنظيف مكاتب. يقبل المبتدئين.', description_en: 'Office cleaning. Beginners accepted.', date: '2024-01-20' },
+                    { id: 3, title: 'Manutentionnaire', title_ar: 'عامل مناولة', title_en: 'Handler', city: 'marseille', contract: 'Intérim', description: 'Entrepôt logistique. Pas d\'expérience requise.', description_ar: 'مستودع لوجستي. لا خبرة مطلوبة.', description_en: 'Logistics warehouse. No experience required.', date: '2024-02-01' },
+                    { id: 4, title: 'Aide à domicile', title_ar: 'مساعد منزلي', title_en: 'Home Helper', city: 'paris', contract: 'CDI', description: 'Aide aux personnes âgées. Formation incluse.', description_ar: 'مساعدة كبار السن. التدريب مشمول.', description_en: 'Elderly care. Training included.', date: '2024-02-10' },
+                    { id: 5, title: 'Coursier à vélo', title_ar: 'ساعي دراجة', title_en: 'Bike Courier', city: 'lille', contract: 'Freelance', description: 'Livraison à vélo. Horaires flexibles.', description_ar: 'توصيل بالدراجة. ساعات مرنة.', description_en: 'Bike delivery. Flexible hours.', date: '2024-02-15' },
+                    { id: 6, title: 'Ouvrier bâtiment', title_ar: 'عامل بناء', title_en: 'Construction Worker', city: 'strasbourg', contract: 'CDI', description: 'Chantier de construction. Expérience souhaitée.', description_ar: 'ورشة بناء. الخبرة مرغوبة.', description_en: 'Construction site. Experience desired.', date: '2024-03-01' },
+                ];
+                saveJobs(defaultJobs);
+            }
+
+            if (getVideos().length === 0) {
+                const defaultVideos = [
+                    { id: 1, title: 'Vos droits en France', title_ar: 'حقوقك في فرنسا', title_en: 'Your Rights in France', category: 'legal', lang: 'fr' },
+                    { id: 2, title: 'Comment rédiger un CV', title_ar: 'كيفية كتابة السيرة الذاتية', title_en: 'How to Write a CV', category: 'emploi', lang: 'fr' },
+                    { id: 3, title: 'Préparer un entretien', title_ar: 'التحضير للمقابلة', title_en: 'Preparing for an Interview', category: 'emploi', lang: 'fr' },
+                    { id: 4, title: 'Système de santé français', title_ar: 'نظام الصحة الفرنسي', title_en: 'French Health System', category: 'social', lang: 'fr' },
+                ];
+                saveVideos(defaultVideos);
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function registerWithProvider(provider) {
+            let userData = {
+                id: 'user_' + Date.now(),
+                provider: provider,
+                registeredAt: new Date().toISOString()
+            };
+
+            const prompts = {
+                google: { email: 'Email Google:', name: translations[currentLanguage].reg_name_placeholder },
+                facebook: { email: 'Email Facebook:', name: translations[currentLanguage].reg_name_placeholder },
+                phone: { phone: 'Numéro de téléphone (+33):', name: translations[currentLanguage].reg_name_placeholder }
+            };
+
+            const p = prompts[provider];
+            if (p.email) userData.email = prompt(p.email);
+            if (p.phone) userData.phone = prompt(p.phone);
+            userData.name = prompt(p.name);
+
+            if ((userData.email || userData.phone) && userData.name) {
+                completeRegistration(userData);
+            }
+        }
+
+        function registerWithEmail(event) {
+            event.preventDefault();
+            const userData = {
+                id: 'user_' + Date.now(),
+                provider: 'email',
+                name: document.getElementById('regName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                registeredAt: new Date().toISOString()
+            };
+            completeRegistration(userData);
+        }
+
+        function completeRegistration(userData) {
+            currentUser = userData;
+            document.getElementById('profile-form-section').classList.remove('hidden');
+            document.getElementById('profile-form-section').scrollIntoView({ behavior: 'smooth' });
+            showToast(translations[currentLanguage].toast_register_success);
+        }
+
+        function completeProfile(event) {
+            event.preventDefault();
+            const status = document.getElementById('statusSelect').value;
+            const city = document.getElementById('citySelect').value;
+            const legalStatus = document.getElementById('legalStatus').value;
+
+            if (!status || !city) {
+                showToast(translations[currentLanguage].toast_profile_required, 'warning');
+                return;
+            }
+
+            currentUser.status = status;
+            currentUser.city = city;
+            currentUser.legalStatus = legalStatus;
+            currentUser.profileComplete = true;
+
+            const cvFile = document.getElementById('cvUpload').files[0];
+            if (cvFile && status === 'jobseeker') {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.cvData = e.target.result;
+                    currentUser.cvFileName = cvFile.name;
+                    finalizeProfile();
+                };
+                reader.readAsDataURL(cvFile);
+            } else {
+                finalizeProfile();
+            }
+        }
+
+        function finalizeProfile() {
+            const users = getUsers();
+            const existingIndex = users.findIndex(u => u.id === currentUser.id);
+            if (existingIndex >= 0) {
+                users[existingIndex] = currentUser;
+            } else {
+                users.push(currentUser);
+            }
+            saveUsers(users);
+            loginUser(currentUser);
+            showToast(translations[currentLanguage].toast_profile_success);
+        }
+
+        function showLoginModal() {
+            const email = prompt('Email:');
+            if (!email) return;
+            const password = prompt(translations[currentLanguage].reg_password_placeholder + ':');
+            const users = getUsers();
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                loginUser(user);
+                showToast(translations[currentLanguage].toast_login_success);
+            } else {
+                showToast(translations[currentLanguage].toast_login_error, 'error');
+            }
+        }
+
+        function loginUser(user) {
+            currentUser = user;
+            localStorage.setItem('horizons_current_user', JSON.stringify(user));
+            document.getElementById('register-section').classList.add('hidden');
+            document.getElementById('profile-form-section').classList.add('hidden');
+            document.getElementById('loginBtn').classList.add('hidden');
+            document.getElementById('registerBtn').classList.add('hidden');
+            document.getElementById('logoutBtn').classList.remove('hidden');
+            document.getElementById('userBadge').classList.remove('hidden');
+            document.getElementById('userBadge').textContent = '👤 ' + user.name;
+            if (user.email === 'admin@horizonsdavenir.fr') {
+                document.getElementById('admin-section').classList.remove('hidden');
+            }
+            loadAllData();
+            scrollToSection('jobs-section');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('horizons_current_user');
+            document.getElementById('loginBtn').classList.remove('hidden');
+            document.getElementById('registerBtn').classList.remove('hidden');
+            document.getElementById('logoutBtn').classList.add('hidden');
+            document.getElementById('userBadge').classList.add('hidden');
+            document.getElementById('admin-section').classList.add('hidden');
+            showToast(translations[currentLanguage].toast_logout_success);
+            scrollToSection('home');
+        }
+
+        function loadAllData() {
+            loadJobs();
+            loadVideos();
+            loadPosters();
+            loadVolunteering();
+            populateCityFilter();
+        }
+
+        function getLocalizedField(item, field) {
+            const lang = currentLanguage;
+            if (lang === 'ar' && item[field + '_ar']) return item[field + '_ar'];
+            if (lang === 'en' && item[field + '_en']) return item[field + '_en'];
+            return item[field];
+        }
+
+        function loadJobs(filterCity = '', filterContract = '', searchTerm = '') {
+            const container = document.getElementById('jobsContainer');
+            let jobs = getJobs();
+            const lang = currentLanguage;
+
+            if (filterCity) jobs = jobs.filter(j => j.city === filterCity);
+            if (filterContract) jobs = jobs.filter(j => j.contract === filterContract);
+            if (searchTerm) {
+                jobs = jobs.filter(j => {
+                    const title = getLocalizedField(j, 'title').toLowerCase();
+                    const desc = getLocalizedField(j, 'description').toLowerCase();
+                    return title.includes(searchTerm.toLowerCase()) || desc.includes(searchTerm.toLowerCase());
+                });
+            }
+
+            if (currentUser && currentUser.city && !filterCity) {
+                jobs.sort((a, b) => {
+                    if (a.city === currentUser.city) return -1;
+                    if (b.city === currentUser.city) return 1;
+                    return 0;
+                });
+            }
+
+            if (jobs.length === 0) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">${translations[lang].no_jobs_found}</p>`;
+                return;
+            }
+
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card">
+                    <h4>${getLocalizedField(job, 'title')}</h4>
+                    <span class="badge badge-city">📍 ${capitalize(job.city)}</span>
+                    <span class="badge badge-contract">📄 ${job.contract}</span>
+                    <p style="margin-top:10px;">${getLocalizedField(job, 'description')}</p>
+                    <small style="color:#999;">${translations[lang].published_on} ${job.date || 'N/A'}</small>
+                    <br>
+                    <button class="btn btn-primary" style="margin-top:10px;" onclick="applyForJob(${job.id})">
+                        ${translations[lang].apply_btn}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterJobs() {
+            const city = document.getElementById('jobCityFilter').value;
+            const contract = document.getElementById('jobContractFilter').value;
+            const search = document.getElementById('jobSearch').value;
+            loadJobs(city, contract, search);
+        }
+
+        function populateCityFilter() {
+            const select = document.getElementById('jobCityFilter');
+            const jobs = getJobs();
+            const cities = [...new Set(jobs.map(j => j.city))];
+            select.innerHTML = `<option value="">${translations[currentLanguage].all_cities}</option>` +
+                cities.map(c => `<option value="${c}">${capitalize(c)}</option>`).join('');
+        }
+
+        function applyForJob(jobId) {
+            const jobs = getJobs();
+            const job = jobs.find(j => j.id === jobId);
+            if (!currentUser) {
+                showToast(translations[currentLanguage].toast_login_required, 'warning');
+                scrollToSection('register-section');
+                return;
+            }
+            if (!currentUser.profileComplete) {
+                showToast(translations[currentLanguage].toast_profile_required, 'warning');
+                return;
+            }
+            if (job) {
+                showToast(`${translations[currentLanguage].toast_job_apply} ${getLocalizedField(job, 'title')}`);
+            }
+        }
+
+        function addJob(event) {
+            event.preventDefault();
+            const jobs = getJobs();
+            const newJob = {
+                id: jobs.length > 0 ? Math.max(...jobs.map(j => j.id)) + 1 : 1,
+                title: document.getElementById('adminJobTitle').value,
+                city: document.getElementById('adminJobCity').value.toLowerCase(),
+                contract: document.getElementById('adminJobContract').value,
+                description: document.getElementById('adminJobDesc').value,
+                date: new Date().toISOString().split('T')[0]
+            };
+            jobs.push(newJob);
+            saveJobs(jobs);
+            loadJobs();
+            populateCityFilter();
+            showToast(translations[currentLanguage].toast_job_added);
+            event.target.reset();
+        }
+
+        function loadVideos() {
+            const container = document.getElementById('videosContainer');
+            const videos = getVideos();
+            const lang = currentLanguage;
+
+            if (videos.length === 0) {
+                container.innerHTML = `<p style="text-align:center; grid-column:1/-1;">${translations[lang].no_videos}</p>`;
+                return;
+            }
+
+            container.innerHTML = videos.map(v => `
+                <div class="video-card" onclick="showToast('${getLocalizedField(v, 'title')}')">
+                    <div class="video-thumb">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="video-info">
+                        <h4>${getLocalizedField(v, 'title')}</h4>
+                        <span class="badge badge-city">${translations[lang]['category_' + v.category] || v.category}</span>
+                        <span class="badge badge-lang">🌐 ${v.lang.toUpperCase()}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addVideo(event) {
+            event.preventDefault();
+            const videos = getVideos();
+            const newVideo = {
+                id: videos.length > 0 ? Math.max(...videos.map(v => v.id)) + 1 : 1,
+                title: document.getElementById('adminVideoTitle').value,
+                category: document.getElementById('adminVideoCategory').value,
+                lang: document.getElementById('adminVideoLang').value
+            };
+            videos.push(newVideo);
+            saveVideos(videos);
+            loadVideos();
+            showToast(translations[currentLanguage].toast_video_added);
+            event.target.reset();
+        }
+
+        const postersData = [
+            { id: 1, title: 'Connaissez vos droits', title_ar: 'اعرف حقوقك', title_en: 'Know Your Rights', topic: 'Droits', topic_ar: 'حقوق', topic_en: 'Rights' },
+            { id: 2, title: 'Numéros d\'urgence', title_ar: 'أرقام الطوارئ', title_en: 'Emergency Numbers', topic: 'Urgence', topic_ar: 'طوارئ', topic_en: 'Emergency' },
+            { id: 3, title: 'Accès aux soins', title_ar: 'الوصول إلى الرعاية', title_en: 'Access to Care', topic: 'Santé', topic_ar: 'صحة', topic_en: 'Health' },
+            { id: 4, title: 'Guide du logement', title_ar: 'دليل السكن', title_en: 'Housing Guide', topic: 'Logement', topic_ar: 'سكن', topic_en: 'Housing' },
+        ];
+
+        function loadPosters() {
+            const container = document.getElementById('postersContainer');
+            container.innerHTML = postersData.map(p => `
+                <div class="poster-card" onclick="showToast('${getLocalizedField(p, 'title')}')">
+                    <div class="poster-img">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="poster-info">
+                        <h4>${getLocalizedField(p, 'title')}</h4>
+                        <span class="badge badge-city">${getLocalizedField(p, 'topic')}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        const volunteeringData = [
+            { id: 1, org: 'Restos du Cœur', city: 'paris', task: 'Distribution alimentaire', task_ar: 'توزيع الطعام', task_en: 'Food distribution' },
+            { id: 2, org: 'La Cimade', city: 'lyon', task: 'Accompagnement juridique', task_ar: 'مرافقة قانونية', task_en: 'Legal support' },
+            { id: 3, org: 'Secours Populaire', city: 'marseille', task: 'Aide aux réfugiés', task_ar: 'مساعدة اللاجئين', task_en: 'Refugee aid' },
+            { id: 4, org: 'Emmaüs', city: 'paris', task: 'Tri et vente solidaire', task_ar: 'فرز وبيع تضامني', task_en: 'Sorting and solidarity sale' },
+        ];
+
+        function loadVolunteering() {
+            const container = document.getElementById('volunteeringContainer');
+            const lang = currentLanguage;
+            container.innerHTML = volunteeringData.map(v => `
+                <div class="job-card" style="border-left-color: var(--success);">
+                    <h4>${v.org}</h4>
+                    <span class="badge badge-city">📍 ${capitalize(v.city)}</span>
+                    <p style="margin-top:10px;">${getLocalizedField(v, 'task')}</p>
+                    <button class="btn btn-outline" style="margin-top:10px; border-color:var(--success); color:var(--success);" onclick="applyVolunteer(${v.id})">
+                        ${translations[lang].volunteer_btn}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function applyVolunteer(id) {
+            const vol = volunteeringData.find(v => v.id === id);
+            if (!currentUser) {
+                showToast(translations[currentLanguage].toast_login_required, 'warning');
+                return;
+            }
+            showToast(`${translations[currentLanguage].toast_volunteer} ${vol.org}`);
+        }
+
+        function switchResourceTab(tabName, btn) {
+            document.querySelectorAll('#resources-section .tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('#resources-section .tab-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById(`panel-${tabName}`).classList.add('active');
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function capitalize(str) {
+            if (!str) return '';
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // ============ INIT ============
+        document.addEventListener('DOMContentLoaded', () => {
+            initDefaultData();
+            applyTranslation(currentLanguage);
+
+            const savedUser = localStorage.getItem('horizons_current_user');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                loginUser(user);
+            }
+
+            loadAllData();
+            console.log('✅ Horizons d\'Avenir - Plateforme initialisée avec traduction complète');
+            console.log('📍 Serveur: France | Conforme RGPD');
+            console.log('⚖️ Respect du droit français et européen');
         });
     </script>
 </body>
