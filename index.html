@@ -6,10 +6,8 @@
     <title>Nouvelle Chance | Plateforme d'insertion professionnelle France</title>
     <meta name="description" content="Plateforme d'insertion professionnelle pour migrants en France. Offres d'emploi sécurisées, formations gratuites, accompagnement juridique RGPD.">
     
-    <script src="https://cdn.tailwindcss.com">
-    </script>
-    <script src="https://unpkg.com/lucide@latest">
-    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <script>
         tailwind.config = {
@@ -22,7 +20,8 @@
                             sky: '#E3F2FD',
                             beige: '#FDFBF7',
                             accent: '#E67E22',
-                            dark: '#1E293B'
+                            dark: '#1E293B',
+                            admin: '#6C5CE7'
                         }
                     },
                     fontFamily: {
@@ -36,85 +35,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #FDFBF7; transition: background-color 0.3s, color 0.3s; }
+        body.dark-mode { background-color: #1a202c; color: #e2e8f0; }
+        body.dark-mode .bg-white { background-color: #2d3748 !important; }
+        body.dark-mode .text-gray-500, body.dark-mode .text-gray-600, body.dark-mode .text-gray-700 { color: #cbd5e0 !important; }
+        body.dark-mode .border, body.dark-mode .border-gray-100, body.dark-mode .border-gray-200 { border-color: #4a5568 !important; }
+        body.dark-mode .bg-gray-50, body.dark-mode .bg-gray-100 { background-color: #4a5568 !important; color: #e2e8f0; }
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background-color: #4a5568 !important; color: #e2e8f0 !important; border-color: #718096 !important; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #1B4332; border-radius: 4px; }
+        
+        *:focus-visible { outline: 2px solid #1B4332; outline-offset: 2px; border-radius: 4px; }
+        
+        .admin-sidebar {
+            transition: transform 0.3s ease;
         }
-        body {
-            background-color: #FDFBF7;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        body.dark-mode {
-            background-color: #1a202c;
-            color: #e2e8f0;
-        }
-        body.dark-mode .bg-white {
-            background-color: #2d3748 !important;
-        }
-        body.dark-mode .text-gray-500, body.dark-mode .text-gray-600, body.dark-mode .text-gray-700 {
-            color: #cbd5e0 !important;
-        }
-        body.dark-mode .border, body.dark-mode .border-gray-100, body.dark-mode .border-gray-200 {
-            border-color: #4a5568 !important;
-        }
-        body.dark-mode .bg-gray-50, body.dark-mode .bg-gray-100 {
-            background-color: #4a5568 !important;
-            color: #e2e8f0;
-        }
-        body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
-            background-color: #4a5568 !important;
-            color: #e2e8f0 !important;
-            border-color: #718096 !important;
-        }
-        body.dark-mode .bg-brand-oliveLight {
-            background-color: #2f4f4f;
-        }
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FDFBF7;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1B4332;
-            border-radius: 4px;
-        }
-        *:focus-visible {
-            outline: 2px solid #1B4332;
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
-        .error-shake {
-            animation: shake 0.3s ease-in-out;
-        }
-        @keyframes shake {
-            0%, 100% {
-                transform: translateX(0)
-            }
-            25% {
-                transform: translateX(-5px)
-            }
-            75% {
-                transform: translateX(5px)
-            }
-        }
-        .hidden {
-            display: none;
-        }
-        .auth-btn {
-            transition: all 0.2s ease;
-        }
-        .auth-btn:hover {
-            transform: translateY(-2px);
-        }
+        
         .modal-transition {
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
-        .password-strength-meter {
-            height: 4px;
-            transition: width 0.3s ease, background-color 0.3s ease;
-        }
+        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -122,97 +65,116 @@
             z-index: 9999;
             animation: slideIn 0.3s ease;
         }
+        
         @keyframes slideIn {
-            from {
-                transform: translateX(100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        .input-error {
-            border-color: #e53e3e !important;
-            animation: shake 0.3s ease;
+        
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
         }
-        .rtl {
-            direction: rtl;
-            text-align: right;
+        
+        .status-pending { background: #FEF3C7; color: #92400E; }
+        .status-approved { background: #D1FAE5; color: #065F46; }
+        .status-rejected { background: #FEE2E2; color: #991B1B; }
+        
+        .admin-table th {
+            background: #F8FAFC;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
         }
-        .rtl .space-x-2 > * + * {
-            margin-left: 0;
-            margin-right: 0.5rem;
-        }
-        .rtl .space-x-4 > * + * {
-            margin-left: 0;
-            margin-right: 1rem;
-        }
+        
+        .rtl { direction: rtl; text-align: right; }
     </style>
 </head>
 <body class="text-brand-dark flex flex-col min-h-screen" id="main-body">
 
-    <!-- Message pour navigateurs sans JavaScript -->
-    <noscript>
-        <div class="fixed inset-0 bg-white z-[9999] flex items-center justify-center p-4">
-            <div class="text-center max-w-md">
-                <div class="text-6xl mb-4">⚠️</div>
-                <h2 class="text-2xl font-bold text-red-600 mb-3">JavaScript est désactivé</h2>
-                <p class="text-gray-700 mb-4">Veuillez activer JavaScript pour accéder à toutes les fonctionnalités de la plateforme.</p>
-                <div class="bg-gray-100 p-4 rounded-lg">
-                    <p class="text-sm font-semibold">Contact : contact@nouvellechance.fr</p>
-                </div>
-            </div>
-        </div>
-    </noscript>
-
     <!-- Toast Notification -->
-    <div id="toast" class="toast hidden bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2">
+    <div id="toast" class="toast hidden bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-[10000]">
         <i data-lucide="check-circle" class="w-5 h-5"></i>
         <span id="toast-message"></span>
     </div>
 
-    <!-- Modale d'authentification -->
-    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 modal-transition">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl modal-transition transform scale-95" id="auth-modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="auth-modal-title" class="text-xl font-bold text-brand-olive">Connexion / Inscription</h3>
-                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+    <!-- Admin Panel Modal (Full Screen) -->
+    <div id="admin-panel" class="fixed inset-0 bg-gray-100 z-[9999] hidden overflow-hidden">
+        <div class="flex h-full">
+            <!-- Sidebar -->
+            <div id="admin-sidebar" class="admin-sidebar w-64 bg-brand-dark text-white flex flex-col flex-shrink-0 overflow-y-auto">
+                <div class="p-6 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-brand-admin rounded-lg flex items-center justify-center">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-sm">Admin Panel</h3>
+                            <p class="text-xs text-gray-400">Nouvelle Chance</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="flex-1 p-4 space-y-1">
+                    <button onclick="switchAdminTab('dashboard')" id="admin-tab-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition bg-white/10">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                    </button>
+                    <button onclick="switchAdminTab('jobs')" id="admin-tab-jobs" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i> Gestion Offres
+                    </button>
+                    <button onclick="switchAdminTab('users')" id="admin-tab-users" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="users" class="w-4 h-4"></i> Utilisateurs
+                    </button>
+                    <button onclick="switchAdminTab('applications')" id="admin-tab-applications" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="file-text" class="w-4 h-4"></i> Candidatures
+                        <span id="pending-count" class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+                    <button onclick="switchAdminTab('volunteers')" id="admin-tab-volunteers" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="heart-handshake" class="w-4 h-4"></i> Bénévoles
+                    </button>
+                    <button onclick="switchAdminTab('settings')" id="admin-tab-settings" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="settings" class="w-4 h-4"></i> Paramètres
+                    </button>
+                    <button onclick="switchAdminTab('privacy')" id="admin-tab-privacy" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5">
+                        <i data-lucide="lock" class="w-4 h-4"></i> Politique & RGPD
+                    </button>
+                </nav>
+                
+                <div class="p-4 border-t border-white/10">
+                    <button onclick="closeAdminPanel()" class="w-full flex items-center gap-2 px-4 py-2 bg-red-500/20 hover:bg-red-500/30 rounded-lg text-sm transition">
+                        <i data-lucide="log-out" class="w-4 h-4"></i> Fermer Admin
+                    </button>
+                </div>
             </div>
-            <div id="auth-modal-body" class="space-y-4">
-                <!-- Contenu dynamique -->
-            </div>
-            <div class="mt-4 text-center text-xs text-gray-500">
-                <span data-i18n="auth-secure">🔒 Connexion sécurisée - Vos données sont protégées</span>
+            
+            <!-- Main Content -->
+            <div class="flex-1 overflow-y-auto bg-gray-50">
+                <!-- Header -->
+                <div class="bg-white border-b px-6 py-4 flex items-center justify-between sticky top-0 z-10">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-800" id="admin-page-title">Dashboard</h2>
+                        <p class="text-xs text-gray-500" id="admin-page-subtitle">Vue d'ensemble</p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm text-gray-600">Admin: <strong id="admin-name-display"></strong></span>
+                        <button onclick="closeAdminPanel()" class="p-2 hover:bg-gray-100 rounded-lg">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Content Area -->
+                <div class="p-6" id="admin-content-area">
+                    <!-- Dynamic content -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Modale standard -->
-    <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 modal-transition">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl border-t-4 border-brand-olive transform scale-95 modal-transition">
-            <div class="flex items-center gap-3 text-brand-olive mb-4">
-                <i data-lucide="shield-check" class="w-8 h-8"></i>
-                <h3 id="modal-title" class="text-xl font-bold"></h3>
-            </div>
-            <p id="modal-message" class="text-gray-600 mb-6 text-sm leading-relaxed"></p>
-            <button onclick="closeModal()" class="w-full bg-brand-olive hover:bg-opacity-90 text-white font-semibold py-2.5 px-4 rounded-xl transition">OK</button>
-        </div>
-    </div>
-
-    <!-- Modale de confirmation -->
-    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 modal-transition">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl modal-transition transform scale-95">
-            <h3 id="confirm-title" class="text-xl font-bold text-brand-olive mb-4"></h3>
-            <p id="confirm-message" class="text-gray-600 mb-6 text-sm"></p>
-            <div class="flex gap-3">
-                <button onclick="confirmAction(true)" id="confirm-yes" class="flex-1 bg-brand-olive text-white font-semibold py-2.5 rounded-xl transition">Oui</button>
-                <button onclick="confirmAction(false)" class="flex-1 bg-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl transition">Non</button>
-            </div>
-        </div>
-    </modale>
-
-    <!-- Header -->
+    <!-- Header Principal -->
     <header class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -233,32 +195,39 @@
             </nav>
 
             <div class="flex items-center gap-3">
-                <!-- Sélecteur de langue -->
                 <div class="bg-gray-100 p-1 rounded-xl flex items-center gap-1 text-xs font-bold">
                     <button onclick="switchLanguage('fr')" id="lang-fr" class="px-2.5 py-1.5 rounded-lg transition-all bg-brand-olive text-white shadow-sm">FR</button>
                     <button onclick="switchLanguage('ar')" id="lang-ar" class="px-2.5 py-1.5 rounded-lg transition-all text-gray-500 hover:text-brand-dark">AR</button>
                     <button onclick="switchLanguage('en')" id="lang-en" class="px-2.5 py-1.5 rounded-lg transition-all text-gray-500 hover:text-brand-dark">EN</button>
                 </div>
                 
-                <!-- Dark mode -->
                 <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition" id="dark-mode-btn">
                     <i data-lucide="moon" class="w-5 h-5 text-gray-600"></i>
                 </button>
                 
-                <!-- Auth status / Connexion -->
                 <div id="auth-status-container" class="flex items-center gap-2">
                     <div id="user-info" class="hidden text-sm text-brand-olive font-semibold"></div>
                     <button onclick="openAuthModal('login')" id="login-btn" class="bg-brand-olive text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition" data-i18n="btn-login">Connexion</button>
+                    <!-- Admin Button (visible uniquement pour admin) -->
+                    <button onclick="openAdminPanel()" id="admin-btn" class="hidden bg-brand-admin text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition">
+                        <i data-lucide="shield" class="w-4 h-4 inline mr-1"></i> Admin
+                    </button>
                     <button onclick="logout()" id="logout-btn" class="hidden bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-300 transition" data-i18n="btn-logout">Déconnexion</button>
                 </div>
-
-                <a href="#resources-section" class="hidden sm:flex bg-brand-accent text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition items-center gap-2">
-                    <i data-lucide="help-circle" class="w-4 h-4"></i>
-                    <span data-i18n="btn-help">Aide juridique</span>
-                </a>
             </div>
         </div>
     </header>
+
+    <!-- Modale d'authentification -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 modal-transition">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl modal-transition transform scale-95" id="auth-modal-content">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="auth-modal-title" class="text-xl font-bold text-brand-olive">Connexion / Inscription</h3>
+                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div id="auth-modal-body" class="space-y-4"></div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="relative overflow-hidden py-12 md:py-20 bg-gradient-to-br from-brand-oliveLight via-white to-brand-sky">
@@ -269,7 +238,7 @@
                     <span data-i18n="hero-badge">🔒 Conformité RGPD - Données confidentielles</span>
                 </div>
                 <h2 class="text-3xl md:text-5xl font-extrabold text-brand-olive leading-tight" data-i18n="hero-title">La dignité humaine commence par un emploi juste et stable en France</h2>
-                <p class="text-gray-600 text-lg md:text-xl leading-relaxed" data-i18n="hero-desc">Nous croyons que les compétences n'ont pas besoin de papiers complexes. Nous vous connectons directement avec des employeurs solidaires en France, prêts à vous embaucher et à vous accompagner.</p>
+                <p class="text-gray-600 text-lg md:text-xl leading-relaxed" data-i18n="hero-desc">Nous croyons que les compétences n'ont pas besoin de papiers complexes. Nous vous connectons directement avec des employeurs solidaires.</p>
                 <div class="flex flex-wrap gap-4 pt-2">
                     <a href="#jobs-section" class="bg-brand-olive hover:bg-opacity-95 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg transition flex items-center gap-2">
                         <span data-i18n="hero-btn-browse">Voir les offres</span>
@@ -281,7 +250,6 @@
                     </a>
                 </div>
             </div>
-
             <div class="lg:col-span-5 flex justify-center">
                 <div class="relative w-full max-w-sm">
                     <div class="absolute inset-0 bg-brand-olive rounded-3xl transform rotate-6 opacity-10"></div>
@@ -291,62 +259,14 @@
                             <i data-lucide="briefcase" class="w-10 h-10 text-brand-olive"></i>
                         </div>
                         <h4 class="text-lg font-bold text-brand-olive" data-i18n="stats-title">Notre mission</h4>
-                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="stats-desc">Lutter contre le chômage des migrants en France par la formation gratuite et l'emploi direct.</p>
+                        <p class="text-sm text-gray-500 leading-relaxed" data-i18n="stats-desc">Lutter contre le chômage des migrants en France.</p>
                         <div class="grid grid-cols-3 gap-2 pt-2 border-t border-gray-100">
-                            <div><span class="block text-xl font-bold text-brand-olive" id="counter-jobs">0</span><span class="text-xs text-gray-400" data-i18n="stats-jobs">Offres actives</span></div>
-                            <div class="border-x border-gray-100"><span class="block text-xl font-bold text-brand-olive">100%</span><span class="text-xs text-gray-400" data-i18n="stats-security">Confidentiel</span></div>
-                            <div><span class="block text-xl font-bold text-brand-olive" id="counter-partners">0</span><span class="text-xs text-gray-400" data-i18n="stats-partners">Partenaires</span></div>
+                            <div><span class="block text-xl font-bold text-brand-olive" id="counter-jobs">0</span><span class="text-xs text-gray-400">Offres</span></div>
+                            <div class="border-x border-gray-100"><span class="block text-xl font-bold text-brand-olive">100%</span><span class="text-xs text-gray-400">Sécurisé</span></div>
+                            <div><span class="block text-xl font-bold text-brand-olive" id="counter-partners">0</span><span class="text-xs text-gray-400">Partenaires</span></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Bandeau RGPD -->
-    <div class="bg-gradient-to-r from-[#0055A4] to-[#003377] text-white py-3">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-center">
-            <span class="flex items-center gap-1.5 font-semibold">
-                <i data-lucide="shield" class="w-5 h-5"></i>
-                <span data-i18n="gdpr-title">Protection des données (RGPD) :</span>
-            </span>
-            <span data-i18n="gdpr-desc">Aucune donnée n'est partagée avec les autorités. Conformité totale avec le droit français et européen.</span>
-        </div>
-    </div>
-
-    <!-- Services Section -->
-    <section class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h3 class="text-2xl md:text-3xl font-bold text-brand-olive" data-i18n="services-title">Nos services pour votre insertion en France</h3>
-            <p class="text-gray-500 mt-2 text-sm" data-i18n="services-subtitle">Accompagnement complet, gratuit et sans discrimination</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center mb-4">
-                    <i data-lucide="graduation-cap" class="w-6 h-6"></i>
-                </div>
-                <h4 class="text-xl font-bold text-brand-olive mb-2" data-i18n="card1-title">Formations professionnelles</h4>
-                <p class="text-gray-500 text-sm" data-i18n="card1-desc">Cours gratuits en français, bureautique, bâtiment, restauration, et compétences numériques.</p>
-                <a href="#resources-section" class="mt-6 inline-block text-indigo-600 font-bold text-sm" data-i18n="card1-link">Découvrir →</a>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center mb-4">
-                    <i data-lucide="scale" class="w-6 h-6"></i>
-                </div>
-                <h4 class="text-xl font-bold text-brand-olive mb-2" data-i18n="card2-title">Conseils juridiques</h4>
-                <p class="text-gray-500 text-sm" data-i18n="card2-desc">Aide à la régularisation, titres de séjour, et accompagnement vers les associations agréées.</p>
-                <a href="#resources-section" class="mt-6 inline-block text-emerald-600 font-bold text-sm" data-i18n="card2-link">En savoir plus →</a>
-            </div>
-
-            <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-                <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center mb-4">
-                    <i data-lucide="sparkles" class="w-6 h-6"></i>
-                </div>
-                <h4 class="text-xl font-bold text-brand-olive mb-2" data-i18n="card3-title">Témoignages inspirants</h4>
-                <p class="text-gray-500 text-sm" data-i18n="card3-desc">Des parcours réussis de personnes ayant trouvé un emploi stable et une dignité retrouvée.</p>
-                <a href="#success-stories" class="mt-6 inline-block text-amber-600 font-bold text-sm" data-i18n="card3-link">Lire →</a>
             </div>
         </div>
     </section>
@@ -359,44 +279,8 @@
                     <h3 class="text-2xl md:text-3xl font-bold text-brand-olive" data-i18n="jobs-title">Offres d'emploi en France</h3>
                     <p class="text-gray-500 mt-1 text-sm" data-i18n="jobs-subtitle">Entreprises solidaires engagées pour l'inclusion professionnelle</p>
                 </div>
-                <div class="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border shadow-sm text-xs font-semibold text-gray-600">
-                    <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                    <span data-i18n="jobs-update">Mise à jour quotidienne</span>
-                </div>
             </div>
-
-            <div class="bg-white p-4 rounded-2xl shadow-sm border mb-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1" data-i18n="search-skill">Rechercher par compétence</label>
-                    <input type="text" id="search-skill" oninput="debouncedFilterJobs()" placeholder="Ex: plomberie, cuisine..." class="w-full px-4 py-2 bg-gray-50 border rounded-xl text-sm">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1" data-i18n="search-city">Ville / Département</label>
-                    <select id="filter-city" onchange="filterJobs()" class="w-full px-4 py-2 bg-gray-50 border rounded-xl text-sm">
-                        <option value="">Toute la France</option>
-                        <option value="Paris">Paris</option>
-                        <option value="Marseille">Marseille</option>
-                        <option value="Lyon">Lyon</option>
-                        <option value="Lille">Lille</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-500 mb-1" data-i18n="search-type">Type de contrat</label>
-                    <select id="filter-type" onchange="filterJobs()" class="w-full px-4 py-2 bg-gray-50 border rounded-xl text-sm">
-                        <option value="">Tous types</option>
-                        <option value="CDI">CDI</option>
-                        <option value="CDD">CDD</option>
-                        <option value="Intérim">Intérim</option>
-                    </select>
-                </div>
-            </div>
-
             <div id="jobs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            <div id="no-jobs-message" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed">
-                <i data-lucide="folder-search" class="w-12 h-12 mx-auto text-gray-300 mb-2"></i>
-                <h4 class="text-lg font-bold text-gray-500" data-i18n="no-jobs-title">Aucune offre trouvée</h4>
-                <p class="text-sm text-gray-400 mt-1" data-i18n="no-jobs-desc">Modifiez vos critères de recherche</p>
-            </div>
         </div>
     </section>
 
@@ -406,22 +290,6 @@
             <div class="bg-brand-olive p-6 text-white text-center space-y-4">
                 <h3 class="text-2xl sm:text-3xl font-extrabold" data-i18n="hub-title">Espace d'inscription sécurisé</h3>
                 <p class="text-brand-sky text-sm max-w-2xl mx-auto" data-i18n="hub-subtitle">Choisissez votre parcours et inscrivez-vous en toute confidentialité</p>
-                
-                <div id="auth-status-indicator" class="hidden bg-white/20 rounded-xl p-2 text-sm">
-                    <span id="auth-status-text"></span>
-                </div>
-                
-                <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
-                    <button onclick="socialLogin('google')" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
-                        <i data-lucide="chrome" class="w-4 h-4"></i> Google
-                    </button>
-                    <button onclick="socialLogin('facebook')" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
-                        <i data-lucide="facebook" class="w-4 h-4"></i> Facebook
-                    </button>
-                    <button onclick="openEmailRegister()" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
-                        <i data-lucide="mail" class="w-4 h-4"></i> <span data-i18n="auth-email">E-mail</span>
-                    </button>
-                </div>
                 
                 <div class="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-white/20 mt-4">
                     <button onclick="switchTab('seeker')" id="tab-seeker" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2">
@@ -438,255 +306,51 @@
 
             <!-- Panel Candidat -->
             <div id="panel-seeker" class="p-8 md:p-12 space-y-8">
-                <div>
-                    <h4 class="text-xl font-bold text-brand-olive" data-i18n="seeker-title">Candidature spontanée</h4>
-                    <p class="text-xs text-gray-500" data-i18n="seeker-subtitle">Vos données sont protégées par le RGPD (France/UE)</p>
-                </div>
                 <form id="seeker-form" onsubmit="return handleFormSubmit(event, 'seeker')" class="space-y-6" novalidate>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom (ou pseudonyme) *</label>
-                            <input type="text" id="seeker-name" required minlength="2" maxlength="100" class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm form-input" data-validation="name">
-                            <span class="text-red-500 text-xs hidden validation-error">Nom requis (2-100 caractères)</span>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-city">Ville en France *</label>
-                            <select id="seeker-city" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm form-input">
-                                <option value="">Sélectionnez</option>
-                                <option value="Paris">Paris</option>
-                                <option value="Lyon">Lyon</option>
-                                <option value="Marseille">Marseille</option>
-                                <option value="Lille">Lille</option>
-                                <option value="Bordeaux">Bordeaux</option>
-                            </select>
-                        </div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Nom *</label><input type="text" id="seeker-name" required minlength="2" class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Ville *</label><select id="seeker-city" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Sélectionnez</option><option value="Paris">Paris</option><option value="Lyon">Lyon</option><option value="Marseille">Marseille</option></select></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone (WhatsApp) *</label>
-                            <input type="tel" id="seeker-phone" required pattern="^[\d\s\+\-\(\)]{8,20}$" placeholder="+33 6 XX XX XX XX" class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm form-input" data-validation="phone">
-                            <span class="text-red-500 text-xs hidden validation-error">Format: +33 6 XX XX XX XX</span>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-skills">Compétences *</label>
-                            <input type="text" id="seeker-skills" required placeholder="Ex: plomberie, ménage, cuisine..." class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm form-input" data-validation="skills">
-                            <span class="text-red-500 text-xs hidden validation-error">3 caractères minimum</span>
-                        </div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Téléphone *</label><input type="tel" id="seeker-phone" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Compétences *</label><input type="text" id="seeker-skills" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-cv">CV (optionnel)</label>
-                        <div id="drop-zone" class="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center cursor-pointer hover:border-brand-olive transition">
-                            <input type="file" id="resume-file" class="hidden" accept=".pdf,.doc,.docx" onchange="handleFileSelect(event)" data-max-size="5242880">
-                            <i data-lucide="cloud-upload" class="w-10 h-10 mx-auto text-brand-olive mb-2"></i>
-                            <p class="text-sm font-bold text-gray-600" data-i18n="cv-drag">Déposez votre CV ou cliquez</p>
-                            <p class="text-xs text-gray-400">PDF, DOCX (max 5 Mo)</p>
-                            <p id="file-name" class="text-xs text-emerald-600 mt-1 hidden"></p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3">
-                        <input type="checkbox" id="seeker-agree" required class="w-4 h-4 text-brand-olive rounded form-input">
-                        <label class="text-xs text-gray-600" data-i18n="agree-label">J'accepte la protection de mes données (RGPD) et souhaite postuler</label>
-                    </div>
-                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2 disabled:opacity-50">
-                        <i data-lucide="send" class="w-5 h-5"></i>
-                        <span data-i18n="btn-submit">Envoyer ma candidature</span>
-                    </button>
+                    <div class="flex items-center gap-3"><input type="checkbox" id="seeker-agree" required><label class="text-xs text-gray-600">J'accepte la protection de mes données (RGPD)</label></div>
+                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition">Envoyer ma candidature</button>
                 </form>
             </div>
 
             <!-- Panel Formation -->
             <div id="panel-learning" class="p-8 md:p-12 space-y-8 hidden">
-                <div>
-                    <h4 class="text-xl font-bold text-brand-olive" data-i18n="learning-title">Demande de formation gratuite</h4>
-                    <p class="text-xs text-gray-500" data-i18n="learning-subtitle">France Relance - Dispositif inclusion</p>
-                </div>
                 <form id="learning-form" onsubmit="return handleFormSubmit(event, 'learning')" class="space-y-6" novalidate>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom *</label>
-                            <input type="text" id="learning-name" required minlength="2" class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-course">Formation souhaitée *</label>
-                            <select id="learning-course" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                                <option value="">Sélectionnez</option>
-                                <option value="Plomberie / Chauffage">Plomberie / Chauffage</option>
-                                <option value="Cuisine professionnelle">Cuisine professionnelle</option>
-                                <option value="Informatique / Web">Informatique / Web</option>
-                                <option value="Français FLE">Français FLE</option>
-                                <option value="Électricité">Électricité</option>
-                            </select>
-                        </div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Nom *</label><input type="text" id="learning-name" required minlength="2" class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Formation *</label><select id="learning-course" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Sélectionnez</option><option value="Plomberie">Plomberie</option><option value="Cuisine">Cuisine</option><option value="Informatique">Informatique</option></select></div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone *</label>
-                            <input type="tel" id="learning-phone" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-goal">Objectif *</label>
-                            <input type="text" id="learning-goal" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                        <i data-lucide="book-open" class="w-5 h-5"></i>
-                        <span data-i18n="learning-btn">S'inscrire à la formation</span>
-                    </button>
+                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition">S'inscrire à la formation</button>
                 </form>
             </div>
 
             <!-- Panel Bénévolat -->
             <div id="panel-volunteer" class="p-8 md:p-12 space-y-8 hidden">
-                <div>
-                    <h4 class="text-xl font-bold text-brand-olive" data-i18n="volunteer-title">Devenir bénévole</h4>
-                    <p class="text-xs text-gray-500" data-i18n="volunteer-subtitle">Engagement citoyen en France</p>
-                </div>
                 <form id="volunteer-form" onsubmit="return handleFormSubmit(event, 'volunteer')" class="space-y-6" novalidate>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom *</label>
-                            <input type="text" id="volunteer-name" required minlength="2" class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-role">Domaine *</label>
-                            <select id="volunteer-role" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                                <option value="">Choisissez</option>
-                                <option value="Juridique">Soutien juridique (droit des étrangers)</option>
-                                <option value="Français">Cours de français (FLE)</option>
-                                <option value="Accompagnement social">Accompagnement social</option>
-                                <option value="Médical">Soins / Médical</option>
-                                <option value="Administratif">Aide administrative</option>
-                            </select>
-                        </div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Nom *</label><input type="text" id="volunteer-name" required minlength="2" class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5">Domaine *</label><select id="volunteer-role" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Choisissez</option><option value="Juridique">Juridique</option><option value="Français">Français</option><option value="Social">Social</option></select></div>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone *</label>
-                            <input type="tel" id="volunteer-phone" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-hours">Disponibilité (h/semaine) *</label>
-                            <input type="number" id="volunteer-hours" required min="1" max="40" class="w-full px-4 py-3 bg-gray-50 border rounded-xl form-input">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2">
-                        <i data-lucide="heart" class="w-5 h-5"></i>
-                        <span data-i18n="volunteer-btn">Devenir bénévole</span>
-                    </button>
+                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition">Devenir bénévole</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Resources Section -->
-    <section id="resources-section" class="py-12 bg-brand-oliveLight border-t border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-2xl mx-auto mb-12">
-                <h3 class="text-2xl md:text-3xl font-bold text-brand-olive" data-i18n="resources-title">Ressources pour l'insertion en France</h3>
-                <p class="text-gray-500 mt-2 text-sm" data-i18n="resources-subtitle">Associations, OFII, France Travail, et cours gratuits</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                    <h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="graduation-cap" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-training">Formations</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="https://www.francetravail.fr" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">France Travail →</a></li>
-                        <li><a href="https://www.ofii.fr" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">OFII (Cours de français) →</a></li>
-                        <li><a href="https://www.lefrancaisenligne.fr" target="_blank" rel="noopener noreferrer" class="text-indigo-600 hover:underline">Français en ligne →</a></li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                    <h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="scale" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-legal">Associations & Droit</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="https://www.lacimade.fr" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline">La Cimade →</a></li>
-                        <li><a href="https://www.france-terre-asile.org" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline">France Terre d'Asile →</a></li>
-                        <li><a href="https://www.anafe.org" target="_blank" rel="noopener noreferrer" class="text-emerald-600 hover:underline">ANAFÉ →</a></li>
-                    </ul>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                    <h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="heart" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-social">Aide sociale</span></h4>
-                    <ul class="space-y-3 text-sm">
-                        <li><a href="https://www.restosducoeur.org" target="_blank" rel="noopener noreferrer" class="text-amber-600 hover:underline">Restos du Cœur →</a></li>
-                        <li><a href="https://www.secours-catholique.org" target="_blank" rel="noopener noreferrer" class="text-amber-600 hover:underline">Secours Catholique →</a></li>
-                        <li><a href="https://www.samusalternance.org" target="_blank" rel="noopener noreferrer" class="text-amber-600 hover:underline">Samu Alternance →</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Success Stories -->
-    <section id="success-stories" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h3 class="text-2xl md:text-3xl font-bold text-brand-olive" data-i18n="stories-title">Ils ont réussi en France</h3>
-            <p class="text-gray-500 mt-2 text-sm" data-i18n="stories-subtitle">Des parcours exemplaires de migrants insérés professionnellement</p>
-        </div>
-        <div id="stories-container" class="grid grid-cols-1 md:grid-cols-2 gap-8"></div>
-    </section>
-
-    <!-- Chatbot -->
-    <div id="chat-widget-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-        <div id="chat-window" class="hidden w-[380px] h-[550px] bg-white rounded-2xl shadow-2xl border flex flex-col overflow-hidden mb-4">
-            <div class="bg-brand-olive text-white p-4 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="bot" class="w-6 h-6"></i>
-                    <span class="font-bold" data-i18n="chat-title">Assistant France Insertion</span>
-                </div>
-                <button onclick="toggleChat()" class="text-white hover:text-gray-200">✕</button>
-            </div>
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50">
-                <div class="flex items-start gap-2">
-                    <div class="bg-brand-olive text-white p-2 rounded-xl max-w-[80%]" data-i18n="chat-welcome">Bonjour ! Je vous guide vers l'emploi, les formations et l'aide juridique en France. Conformité RGPD garantie.</div>
-                </div>
-            </div>
-            <div class="p-3 border-t flex gap-2">
-                <input type="text" id="chat-input" onkeypress="handleChatKeyPress(event)" placeholder="Posez votre question..." class="flex-1 px-3 py-2 border rounded-xl text-sm">
-                <button onclick="sendMessage()" class="bg-brand-olive text-white px-4 py-2 rounded-xl hover:bg-opacity-90">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
-        <button onclick="toggleChat()" class="bg-brand-olive hover:bg-opacity-90 text-white p-4 rounded-full shadow-2xl transition hover:scale-105">
-            <i data-lucide="bot" class="w-6 h-6"></i>
-        </button>
-    </div>
-
     <!-- Footer -->
     <footer class="bg-brand-olive text-white mt-auto pt-12 pb-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                    <h4 class="text-lg font-bold mb-3" data-i18n="footer-title">Nouvelle Chance</h4>
-                    <p class="text-sm text-gray-300" data-i18n="footer-desc">Plateforme solidaire conforme au droit français (RGPD, Code du travail).</p>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-links">Liens utiles</h5>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#jobs-section" class="hover:text-white transition" data-i18n="nav-jobs">Offres d'emploi</a></li>
-                        <li><a href="#register-hub" class="hover:text-white transition" data-i18n="nav-register">Inscription</a></li>
-                        <li><a href="#resources-section" class="hover:text-white transition" data-i18n="nav-resources">Ressources</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-partners">Partenaires</h5>
-                    <ul class="space-y-2 text-xs text-gray-300">
-                        <li>La Cimade</li>
-                        <li>France Terre d'Asile</li>
-                        <li>France Travail</li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-contact">Contact</h5>
-                    <p class="text-sm text-gray-300">📞 01 53 59 22 22</p>
-                    <p class="text-sm text-gray-300">✉ contact@nouvellechance.fr</p>
-                    <p class="text-xs text-gray-400 mt-2">75 rue de Lourmel, 75015 Paris</p>
-                </div>
-            </div>
-            <div class="border-t border-white border-opacity-10 pt-6 text-center text-xs text-gray-400">
-                <p data-i18n="footer-copyright">© 2026 Nouvelle Chance - Tous droits réservés - Conformité RGPD (UE 2016/679)</p>
-                <div class="flex justify-center gap-4 mt-2">
-                    <a href="#" onclick="showPrivacyPolicy()" class="hover:text-white transition" data-i18n="footer-privacy">Politique de confidentialité</a>
-                    <a href="#" onclick="showTerms()" class="hover:text-white transition" data-i18n="footer-terms">Conditions d'utilisation</a>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">&copy; 2026 Nouvelle Chance - Tous droits réservés</p>
+            <div class="flex justify-center gap-4 mt-2 text-xs">
+                <a href="#" onclick="showPrivacyPolicy()" class="hover:text-white">Politique de confidentialité</a>
+                <a href="#" onclick="showTerms()" class="hover:text-white">Conditions d'utilisation</a>
             </div>
         </div>
     </footer>
@@ -695,1245 +359,895 @@
         // ==================== CONFIGURATION ====================
         const CONFIG = {
             APP_NAME: 'Nouvelle Chance',
+            ADMIN_EMAIL: 'admin@nouvellechance.fr',
+            ADMIN_PASSWORD: 'Admin2026!',
             STORAGE_KEYS: {
                 USERS: 'nc_users',
                 CURRENT_USER: 'nc_current_user',
                 SUBMISSIONS: 'nc_submissions',
                 APPLICATIONS: 'nc_applications',
+                JOBS: 'nc_jobs',
+                PRIVACY_POLICY: 'nc_privacy_policy',
+                TERMS: 'nc_terms',
+                SETTINGS: 'nc_settings',
                 DARK_MODE: 'nc_dark_mode',
                 LANGUAGE: 'nc_language'
-            },
-            MAX_FILE_SIZE: 5 * 1024 * 1024, // 5 Mo
-            ALLOWED_FILE_TYPES: ['.pdf', '.doc', '.docx'],
-            SESSION_TIMEOUT: 30 * 60 * 1000 // 30 minutes
-        };
-
-        // ==================== TRADUCTIONS COMPLÈTES ====================
-        const translations = {
-            fr: {
-                "logo-title": "Nouvelle Chance",
-                "logo-subtitle": "Dignité & Travail en France",
-                "nav-jobs": "Offres d'emploi",
-                "nav-register": "Inscription",
-                "nav-resources": "Ressources",
-                "nav-stories": "Témoignages",
-                "btn-help": "Aide juridique",
-                "btn-login": "Connexion",
-                "btn-logout": "Déconnexion",
-                "auth-email": "E-mail",
-                "auth-secure": "🔒 Connexion sécurisée - Vos données sont protégées",
-                "hero-badge": "🔒 Conformité RGPD - Données confidentielles",
-                "hero-title": "La dignité humaine commence par un emploi juste et stable en France",
-                "hero-desc": "Nous croyons que les compétences n'ont pas besoin de papiers complexes. Nous vous connectons directement avec des employeurs solidaires.",
-                "hero-btn-browse": "Voir les offres",
-                "hero-btn-register": "S'inscrire",
-                "stats-title": "Notre mission",
-                "stats-desc": "Lutter contre le chômage des migrants en France",
-                "stats-jobs": "Offres actives",
-                "stats-security": "Confidentiel",
-                "stats-partners": "Partenaires",
-                "gdpr-title": "Protection des données (RGPD) :",
-                "gdpr-desc": "Aucune donnée n'est partagée avec les autorités. Conformité totale.",
-                "services-title": "Nos services pour votre insertion",
-                "services-subtitle": "Accompagnement complet, gratuit et sans discrimination",
-                "card1-title": "Formations",
-                "card1-desc": "Cours gratuits en français, bureautique, bâtiment.",
-                "card1-link": "Découvrir →",
-                "card2-title": "Conseils juridiques",
-                "card2-desc": "Aide à la régularisation et titres de séjour.",
-                "card2-link": "En savoir plus →",
-                "card3-title": "Témoignages",
-                "card3-desc": "Des parcours réussis d'insertion professionnelle.",
-                "card3-link": "Lire →",
-                "jobs-title": "Offres d'emploi en France",
-                "jobs-subtitle": "Entreprises solidaires engagées",
-                "jobs-update": "Mise à jour quotidienne",
-                "search-skill": "Rechercher par compétence",
-                "search-city": "Ville",
-                "search-type": "Type de contrat",
-                "no-jobs-title": "Aucune offre trouvée",
-                "no-jobs-desc": "Modifiez vos critères de recherche",
-                "hub-title": "Espace d'inscription sécurisé",
-                "hub-subtitle": "Choisissez votre parcours et inscrivez-vous",
-                "tab-seeker": "Candidat",
-                "tab-learning": "Formation",
-                "tab-volunteer": "Bénévolat",
-                "seeker-title": "Candidature spontanée",
-                "seeker-subtitle": "Vos données sont protégées par le RGPD",
-                "label-name": "Nom (ou pseudonyme) *",
-                "label-city": "Ville en France *",
-                "label-phone": "Téléphone (WhatsApp) *",
-                "label-skills": "Compétences *",
-                "label-cv": "CV (optionnel)",
-                "cv-drag": "Déposez votre CV ou cliquez",
-                "agree-label": "J'accepte la protection de mes données (RGPD)",
-                "btn-submit": "Envoyer ma candidature",
-                "learning-title": "Demande de formation gratuite",
-                "learning-subtitle": "France Relance",
-                "label-course": "Formation souhaitée *",
-                "label-goal": "Objectif *",
-                "learning-btn": "S'inscrire à la formation",
-                "volunteer-title": "Devenir bénévole",
-                "volunteer-subtitle": "Engagement citoyen",
-                "label-role": "Domaine *",
-                "label-hours": "Disponibilité (h/semaine) *",
-                "volunteer-btn": "Devenir bénévole",
-                "resources-title": "Ressources pour l'insertion",
-                "resources-subtitle": "Associations, OFII, France Travail",
-                "res-training": "Formations",
-                "res-legal": "Associations & Droit",
-                "res-social": "Aide sociale",
-                "stories-title": "Ils ont réussi en France",
-                "stories-subtitle": "Des parcours exemplaires",
-                "chat-title": "Assistant France Insertion",
-                "chat-welcome": "Bonjour ! Je vous guide vers l'emploi, les formations et l'aide juridique.",
-                "footer-title": "Nouvelle Chance",
-                "footer-desc": "Plateforme solidaire conforme au droit français",
-                "footer-links": "Liens utiles",
-                "footer-partners": "Partenaires",
-                "footer-contact": "Contact",
-                "footer-copyright": "© 2026 Nouvelle Chance - RGPD",
-                "footer-privacy": "Confidentialité",
-                "footer-terms": "Conditions"
-            },
-            ar: {
-                "logo-title": "فرصة جديدة",
-                "logo-subtitle": "الكرامة والعمل في فرنسا",
-                "nav-jobs": "فرص العمل",
-                "nav-register": "التسجيل",
-                "nav-resources": "الموارد",
-                "nav-stories": "قصص نجاح",
-                "btn-help": "مساعدة قانونية",
-                "btn-login": "تسجيل الدخول",
-                "btn-logout": "تسجيل خروج",
-                "auth-email": "البريد الإلكتروني",
-                "auth-secure": "🔒 اتصال آمن - بياناتك محمية",
-                "hero-badge": "🔒 الامتثال للقانون الأوروبي - بيانات سرية",
-                "hero-title": "الكرامة الإنسانية تبدأ بفرصة عمل عادلة ومستقرة في فرنسا",
-                "hero-desc": "نؤمن بأن المهارات لا تحتاج أوراقاً معقدة. نربطك مباشرة بأصحاب عمل متضامنين.",
-                "hero-btn-browse": "تصفح الوظائف",
-                "hero-btn-register": "سجل الآن",
-                "stats-title": "مهمتنا",
-                "stats-desc": "محاربة بطالة المهاجرين في فرنسا",
-                "stats-jobs": "فرص نشطة",
-                "stats-security": "سري",
-                "stats-partners": "شركاء",
-                "gdpr-title": "حماية البيانات (RGPD):",
-                "gdpr-desc": "لا يتم مشاركة أي بيانات مع السلطات. امتثال كامل.",
-                "services-title": "خدماتنا للإدماج",
-                "services-subtitle": "دعم شامل ومجاني دون تمييز",
-                "card1-title": "تكوينات مهنية",
-                "card1-desc": "دورات مجانية في الفرنسية والحاسوب والبناء.",
-                "card1-link": "اكتشف ←",
-                "card2-title": "استشارات قانونية",
-                "card2-desc": "مساعدة في التسوية والحصول على الإقامة.",
-                "card2-link": "اعرف أكثر ←",
-                "card3-title": "شهادات ملهمة",
-                "card3-desc": "قصص نجاح لأشخاص اندمجوا مهنياً.",
-                "card3-link": "اقرأ ←",
-                "jobs-title": "فرص العمل في فرنسا",
-                "jobs-subtitle": "شركات متضامنة ملتزمة",
-                "jobs-update": "تحديث يومي",
-                "search-skill": "ابحث عن مهارة",
-                "search-city": "المدينة",
-                "search-type": "نوع العقد",
-                "no-jobs-title": "لا توجد عروض",
-                "no-jobs-desc": "عدّل معايير البحث",
-                "hub-title": "فضاء التسجيل الآمن",
-                "hub-subtitle": "اختر مسارك وسجل",
-                "tab-seeker": "باحث عن عمل",
-                "tab-learning": "تكوين",
-                "tab-volunteer": "تطوع",
-                "seeker-title": "ترشيح تلقائي",
-                "seeker-subtitle": "بياناتك محمية بموجب القانون الأوروبي",
-                "label-name": "الاسم *",
-                "label-city": "المدينة في فرنسا *",
-                "label-phone": "رقم الهاتف *",
-                "label-skills": "المهارات *",
-                "label-cv": "السيرة الذاتية",
-                "cv-drag": "اسحب ملفك أو انقر",
-                "agree-label": "أوافق على حماية بياناتي (RGPD)",
-                "btn-submit": "إرسال ترشيحي",
-                "learning-title": "طلب تكوين مجاني",
-                "learning-subtitle": "فرنسا تراكت",
-                "label-course": "التكوين المطلوب *",
-                "label-goal": "الهدف *",
-                "learning-btn": "التسجيل في التكوين",
-                "volunteer-title": "تطوع",
-                "volunteer-subtitle": "التزام مواطن",
-                "label-role": "المجال *",
-                "label-hours": "الساعات/أسبوعياً *",
-                "volunteer-btn": "أصبح متطوعاً",
-                "resources-title": "موارد الإدماج",
-                "resources-subtitle": "جمعيات، OFII، فرنسا العمل",
-                "res-training": "تكوينات",
-                "res-legal": "جمعيات وقانون",
-                "res-social": "مساعدة اجتماعية",
-                "stories-title": "لقد نجحوا في فرنسا",
-                "stories-subtitle": "مسارات نموذجية",
-                "chat-title": "المساعد الذكي",
-                "chat-welcome": "مرحباً! أساعدك في البحث عن عمل وتكوينات واستشارات قانونية.",
-                "footer-title": "فرصة جديدة",
-                "footer-desc": "منصة تضامنية متوافقة مع القانون الفرنسي",
-                "footer-links": "روابط مفيدة",
-                "footer-partners": "شركاؤنا",
-                "footer-contact": "اتصل بنا",
-                "footer-copyright": "© 2026 فرصة جديدة - RGPD",
-                "footer-privacy": "سياسة الخصوصية",
-                "footer-terms": "شروط الاستخدام"
-            },
-            en: {
-                "logo-title": "New Chance",
-                "logo-subtitle": "Dignity & Work in France",
-                "nav-jobs": "Job Offers",
-                "nav-register": "Register",
-                "nav-resources": "Resources",
-                "nav-stories": "Success Stories",
-                "btn-help": "Legal Aid",
-                "btn-login": "Login",
-                "btn-logout": "Logout",
-                "auth-email": "Email",
-                "auth-secure": "🔒 Secure connection - Your data is protected",
-                "hero-badge": "🔒 GDPR Compliant - Confidential Data",
-                "hero-title": "Human dignity begins with a fair and stable job in France",
-                "hero-desc": "We believe skills don't need complex papers. We connect you directly with supportive employers.",
-                "hero-btn-browse": "Browse Jobs",
-                "hero-btn-register": "Register Now",
-                "stats-title": "Our Mission",
-                "stats-desc": "Fighting migrant unemployment in France",
-                "stats-jobs": "Active Jobs",
-                "stats-security": "Confidential",
-                "stats-partners": "Partners",
-                "gdpr-title": "GDPR Compliance:",
-                "gdpr-desc": "No data shared with authorities. Full compliance.",
-                "services-title": "Our Services for Integration",
-                "services-subtitle": "Comprehensive, free, non-discriminatory support",
-                "card1-title": "Training",
-                "card1-desc": "Free courses in French, IT, construction.",
-                "card1-link": "Discover →",
-                "card2-title": "Legal Advice",
-                "card2-desc": "Help with regularization and residence permits.",
-                "card2-link": "Learn more →",
-                "card3-title": "Testimonials",
-                "card3-desc": "Success stories of professional integration.",
-                "card3-link": "Read →",
-                "jobs-title": "Job Offers in France",
-                "jobs-subtitle": "Committed supportive companies",
-                "jobs-update": "Daily update",
-                "search-skill": "Search by skill",
-                "search-city": "City",
-                "search-type": "Contract type",
-                "no-jobs-title": "No offers found",
-                "no-jobs-desc": "Modify your search criteria",
-                "hub-title": "Secure Registration Hub",
-                "hub-subtitle": "Choose your path and register",
-                "tab-seeker": "Job Seeker",
-                "tab-learning": "Training",
-                "tab-volunteer": "Volunteer",
-                "seeker-title": "Job Application",
-                "seeker-subtitle": "Your data is GDPR protected",
-                "label-name": "Name *",
-                "label-city": "City in France *",
-                "label-phone": "Phone number *",
-                "label-skills": "Skills *",
-                "label-cv": "CV (optional)",
-                "cv-drag": "Drop your CV or click",
-                "agree-label": "I agree to GDPR data protection",
-                "btn-submit": "Submit my application",
-                "learning-title": "Free Training Request",
-                "learning-subtitle": "France Relance",
-                "label-course": "Desired training *",
-                "label-goal": "Goal *",
-                "learning-btn": "Register for training",
-                "volunteer-title": "Become a volunteer",
-                "volunteer-subtitle": "Citizen commitment",
-                "label-role": "Area *",
-                "label-hours": "Hours/week *",
-                "volunteer-btn": "Become a volunteer",
-                "resources-title": "Integration Resources",
-                "resources-subtitle": "Associations, OFII, France Travail",
-                "res-training": "Training",
-                "res-legal": "Associations & Law",
-                "res-social": "Social support",
-                "stories-title": "They succeeded in France",
-                "stories-subtitle": "Exemplary journeys",
-                "chat-title": "Smart Assistant",
-                "chat-welcome": "Hello! I guide you to jobs, training, and legal aid.",
-                "footer-title": "New Chance",
-                "footer-desc": "Solidarity platform compliant with French law",
-                "footer-links": "Useful links",
-                "footer-partners": "Partners",
-                "footer-contact": "Contact",
-                "footer-copyright": "© 2026 New Chance - GDPR",
-                "footer-privacy": "Privacy Policy",
-                "footer-terms": "Terms of Use"
             }
         };
 
-        // ==================== DONNÉES ====================
-        const jobsData = [
-            { id: 1, titleFr: "Plombier / Chauffagiste", titleAr: "سباك / تدفئة", titleEn: "Plumber / Heating", company: "Urban Énergie", city: "Paris", type: "CDI", salary: "2100€/mois", skills: "plomberie chauffage", descriptionFr: "Recherche plombier expérimenté. Titre de séjour accompagné.", descriptionAr: "نبحث عن سباك ذو خبرة. مساعدة في الحصول على الإقامة.", descriptionEn: "Experienced plumber needed. Residence permit assistance." },
-            { id: 2, titleFr: "Aide-cuisinier", titleAr: "مساعد طباخ", titleEn: "Kitchen Assistant", company: "Restaurant Solidaire", city: "Lyon", type: "CDD", salary: "11.88€/heure", skills: "cuisine restauration", descriptionFr: "Poste en contrat d'insertion.", descriptionAr: "عقد إدماج مهني.", descriptionEn: "Integration contract position." },
-            { id: 3, titleFr: "Agent d'entretien", titleAr: "عامل نظافة", titleEn: "Cleaner", company: "Clean Service", city: "Marseille", type: "Intérim", salary: "11.65€/heure", skills: "ménage nettoyage", descriptionFr: "20h/semaine, horaires flexibles.", descriptionAr: "20 ساعة/أسبوع، ساعات مرنة.", descriptionEn: "20h/week, flexible hours." },
-            { id: 4, titleFr: "Cariste", titleAr: "سائق رافعة", titleEn: "Forklift Operator", company: "LogiTrans", city: "Lille", type: "CDI", salary: "1950€/mois", skills: "cariste logistique", descriptionFr: "CACES obligatoire. Formation possible.", descriptionAr: "رخصة CACES مطلوبة. تدريب ممكن.", descriptionEn: "CACES required. Training possible." },
-            { id: 5, titleFr: "Aide-soignant", titleAr: "مساعد تمريض", titleEn: "Nursing Assistant", company: "EHPAD Les Bleuets", city: "Lyon", type: "CDD", salary: "14.50€/heure", skills: "soins médical", descriptionFr: "Débutant accepté. Formation en interne.", descriptionAr: "يقبل المبتدئين. تدريب داخلي.", descriptionEn: "Beginners accepted. Internal training." }
+        // ==================== DONNÉES INITIALES ====================
+        const defaultJobs = [
+            { id: 1, title: "Plombier / Chauffagiste", company: "Urban Énergie", city: "Paris", type: "CDI", salary: "2100€/mois", skills: "plomberie chauffage", description: "Recherche plombier expérimenté. Titre de séjour accompagné.", status: 'active', createdAt: '2026-01-15' },
+            { id: 2, title: "Aide-cuisinier", company: "Restaurant Solidaire", city: "Lyon", type: "CDD", salary: "11.88€/heure", skills: "cuisine restauration", description: "Poste en contrat d'insertion.", status: 'active', createdAt: '2026-01-20' },
+            { id: 3, title: "Agent d'entretien", company: "Clean Service", city: "Marseille", type: "Intérim", salary: "11.65€/heure", skills: "ménage nettoyage", description: "20h/semaine, horaires flexibles.", status: 'active', createdAt: '2026-02-01' }
         ];
 
-        const storiesData = [
-            { nameFr: "Ibrahim", nameAr: "إبراهيم", nameEn: "Ibrahim", roleFr: "Plombier certifié", roleAr: "سباك معتمد", roleEn: "Certified plumber", descFr: "Arrivé sans papiers, j'ai obtenu un CDI à Paris.", descAr: "وصلت بدون أوراق، حصلت على عقد دائم في باريس.", descEn: "Arrived without papers, got a permanent contract in Paris.", meta: "Paris | 2 ans" },
-            { nameFr: "Fatima", nameAr: "فاطمة", nameEn: "Fatima", roleFr: "Cheffe de projet", roleAr: "مديرة مشروع", roleEn: "Project Manager", descFr: "J'ai régularisé ma situation et travaille dans une association.", descAr: "سويت وضعي وأعمل في جمعية.", descEn: "Regularized my status and work at an NGO.", meta: "Lyon | 18 mois" },
-            { nameFr: "Karim", nameAr: "كريم", nameEn: "Karim", roleFr: "Chef cuisinier", roleAr: "طاهٍ", roleEn: "Head Chef", descFr: "Grâce à la formation, j'ai ouvert mon propre restaurant.", descAr: "بفضل التكوين، فتحت مطعمي الخاص.", descEn: "Thanks to training, I opened my own restaurant.", meta: "Marseille | 3 ans" },
-            { nameFr: "Amina", nameAr: "أمينة", nameEn: "Amina", roleFr: "Infirmière", roleAr: "ممرضة", roleEn: "Nurse", descFr: "Validation de mon diplôme étranger et CDI à l'hôpital.", descAr: "تمت المصادقة على شهادتي الأجنبية وعقد دائم في المستشفى.", descEn: "My foreign diploma validated, permanent contract at hospital.", meta: "Paris | 4 ans" }
-        ];
+        const defaultPrivacyPolicy = {
+            content: "Politique de confidentialité de Nouvelle Chance\n\nConformément au Règlement Général sur la Protection des Données (RGPD) UE 2016/679, nous nous engageons à protéger vos données personnelles.\n\n1. Collecte des données\nNous collectons uniquement les données nécessaires à votre insertion professionnelle : nom, coordonnées, compétences, CV.\n\n2. Utilisation des données\nVos données sont utilisées exclusivement pour vous mettre en relation avec des employeurs partenaires et des organismes de formation.\n\n3. Non-partage avec les autorités\nAucune donnée n'est partagée avec les autorités administratives ou policières sans votre consentement explicite.\n\n4. Vos droits\nDroit d'accès, de rectification, d'effacement et de portabilité de vos données.\n\nContact DPO : dpo@nouvellechance.fr",
+            lastUpdated: '2026-01-01'
+        };
 
-        // ==================== GESTION DU STOCKAGE LOCAL ====================
+        const defaultTerms = {
+            content: "Conditions d'utilisation de Nouvelle Chance\n\n1. Objet\nPlateforme d'insertion professionnelle pour migrants en France.\n\n2. Inscription\nL'inscription est gratuite et confidentielle.\n\n3. Responsabilités\nNouvelle Chance agit comme intermédiaire et ne garantit pas l'obtention d'un emploi.\n\n4. Litiges\nTribunal compétent : Tribunal Judiciaire de Paris.\n\nDernière mise à jour : Janvier 2026",
+            lastUpdated: '2026-01-01'
+        };
+
+        // ==================== STORAGE MANAGER ====================
         class StorageManager {
             static get(key, defaultValue = null) {
                 try {
                     const item = localStorage.getItem(key);
                     return item ? JSON.parse(item) : defaultValue;
                 } catch (e) {
-                    console.error(`Erreur de lecture du stockage: ${key}`, e);
                     return defaultValue;
                 }
             }
-
             static set(key, value) {
-                try {
-                    localStorage.setItem(key, JSON.stringify(value));
-                    return true;
-                } catch (e) {
-                    console.error(`Erreur d'écriture du stockage: ${key}`, e);
-                    return false;
-                }
+                try { localStorage.setItem(key, JSON.stringify(value)); return true; } 
+                catch (e) { return false; }
             }
-
             static remove(key) {
-                try {
-                    localStorage.removeItem(key);
-                    return true;
-                } catch (e) {
-                    console.error(`Erreur de suppression du stockage: ${key}`, e);
-                    return false;
-                }
-            }
-
-            static clearAll() {
-                Object.values(CONFIG.STORAGE_KEYS).forEach(key => this.remove(key));
+                try { localStorage.removeItem(key); return true; } 
+                catch (e) { return false; }
             }
         }
 
-        // ==================== GESTION DES UTILISATEURS ====================
+        // ==================== USER MANAGER ====================
         class UserManager {
             static getCurrentUser() {
                 return StorageManager.get(CONFIG.STORAGE_KEYS.CURRENT_USER);
             }
-
             static setCurrentUser(user) {
-                if (user) {
-                    user.lastLogin = new Date().toISOString();
-                    StorageManager.set(CONFIG.STORAGE_KEYS.CURRENT_USER, user);
-                } else {
-                    StorageManager.remove(CONFIG.STORAGE_KEYS.CURRENT_USER);
-                }
+                StorageManager.set(CONFIG.STORAGE_KEYS.CURRENT_USER, user);
             }
-
             static getAllUsers() {
                 return StorageManager.get(CONFIG.STORAGE_KEYS.USERS, []);
             }
-
             static findUserByEmail(email) {
-                const users = this.getAllUsers();
-                return users.find(u => u.email.toLowerCase() === email.toLowerCase());
+                return this.getAllUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
             }
-
             static registerUser(userData) {
                 const users = this.getAllUsers();
-                
-                // Vérifier si l'utilisateur existe déjà
                 if (this.findUserByEmail(userData.email)) {
                     return { success: false, error: 'email_exists' };
                 }
-
-                // Ajouter des métadonnées
                 const newUser = {
                     ...userData,
-                    id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                    id: 'user_' + Date.now(),
                     createdAt: new Date().toISOString(),
-                    lastLogin: new Date().toISOString(),
-                    isActive: true
+                    status: 'pending', // pending, approved, rejected
+                    role: userData.email === CONFIG.ADMIN_EMAIL ? 'admin' : 'user'
                 };
-
                 users.push(newUser);
                 StorageManager.set(CONFIG.STORAGE_KEYS.USERS, users);
-                this.setCurrentUser(newUser);
+                
+                // Auto-approve admin
+                if (newUser.role === 'admin') {
+                    newUser.status = 'approved';
+                    this.setCurrentUser(newUser);
+                }
                 
                 return { success: true, user: newUser };
             }
-
-            static loginUser(email, password = null) {
-                const user = this.findUserByEmail(email);
-                if (!user) {
-                    return { success: false, error: 'user_not_found' };
+            static approveUser(userId) {
+                const users = this.getAllUsers();
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    user.status = 'approved';
+                    user.approvedAt = new Date().toISOString();
+                    StorageManager.set(CONFIG.STORAGE_KEYS.USERS, users);
                 }
-
-                // Pour les connexions sociales, pas de vérification de mot de passe
-                if (password && user.password && user.password !== password) {
-                    return { success: false, error: 'wrong_password' };
-                }
-
-                this.setCurrentUser(user);
-                return { success: true, user };
+                return user;
             }
-
-            static logout() {
-                this.setCurrentUser(null);
+            static rejectUser(userId) {
+                const users = this.getAllUsers();
+                const user = users.find(u => u.id === userId);
+                if (user) {
+                    user.status = 'rejected';
+                    user.rejectedAt = new Date().toISOString();
+                    StorageManager.set(CONFIG.STORAGE_KEYS.USERS, users);
+                }
+                return user;
+            }
+            static deleteUser(userId) {
+                let users = this.getAllUsers();
+                users = users.filter(u => u.id !== userId);
+                StorageManager.set(CONFIG.STORAGE_KEYS.USERS, users);
             }
         }
 
-        // ==================== GESTION DES SOUMISSIONS ====================
+        // ==================== JOB MANAGER ====================
+        class JobManager {
+            static getAll() {
+                return StorageManager.get(CONFIG.STORAGE_KEYS.JOBS, defaultJobs);
+            }
+            static add(jobData) {
+                const jobs = this.getAll();
+                const newJob = {
+                    ...jobData,
+                    id: 'job_' + Date.now(),
+                    createdAt: new Date().toISOString(),
+                    status: 'active'
+                };
+                jobs.push(newJob);
+                StorageManager.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
+                return newJob;
+            }
+            static update(jobId, jobData) {
+                const jobs = this.getAll();
+                const index = jobs.findIndex(j => j.id === jobId);
+                if (index >= 0) {
+                    jobs[index] = { ...jobs[index], ...jobData, updatedAt: new Date().toISOString() };
+                    StorageManager.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
+                }
+            }
+            static delete(jobId) {
+                let jobs = this.getAll();
+                jobs = jobs.filter(j => j.id !== jobId);
+                StorageManager.set(CONFIG.STORAGE_KEYS.JOBS, jobs);
+            }
+        }
+
+        // ==================== APPLICATION MANAGER ====================
+        class ApplicationManager {
+            static getAll() {
+                return StorageManager.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
+            }
+            static add(application) {
+                const applications = this.getAll();
+                applications.push({
+                    ...application,
+                    id: 'app_' + Date.now(),
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
+                StorageManager.set(CONFIG.STORAGE_KEYS.APPLICATIONS, applications);
+            }
+            static updateStatus(appId, status) {
+                const applications = this.getAll();
+                const app = applications.find(a => a.id === appId);
+                if (app) {
+                    app.status = status;
+                    app.reviewedAt = new Date().toISOString();
+                    StorageManager.set(CONFIG.STORAGE_KEYS.APPLICATIONS, applications);
+                }
+            }
+        }
+
+        // ==================== SUBMISSION MANAGER ====================
         class SubmissionManager {
             static getAll() {
                 return StorageManager.get(CONFIG.STORAGE_KEYS.SUBMISSIONS, []);
             }
-
             static add(submission) {
                 const submissions = this.getAll();
-                submission.id = 'sub_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                submission.timestamp = new Date().toISOString();
-                submissions.push(submission);
+                submissions.push({
+                    ...submission,
+                    id: 'sub_' + Date.now(),
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
                 StorageManager.set(CONFIG.STORAGE_KEYS.SUBMISSIONS, submissions);
-                return submission;
             }
-
-            static getByUser(userId) {
-                return this.getAll().filter(s => s.userId === userId);
-            }
-        }
-
-        // ==================== VALIDATION ====================
-        class Validator {
-            static validateName(name) {
-                return name && name.trim().length >= 2 && name.trim().length <= 100;
-            }
-
-            static validatePhone(phone) {
-                return /^[\d\s\+\-\(\)]{8,20}$/.test(phone);
-            }
-
-            static validateEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-
-            static validateSkills(skills) {
-                return skills && skills.trim().length >= 3;
-            }
-
-            static validateFile(file) {
-                if (!file) return true; // Optionnel
-                return file.size <= CONFIG.MAX_FILE_SIZE;
-            }
-
-            static showError(inputElement) {
-                const parent = inputElement.closest('div');
-                const errorSpan = parent?.querySelector('.validation-error');
-                inputElement.classList.add('input-error');
-                if (errorSpan) errorSpan.classList.remove('hidden');
-            }
-
-            static clearError(inputElement) {
-                const parent = inputElement.closest('div');
-                const errorSpan = parent?.querySelector('.validation-error');
-                inputElement.classList.remove('input-error');
-                if (errorSpan) errorSpan.classList.add('hidden');
+            static updateStatus(subId, status) {
+                const submissions = this.getAll();
+                const sub = submissions.find(s => s.id === subId);
+                if (sub) {
+                    sub.status = status;
+                    sub.reviewedAt = new Date().toISOString();
+                    StorageManager.set(CONFIG.STORAGE_KEYS.SUBMISSIONS, submissions);
+                }
             }
         }
 
         // ==================== VARIABLES GLOBALES ====================
         let currentLang = StorageManager.get(CONFIG.STORAGE_KEYS.LANGUAGE, 'fr');
-        let activeTab = 'seeker';
         let currentUser = UserManager.getCurrentUser();
-        let pendingConfirmCallback = null;
-        let debounceTimer;
-        let sessionTimeout;
+        let activeTab = 'seeker';
+        let adminTab = 'dashboard';
 
-        // ==================== FONCTIONS D'AUTHENTIFICATION ====================
+        // ==================== AUTH FUNCTIONS ====================
         function socialLogin(provider) {
             const email = `${provider}_${Date.now()}@social.nouvellechance.fr`;
             const name = `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`;
-            
-            const result = UserManager.findUserByEmail(email) 
-                ? UserManager.loginUser(email)
-                : UserManager.registerUser({ email, name, provider, isSocialLogin: true });
-            
+            const result = UserManager.registerUser({ email, name, provider, isSocialLogin: true });
             if (result.success) {
                 currentUser = result.user;
                 updateAuthUI();
-                showToast('✅ Connexion réussie avec ' + provider);
+                showToast('✅ Connecté avec ' + provider);
                 closeAuthModal();
             }
         }
 
         function openEmailRegister() {
-            document.getElementById('auth-modal-title').innerHTML = 
-                currentLang === 'fr' ? "Inscription par e-mail" : 
-                (currentLang === 'ar' ? "التسجيل بالبريد الإلكتروني" : "Email Registration");
-            
+            document.getElementById('auth-modal-title').innerHTML = "Inscription par e-mail";
             document.getElementById('auth-modal-body').innerHTML = `
                 <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Email *</label>
-                        <input type="email" id="reg-email" class="w-full px-4 py-2 border rounded-xl form-input" placeholder="exemple@email.com">
-                        <span class="text-red-500 text-xs hidden validation-error">Email valide requis</span>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">${currentLang === 'fr' ? 'Nom complet' : (currentLang === 'ar' ? 'الاسم الكامل' : 'Full name')} *</label>
-                        <input type="text" id="reg-name" class="w-full px-4 py-2 border rounded-xl form-input" placeholder="${currentLang === 'fr' ? 'Votre nom' : (currentLang === 'ar' ? 'اسمك' : 'Your name')}">
-                        <span class="text-red-500 text-xs hidden validation-error">2 caractères minimum</span>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">${currentLang === 'fr' ? 'Mot de passe (optionnel)' : (currentLang === 'ar' ? 'كلمة المرور (اختياري)' : 'Password (optional)')}</label>
-                        <input type="password" id="reg-password" class="w-full px-4 py-2 border rounded-xl form-input" minlength="6">
-                        <div class="password-strength-meter mt-1 bg-gray-200 rounded-full" style="height:4px;">
-                            <div id="strength-bar" class="h-full rounded-full transition-all" style="width:0%; background:#e53e3e;"></div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="reg-agree" required class="w-4 h-4">
-                        <label class="text-xs">${currentLang === 'fr' ? "J'accepte les conditions d'utilisation et la politique de confidentialité" : (currentLang === 'ar' ? "أوافق على شروط الاستخدام وسياسة الخصوصية" : "I accept the terms of use and privacy policy")}</label>
-                    </div>
-                    <button onclick="emailRegister()" class="w-full bg-brand-olive text-white py-2 rounded-xl hover:bg-opacity-90">
-                        ${currentLang === 'fr' ? "S'inscrire" : (currentLang === 'ar' ? 'تسجيل' : 'Register')}
-                    </button>
-                    <p class="text-center text-xs">
-                        ${currentLang === 'fr' ? 'Déjà un compte ?' : (currentLang === 'ar' ? 'لديك حساب؟' : 'Already have an account?')} 
-                        <a href="#" onclick="openEmailLogin()" class="text-brand-olive font-bold">
-                            ${currentLang === 'fr' ? 'Se connecter' : (currentLang === 'ar' ? 'تسجيل الدخول' : 'Login')}
-                        </a>
-                    </p>
+                    <div><label class="block text-sm font-semibold mb-1">Email *</label><input type="email" id="reg-email" class="w-full px-4 py-2 border rounded-xl" placeholder="exemple@email.com"></div>
+                    <div><label class="block text-sm font-semibold mb-1">Nom complet *</label><input type="text" id="reg-name" class="w-full px-4 py-2 border rounded-xl" placeholder="Votre nom"></div>
+                    <div><label class="block text-sm font-semibold mb-1">Mot de passe</label><input type="password" id="reg-password" class="w-full px-4 py-2 border rounded-xl"></div>
+                    <div class="flex items-center gap-2"><input type="checkbox" id="reg-agree" required><label class="text-xs">J'accepte les conditions</label></div>
+                    <button onclick="emailRegister()" class="w-full bg-brand-olive text-white py-2 rounded-xl">S'inscrire</button>
+                    <p class="text-center text-xs">Déjà un compte ? <a href="#" onclick="openEmailLogin()" class="text-brand-olive font-bold">Se connecter</a></p>
                 </div>
             `;
-            
             document.getElementById('auth-modal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('auth-modal').classList.add('opacity-100');
-                document.getElementById('auth-modal-content').classList.remove('scale-95');
-            }, 10);
-            
-            // Écouteur pour la force du mot de passe
-            setTimeout(() => {
-                const passwordInput = document.getElementById('reg-password');
-                if (passwordInput) {
-                    passwordInput.addEventListener('input', updatePasswordStrength);
-                }
-            }, 100);
-        }
-
-        function openEmailLogin() {
-            document.getElementById('auth-modal-title').innerHTML = 
-                currentLang === 'fr' ? "Connexion par e-mail" : 
-                (currentLang === 'ar' ? "تسجيل الدخول بالبريد" : "Email Login");
-            
-            document.getElementById('auth-modal-body').innerHTML = `
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-semibold mb-1">Email</label>
-                        <input type="email" id="login-email" class="w-full px-4 py-2 border rounded-xl" placeholder="exemple@email.com">
-                    </div>
-                    <button onclick="emailLogin()" class="w-full bg-brand-olive text-white py-2 rounded-xl hover:bg-opacity-90">
-                        ${currentLang === 'fr' ? 'Se connecter' : (currentLang === 'ar' ? 'تسجيل الدخول' : 'Login')}
-                    </button>
-                    <p class="text-center text-xs">
-                        ${currentLang === 'fr' ? "Pas encore de compte ?" : (currentLang === 'ar' ? 'ليس لديك حساب؟' : "Don't have an account?")} 
-                        <a href="#" onclick="openEmailRegister()" class="text-brand-olive font-bold">
-                            ${currentLang === 'fr' ? "S'inscrire" : (currentLang === 'ar' ? 'تسجيل' : 'Register')}
-                        </a>
-                    </p>
-                </div>
-            `;
-            
-            document.getElementById('auth-modal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('auth-modal').classList.add('opacity-100');
-                document.getElementById('auth-modal-content').classList.remove('scale-95');
-            }, 10);
+            setTimeout(() => document.getElementById('auth-modal').classList.add('opacity-100'), 10);
         }
 
         function emailRegister() {
             const email = document.getElementById('reg-email')?.value?.trim();
             const name = document.getElementById('reg-name')?.value?.trim();
-            const password = document.getElementById('reg-password')?.value;
-            const agree = document.getElementById('reg-agree')?.checked;
+            if (!email || !name) { showToast('⚠️ Tous les champs sont requis', 'warning'); return; }
             
-            // Validation
-            if (!Validator.validateEmail(email)) {
-                Validator.showError(document.getElementById('reg-email'));
-                return;
-            }
-            if (!Validator.validateName(name)) {
-                Validator.showError(document.getElementById('reg-name'));
-                return;
-            }
-            if (!agree) {
-                showToast('⚠️ ' + (currentLang === 'fr' ? 'Veuillez accepter les conditions' : (currentLang === 'ar' ? 'يرجى قبول الشروط' : 'Please accept the terms')), 'warning');
-                return;
-            }
-            
-            const result = UserManager.registerUser({ 
-                email, 
-                name, 
-                password: password || null, 
-                provider: 'email',
-                isSocialLogin: false
-            });
-            
+            const result = UserManager.registerUser({ email, name, provider: 'email', isSocialLogin: false });
             if (result.success) {
                 currentUser = result.user;
                 updateAuthUI();
-                showToast('✅ ' + (currentLang === 'fr' ? 'Inscription réussie !' : (currentLang === 'ar' ? 'تم التسجيل بنجاح!' : 'Registration successful!')));
-                closeAuthModal();
-                resetSessionTimeout();
-            } else if (result.error === 'email_exists') {
-                showToast('⚠️ ' + (currentLang === 'fr' ? 'Cet email est déjà utilisé' : (currentLang === 'ar' ? 'هذا البريد مستخدم بالفعل' : 'This email is already in use')), 'warning');
-            }
-        }
-
-        function emailLogin() {
-            const email = document.getElementById('login-email')?.value?.trim();
-            
-            if (!Validator.validateEmail(email)) {
-                showToast('⚠️ ' + (currentLang === 'fr' ? 'Email invalide' : (currentLang === 'ar' ? 'بريد إلكتروني غير صالح' : 'Invalid email')), 'warning');
-                return;
-            }
-            
-            const result = UserManager.loginUser(email);
-            
-            if (result.success) {
-                currentUser = result.user;
-                updateAuthUI();
-                showToast('✅ ' + (currentLang === 'fr' ? 'Connexion réussie !' : (currentLang === 'ar' ? 'تم تسجيل الدخول بنجاح!' : 'Login successful!'));
-                closeAuthModal();
-                resetSessionTimeout();
-            } else {
-                // Si l'utilisateur n'existe pas, proposer l'inscription
-                if (result.error === 'user_not_found') {
-                    showToast('ℹ️ ' + (currentLang === 'fr' ? 'Compte non trouvé. Veuillez vous inscrire.' : (currentLang === 'ar' ? 'الحساب غير موجود. يرجى التسجيل.' : 'Account not found. Please register.'), 'info');
-                    setTimeout(() => openEmailRegister(), 1500);
+                if (result.user.role === 'admin') {
+                    showToast('✅ Compte administrateur créé !');
+                } else {
+                    showToast('✅ Inscription réussie ! En attente d\'approbation.', 'info');
                 }
-            }
-        }
-
-        function updatePasswordStrength(e) {
-            const password = e.target.value;
-            const strengthBar = document.getElementById('strength-bar');
-            let strength = 0;
-            
-            if (password.length >= 6) strength += 25;
-            if (password.length >= 8) strength += 25;
-            if (/[A-Z]/.test(password)) strength += 25;
-            if (/[0-9!@#$%^&*]/.test(password)) strength += 25;
-            
-            if (strengthBar) {
-                strengthBar.style.width = strength + '%';
-                if (strength <= 25) strengthBar.style.background = '#e53e3e';
-                else if (strength <= 50) strengthBar.style.background = '#ed8936';
-                else if (strength <= 75) strengthBar.style.background = '#ecc94b';
-                else strengthBar.style.background = '#48bb78';
+                closeAuthModal();
+            } else if (result.error === 'email_exists') {
+                showToast('⚠️ Cet email est déjà utilisé', 'warning');
             }
         }
 
         function logout() {
-            showConfirm(
-                currentLang === 'fr' ? 'Déconnexion' : (currentLang === 'ar' ? 'تسجيل الخروج' : 'Logout'),
-                currentLang === 'fr' ? 'Êtes-vous sûr de vouloir vous déconnecter ?' : (currentLang === 'ar' ? 'هل أنت متأكد من تسجيل الخروج؟' : 'Are you sure you want to logout?'),
-                () => {
-                    UserManager.logout();
-                    currentUser = null;
-                    updateAuthUI();
-                    clearSessionTimeout();
-                    showToast('👋 ' + (currentLang === 'fr' ? 'Déconnecté avec succès' : (currentLang === 'ar' ? 'تم تسجيل الخروج بنجاح' : 'Logged out successfully')));
-                }
-            );
+            UserManager.setCurrentUser(null);
+            currentUser = null;
+            updateAuthUI();
+            showToast('👋 Déconnecté');
         }
 
         function updateAuthUI() {
             const loginBtn = document.getElementById('login-btn');
             const logoutBtn = document.getElementById('logout-btn');
             const userInfo = document.getElementById('user-info');
-            const authIndicator = document.getElementById('auth-status-indicator');
-            const authStatusText = document.getElementById('auth-status-text');
+            const adminBtn = document.getElementById('admin-btn');
             
             if (currentUser) {
                 loginBtn.classList.add('hidden');
                 logoutBtn.classList.remove('hidden');
                 userInfo.classList.remove('hidden');
-                userInfo.innerHTML = `<i data-lucide="user" class="w-4 h-4 inline"></i> ${escapeHtml(currentUser.name)}`;
-                if (authIndicator) {
-                    authIndicator.classList.remove('hidden');
-                    authStatusText.innerHTML = currentLang === 'fr' ? 
-                        `✅ Connecté(e) en tant que ${escapeHtml(currentUser.name)}` : 
-                        (currentLang === 'ar' ? 
-                            `✅ مسجل كـ ${escapeHtml(currentUser.name)}` : 
-                            `✅ Logged in as ${escapeHtml(currentUser.name)}`);
+                userInfo.innerHTML = `👤 ${escapeHtml(currentUser.name)}`;
+                
+                if (currentUser.role === 'admin' || currentUser.email === CONFIG.ADMIN_EMAIL) {
+                    adminBtn.classList.remove('hidden');
+                } else {
+                    adminBtn.classList.add('hidden');
                 }
             } else {
                 loginBtn.classList.remove('hidden');
                 logoutBtn.classList.add('hidden');
                 userInfo.classList.add('hidden');
-                if (authIndicator) authIndicator.classList.add('hidden');
+                adminBtn.classList.add('hidden');
             }
             lucide.createIcons();
         }
 
-        // ==================== GESTION DE SESSION ====================
-        function resetSessionTimeout() {
-            clearSessionTimeout();
-            if (currentUser) {
-                sessionTimeout = setTimeout(() => {
-                    showToast('⏰ ' + (currentLang === 'fr' ? 'Session expirée. Veuillez vous reconnecter.' : (currentLang === 'ar' ? 'انتهت الجلسة. يرجى إعادة تسجيل الدخول.' : 'Session expired. Please login again.')), 'warning');
-                    UserManager.logout();
-                    currentUser = null;
-                    updateAuthUI();
-                }, CONFIG.SESSION_TIMEOUT);
+        // ==================== ADMIN PANEL ====================
+        function openAdminPanel() {
+            if (!currentUser || (currentUser.role !== 'admin' && currentUser.email !== CONFIG.ADMIN_EMAIL)) {
+                showToast('⛔ Accès réservé aux administrateurs', 'error');
+                return;
             }
+            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('admin-name-display').textContent = currentUser.name;
+            switchAdminTab('dashboard');
         }
 
-        function clearSessionTimeout() {
-            if (sessionTimeout) {
-                clearTimeout(sessionTimeout);
-                sessionTimeout = null;
-            }
+        function closeAdminPanel() {
+            document.getElementById('admin-panel').classList.add('hidden');
         }
 
-        // ==================== FONCTIONS DE TRADUCTION ====================
-        function updateTranslations() {
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[currentLang] && translations[currentLang][key]) {
-                    if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
-                        el.placeholder = translations[currentLang][key];
-                    } else if (el.tagName === 'BUTTON' && el.hasAttribute('value')) {
-                        el.value = translations[currentLang][key];
-                    } else {
-                        el.innerHTML = translations[currentLang][key];
-                    }
+        function switchAdminTab(tab) {
+            adminTab = tab;
+            
+            // Update sidebar buttons
+            ['dashboard', 'jobs', 'users', 'applications', 'volunteers', 'settings', 'privacy'].forEach(t => {
+                const btn = document.getElementById(`admin-tab-${t}`);
+                if (btn) {
+                    btn.className = t === tab ? 
+                        'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition bg-white/10' : 
+                        'w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition hover:bg-white/5';
                 }
             });
             
-            // Gérer la direction RTL pour l'arabe
-            document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
-            document.body.className = document.body.className.replace(/rtl/g, '');
-            if (currentLang === 'ar') {
-                document.body.classList.add('rtl');
-            }
+            // Update title
+            const titles = {
+                dashboard: ['Dashboard', 'Vue d\'ensemble de la plateforme'],
+                jobs: ['Gestion des Offres', 'Créer, modifier, supprimer des offres d\'emploi'],
+                users: ['Gestion des Utilisateurs', 'Approuver, rejeter, gérer les comptes'],
+                applications: ['Candidatures', 'Suivi des candidatures et formations'],
+                volunteers: ['Bénévolats', 'Gestion des inscriptions bénévoles'],
+                settings: ['Paramètres', 'Configuration de la plateforme'],
+                privacy: ['Politique & RGPD', 'Modifier les documents légaux']
+            };
             
-            updateAuthUI();
-            renderJobs();
-            renderStories();
+            const [title, subtitle] = titles[tab] || ['Admin', ''];
+            document.getElementById('admin-page-title').textContent = title;
+            document.getElementById('admin-page-subtitle').textContent = subtitle;
+            
+            // Render content
+            renderAdminContent(tab);
             lucide.createIcons();
         }
 
-        function switchLanguage(lang) {
-            currentLang = lang;
-            StorageManager.set(CONFIG.STORAGE_KEYS.LANGUAGE, lang);
-            document.documentElement.setAttribute('lang', lang);
-            
-            const btnFr = document.getElementById('lang-fr');
-            const btnAr = document.getElementById('lang-ar');
-            const btnEn = document.getElementById('lang-en');
-            
-            [btnFr, btnAr, btnEn].forEach(btn => {
-                btn.className = "px-2.5 py-1.5 rounded-lg transition-all text-gray-500 hover:text-brand-dark";
-            });
-            
-            const activeBtn = document.getElementById(`lang-${lang}`);
-            if (activeBtn) {
-                activeBtn.className = "px-2.5 py-1.5 rounded-lg transition-all bg-brand-olive text-white shadow-sm";
+        function renderAdminContent(tab) {
+            const area = document.getElementById('admin-content-area');
+            switch(tab) {
+                case 'dashboard': area.innerHTML = renderDashboard(); break;
+                case 'jobs': area.innerHTML = renderJobsManagement(); break;
+                case 'users': area.innerHTML = renderUsersManagement(); break;
+                case 'applications': area.innerHTML = renderApplicationsManagement(); break;
+                case 'volunteers': area.innerHTML = renderVolunteersManagement(); break;
+                case 'settings': area.innerHTML = renderSettings(); break;
+                case 'privacy': area.innerHTML = renderPrivacyManagement(); break;
             }
-            
-            updateTranslations();
+            updatePendingCount();
         }
 
-        // ==================== AFFICHAGE DES DONNÉES ====================
-        function renderJobs(filteredJobs = null) {
-            const container = document.getElementById('jobs-container');
-            const data = filteredJobs || jobsData;
-            container.innerHTML = '';
+        function renderDashboard() {
+            const jobs = JobManager.getAll();
+            const users = UserManager.getAllUsers();
+            const applications = ApplicationManager.getAll();
+            const submissions = SubmissionManager.getAll();
+            const pendingUsers = users.filter(u => u.status === 'pending').length;
+            const pendingApps = applications.filter(a => a.status === 'pending').length;
             
-            if (data.length === 0) {
-                document.getElementById('no-jobs-message').classList.remove('hidden');
-                document.getElementById('counter-jobs').innerText = '0';
-                return;
+            return `
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center"><i data-lucide="users" class="w-6 h-6 text-blue-600"></i></div>
+                            <div><p class="text-2xl font-bold">${users.length}</p><p class="text-xs text-gray-500">Utilisateurs</p></div>
+                        </div>
+                        <p class="text-xs mt-3 text-orange-600">${pendingUsers} en attente</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center"><i data-lucide="briefcase" class="w-6 h-6 text-green-600"></i></div>
+                            <div><p class="text-2xl font-bold">${jobs.length}</p><p class="text-xs text-gray-500">Offres actives</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center"><i data-lucide="file-text" class="w-6 h-6 text-purple-600"></i></div>
+                            <div><p class="text-2xl font-bold">${applications.length}</p><p class="text-xs text-gray-500">Candidatures</p></div>
+                        </div>
+                        <p class="text-xs mt-3 text-orange-600">${pendingApps} en attente</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center"><i data-lucide="heart-handshake" class="w-6 h-6 text-orange-600"></i></div>
+                            <div><p class="text-2xl font-bold">${submissions.filter(s => s.type === 'volunteer').length}</p><p class="text-xs text-gray-500">Bénévoles</p></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 class="font-bold mb-4">Actions rapides</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="switchAdminTab('jobs')" class="p-4 border rounded-xl hover:bg-gray-50 text-left">
+                            <i data-lucide="plus-circle" class="w-5 h-5 text-brand-olive mb-2"></i>
+                            <p class="font-semibold text-sm">Publier une offre</p>
+                        </button>
+                        <button onclick="switchAdminTab('users')" class="p-4 border rounded-xl hover:bg-gray-50 text-left">
+                            <i data-lucide="user-check" class="w-5 h-5 text-brand-olive mb-2"></i>
+                            <p class="font-semibold text-sm">Approuver utilisateurs</p>
+                        </button>
+                        <button onclick="switchAdminTab('privacy')" class="p-4 border rounded-xl hover:bg-gray-50 text-left">
+                            <i data-lucide="lock" class="w-5 h-5 text-brand-olive mb-2"></i>
+                            <p class="font-semibold text-sm">Modifier politique</p>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderJobsManagement() {
+            const jobs = JobManager.getAll();
+            return `
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="p-4 border-b flex justify-between items-center">
+                        <h4 class="font-bold">Offres d'emploi (${jobs.length})</h4>
+                        <button onclick="showAddJobForm()" class="bg-brand-olive text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-90">
+                            <i data-lucide="plus" class="w-4 h-4 inline"></i> Nouvelle offre
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full admin-table">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left">Titre</th>
+                                    <th class="px-4 py-3 text-left">Entreprise</th>
+                                    <th class="px-4 py-3 text-left">Ville</th>
+                                    <th class="px-4 py-3 text-left">Type</th>
+                                    <th class="px-4 py-3 text-left">Salaire</th>
+                                    <th class="px-4 py-3 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${jobs.map(j => `
+                                    <tr class="border-t hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-medium">${escapeHtml(j.title)}</td>
+                                        <td class="px-4 py-3">${escapeHtml(j.company)}</td>
+                                        <td class="px-4 py-3">${escapeHtml(j.city)}</td>
+                                        <td class="px-4 py-3"><span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">${escapeHtml(j.type)}</span></td>
+                                        <td class="px-4 py-3">${escapeHtml(j.salary)}</td>
+                                        <td class="px-4 py-3">
+                                            <button onclick="editJob('${j.id}')" class="text-blue-600 hover:underline text-xs mr-2">Modifier</button>
+                                            <button onclick="deleteJob('${j.id}')" class="text-red-600 hover:underline text-xs">Supprimer</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="job-form-container" class="mt-6 hidden"></div>
+            `;
+        }
+
+        function showAddJobForm() {
+            document.getElementById('job-form-container').innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 class="font-bold mb-4">Ajouter une offre</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-semibold mb-1">Titre *</label><input type="text" id="new-job-title" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Entreprise *</label><input type="text" id="new-job-company" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Ville *</label><input type="text" id="new-job-city" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Type *</label><select id="new-job-type" class="w-full px-3 py-2 border rounded-lg"><option>CDI</option><option>CDD</option><option>Intérim</option></select></div>
+                        <div><label class="block text-xs font-semibold mb-1">Salaire *</label><input type="text" id="new-job-salary" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Compétences</label><input type="text" id="new-job-skills" class="w-full px-3 py-2 border rounded-lg"></div>
+                    </div>
+                    <div class="mt-4"><label class="block text-xs font-semibold mb-1">Description</label><textarea id="new-job-desc" class="w-full px-3 py-2 border rounded-lg" rows="3"></textarea></div>
+                    <button onclick="addJob()" class="mt-4 bg-brand-olive text-white px-6 py-2 rounded-lg">Publier</button>
+                    <button onclick="document.getElementById('job-form-container').classList.add('hidden')" class="mt-4 ml-2 text-gray-600 px-6 py-2">Annuler</button>
+                </div>
+            `;
+            document.getElementById('job-form-container').classList.remove('hidden');
+        }
+
+        function addJob() {
+            const jobData = {
+                title: document.getElementById('new-job-title')?.value,
+                company: document.getElementById('new-job-company')?.value,
+                city: document.getElementById('new-job-city')?.value,
+                type: document.getElementById('new-job-type')?.value,
+                salary: document.getElementById('new-job-salary')?.value,
+                skills: document.getElementById('new-job-skills')?.value,
+                description: document.getElementById('new-job-desc')?.value
+            };
+            if (!jobData.title || !jobData.company) { showToast('⚠️ Titre et entreprise requis', 'warning'); return; }
+            JobManager.add(jobData);
+            showToast('✅ Offre publiée !');
+            document.getElementById('job-form-container').classList.add('hidden');
+            switchAdminTab('jobs');
+        }
+
+        function editJob(jobId) {
+            const jobs = JobManager.getAll();
+            const job = jobs.find(j => j.id === jobId);
+            if (!job) return;
+            document.getElementById('job-form-container').innerHTML = `
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 class="font-bold mb-4">Modifier l'offre</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-semibold mb-1">Titre</label><input type="text" id="edit-job-title" value="${escapeHtml(job.title)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Entreprise</label><input type="text" id="edit-job-company" value="${escapeHtml(job.company)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Ville</label><input type="text" id="edit-job-city" value="${escapeHtml(job.city)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Type</label><select id="edit-job-type" class="w-full px-3 py-2 border rounded-lg"><option ${job.type==='CDI'?'selected':''}>CDI</option><option ${job.type==='CDD'?'selected':''}>CDD</option><option ${job.type==='Intérim'?'selected':''}>Intérim</option></select></div>
+                        <div><label class="block text-xs font-semibold mb-1">Salaire</label><input type="text" id="edit-job-salary" value="${escapeHtml(job.salary)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Compétences</label><input type="text" id="edit-job-skills" value="${escapeHtml(job.skills||'')}" class="w-full px-3 py-2 border rounded-lg"></div>
+                    </div>
+                    <div class="mt-4"><label class="block text-xs font-semibold mb-1">Description</label><textarea id="edit-job-desc" class="w-full px-3 py-2 border rounded-lg" rows="3">${escapeHtml(job.description||'')}</textarea></div>
+                    <button onclick="updateJob('${jobId}')" class="mt-4 bg-brand-olive text-white px-6 py-2 rounded-lg">Enregistrer</button>
+                    <button onclick="document.getElementById('job-form-container').classList.add('hidden')" class="mt-4 ml-2 text-gray-600 px-6 py-2">Annuler</button>
+                </div>
+            `;
+            document.getElementById('job-form-container').classList.remove('hidden');
+        }
+
+        function updateJob(jobId) {
+            const jobData = {
+                title: document.getElementById('edit-job-title')?.value,
+                company: document.getElementById('edit-job-company')?.value,
+                city: document.getElementById('edit-job-city')?.value,
+                type: document.getElementById('edit-job-type')?.value,
+                salary: document.getElementById('edit-job-salary')?.value,
+                skills: document.getElementById('edit-job-skills')?.value,
+                description: document.getElementById('edit-job-desc')?.value
+            };
+            JobManager.update(jobId, jobData);
+            showToast('✅ Offre mise à jour !');
+            switchAdminTab('jobs');
+        }
+
+        function deleteJob(jobId) {
+            if (confirm('Supprimer cette offre ?')) {
+                JobManager.delete(jobId);
+                showToast('🗑️ Offre supprimée');
+                switchAdminTab('jobs');
             }
-            
-            document.getElementById('no-jobs-message').classList.add('hidden');
-            
-            data.forEach(job => {
-                const titleKey = `title${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`;
-                const descKey = `description${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`;
-                const title = job[titleKey] || job.titleFr;
-                const description = job[descKey] || job.descriptionFr;
-                
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition group">
-                        <div class="flex items-start justify-between mb-3">
-                            <h4 class="text-lg font-bold text-brand-olive group-hover:text-brand-accent transition">${escapeHtml(title)}</h4>
-                            <span class="text-xs bg-brand-sky text-brand-olive px-2 py-1 rounded-full font-semibold">${escapeHtml(job.type)}</span>
-                        </div>
-                        <p class="text-xs text-gray-400 mb-2">🏢 ${escapeHtml(job.company)} | 📍 ${escapeHtml(job.city)}</p>
-                        <p class="text-sm text-gray-500 my-2 line-clamp-2">${escapeHtml(description)}</p>
-                        <div class="flex justify-between items-center pt-3 border-t border-gray-100">
-                            <span class="text-sm font-bold text-brand-accent">💰 ${escapeHtml(job.salary)}</span>
-                            <button onclick="applyForJob(${job.id})" class="auth-btn bg-brand-olive text-white px-4 py-1.5 rounded-lg text-sm hover:bg-opacity-90">
-                                ${translations[currentLang]['btn-submit'] || 'Postuler'}
-                            </button>
-                        </div>
-                    </div>`;
-            });
-            
-            document.getElementById('counter-jobs').innerText = data.length;
-            lucide.createIcons();
         }
 
-        function renderStories() {
-            const container = document.getElementById('stories-container');
-            container.innerHTML = '';
-            
-            storiesData.forEach(s => {
-                const nameKey = `name${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`;
-                const roleKey = `role${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`;
-                const descKey = `desc${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`;
-                
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md transition">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-12 h-12 bg-brand-sky text-brand-olive rounded-full flex items-center justify-center font-bold text-lg">
-                                ${escapeHtml(s.nameFr.charAt(0))}
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-olive">${escapeHtml(s[nameKey] || s.nameFr)}</h4>
-                                <p class="text-xs text-emerald-600 font-medium">${escapeHtml(s[roleKey] || s.roleFr)}</p>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500 italic">"${escapeHtml(s[descKey] || s.descFr)}"</p>
-                        <p class="text-xs text-gray-400 mt-3 pt-2 border-t">📍 ${escapeHtml(s.meta)}</p>
-                    </div>`;
-            });
-            lucide.createIcons();
+        function renderUsersManagement() {
+            const users = UserManager.getAllUsers();
+            return `
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="p-4 border-b"><h4 class="font-bold">Utilisateurs (${users.length})</h4></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full admin-table">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-3 text-left">Nom</th>
+                                    <th class="px-4 py-3 text-left">Email</th>
+                                    <th class="px-4 py-3 text-left">Rôle</th>
+                                    <th class="px-4 py-3 text-left">Statut</th>
+                                    <th class="px-4 py-3 text-left">Date</th>
+                                    <th class="px-4 py-3 text-left">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${users.map(u => `
+                                    <tr class="border-t hover:bg-gray-50">
+                                        <td class="px-4 py-3 font-medium">${escapeHtml(u.name)}</td>
+                                        <td class="px-4 py-3 text-sm">${escapeHtml(u.email)}</td>
+                                        <td class="px-4 py-3"><span class="text-xs ${u.role==='admin'?'bg-purple-100 text-purple-700':'bg-gray-100'} px-2 py-1 rounded-full">${u.role||'user'}</span></td>
+                                        <td class="px-4 py-3"><span class="status-badge status-${u.status||'pending'}">${u.status||'pending'}</span></td>
+                                        <td class="px-4 py-3 text-xs">${new Date(u.createdAt).toLocaleDateString()}</td>
+                                        <td class="px-4 py-3">
+                                            ${u.status === 'pending' ? `
+                                                <button onclick="approveUser('${u.id}')" class="text-green-600 hover:underline text-xs mr-2">Approuver</button>
+                                                <button onclick="rejectUser('${u.id}')" class="text-red-600 hover:underline text-xs">Rejeter</button>
+                                            ` : ''}
+                                            <button onclick="deleteUser('${u.id}')" class="text-gray-600 hover:underline text-xs ml-2">🗑️</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
         }
 
-        function filterJobs() {
-            const search = document.getElementById('search-skill')?.value.toLowerCase() || '';
-            const city = document.getElementById('filter-city')?.value || '';
-            const type = document.getElementById('filter-type')?.value || '';
-            
-            const filtered = jobsData.filter(j => 
-                (!search || j.skills.toLowerCase().includes(search)) && 
-                (!city || j.city === city) && 
-                (!type || j.type === type)
-            );
-            
-            renderJobs(filtered);
+        function approveUser(userId) {
+            UserManager.approveUser(userId);
+            showToast('✅ Utilisateur approuvé');
+            switchAdminTab('users');
         }
 
-        function debouncedFilterJobs() {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(filterJobs, 300);
+        function rejectUser(userId) {
+            UserManager.rejectUser(userId);
+            showToast('❌ Utilisateur rejeté');
+            switchAdminTab('users');
         }
 
-        function applyForJob(id) {
-            if (!currentUser) {
-                showConfirm(
-                    currentLang === 'fr' ? 'Connexion requise' : (currentLang === 'ar' ? 'تسجيل الدخول مطلوب' : 'Login required'),
-                    currentLang === 'fr' ? 'Veuillez vous connecter ou créer un compte pour postuler.' : (currentLang === 'ar' ? 'يرجى تسجيل الدخول أو إنشاء حساب للتقديم.' : 'Please login or create an account to apply.'),
-                    () => openAuthModal('login')
-                );
-                return;
+        function deleteUser(userId) {
+            if (confirm('Supprimer cet utilisateur ?')) {
+                UserManager.deleteUser(userId);
+                showToast('🗑️ Utilisateur supprimé');
+                switchAdminTab('users');
             }
-            
-            const job = jobsData.find(j => j.id === id);
-            const jobTitle = job ? (job[`title${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || job.titleFr) : `#${id}`;
-            
-            showConfirm(
-                currentLang === 'fr' ? 'Confirmation de candidature' : (currentLang === 'ar' ? 'تأكيد الترشح' : 'Application confirmation'),
-                currentLang === 'fr' ? 
-                    `Postuler à l'offre : <strong>${escapeHtml(jobTitle)}</strong> ?` : 
-                    (currentLang === 'ar' ? 
-                        `تقديم على عرض: <strong>${escapeHtml(jobTitle)}</strong>؟` : 
-                        `Apply for: <strong>${escapeHtml(jobTitle)}</strong>?`),
-                () => {
-                    const applications = StorageManager.get(CONFIG.STORAGE_KEYS.APPLICATIONS, []);
-                    applications.push({ 
-                        jobId: id, 
-                        userId: currentUser.id, 
-                        userEmail: currentUser.email,
-                        jobTitle: jobTitle,
-                        date: new Date().toISOString(),
-                        status: 'pending'
-                    });
-                    StorageManager.set(CONFIG.STORAGE_KEYS.APPLICATIONS, applications);
-                    
-                    showModal(
-                        '✅ ' + (currentLang === 'fr' ? 'Candidature envoyée' : (currentLang === 'ar' ? 'تم إرسال الترشح' : 'Application sent')),
-                        currentLang === 'fr' ? 
-                            'Votre candidature a été enregistrée avec succès. Un conseiller vous recontactera sous 48h.' : 
-                            (currentLang === 'ar' ? 
-                                'تم تسجيل ترشحك بنجاح. سيتصل بك مستشار خلال 48 ساعة.' : 
-                                'Your application has been successfully registered. An advisor will contact you within 48 hours.')
-                    );
-                }
-            );
         }
 
-        // ==================== GESTION DES FORMULAIRES ====================
+        function renderApplicationsManagement() {
+            const applications = ApplicationManager.getAll();
+            const submissions = SubmissionManager.getAll();
+            return `
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                        <div class="p-4 border-b"><h4 class="font-bold">Candidatures emploi (${applications.length})</h4></div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full admin-table">
+                                <thead><tr><th class="px-4 py-3">Offre</th><th class="px-4 py-3">Candidat</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3">Actions</th></tr></thead>
+                                <tbody>
+                                    ${applications.map(a => `
+                                        <tr class="border-t">
+                                            <td class="px-4 py-3">${escapeHtml(a.jobTitle||'N/A')}</td>
+                                            <td class="px-4 py-3">${escapeHtml(a.userEmail)}</td>
+                                            <td class="px-4 py-3 text-xs">${new Date(a.date).toLocaleDateString()}</td>
+                                            <td class="px-4 py-3"><span class="status-badge status-${a.status}">${a.status}</span></td>
+                                            <td class="px-4 py-3">
+                                                <button onclick="approveApplication('${a.id}')" class="text-green-600 text-xs mr-2">✅</button>
+                                                <button onclick="rejectApplication('${a.id}')" class="text-red-600 text-xs">❌</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                        <div class="p-4 border-b"><h4 class="font-bold">Demandes formation (${submissions.filter(s=>s.type==='learning').length})</h4></div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full admin-table">
+                                <thead><tr><th class="px-4 py-3">Nom</th><th class="px-4 py-3">Formation</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3">Actions</th></tr></thead>
+                                <tbody>
+                                    ${submissions.filter(s=>s.type==='learning').map(s => `
+                                        <tr class="border-t">
+                                            <td class="px-4 py-3">${escapeHtml(s.name)}</td>
+                                            <td class="px-4 py-3">${escapeHtml(s.course||'N/A')}</td>
+                                            <td class="px-4 py-3 text-xs">${new Date(s.date).toLocaleDateString()}</td>
+                                            <td class="px-4 py-3"><span class="status-badge status-${s.status||'pending'}">${s.status||'pending'}</span></td>
+                                            <td class="px-4 py-3">
+                                                <button onclick="approveSubmission('${s.id}')" class="text-green-600 text-xs mr-2">✅</button>
+                                                <button onclick="rejectSubmission('${s.id}')" class="text-red-600 text-xs">❌</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderVolunteersManagement() {
+            const submissions = SubmissionManager.getAll().filter(s => s.type === 'volunteer');
+            return `
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="p-4 border-b"><h4 class="font-bold">Bénévoles (${submissions.length})</h4></div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full admin-table">
+                            <thead><tr><th class="px-4 py-3">Nom</th><th class="px-4 py-3">Domaine</th><th class="px-4 py-3">Téléphone</th><th class="px-4 py-3">Date</th><th class="px-4 py-3">Statut</th><th class="px-4 py-3">Actions</th></tr></thead>
+                            <tbody>
+                                ${submissions.map(s => `
+                                    <tr class="border-t">
+                                        <td class="px-4 py-3">${escapeHtml(s.name)}</td>
+                                        <td class="px-4 py-3">${escapeHtml(s.role||'N/A')}</td>
+                                        <td class="px-4 py-3">${escapeHtml(s.phone)}</td>
+                                        <td class="px-4 py-3 text-xs">${new Date(s.date).toLocaleDateString()}</td>
+                                        <td class="px-4 py-3"><span class="status-badge status-${s.status||'pending'}">${s.status||'pending'}</span></td>
+                                        <td class="px-4 py-3">
+                                            <button onclick="approveSubmission('${s.id}')" class="text-green-600 text-xs mr-2">✅</button>
+                                            <button onclick="rejectSubmission('${s.id}')" class="text-red-600 text-xs">❌</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function approveApplication(appId) {
+            ApplicationManager.updateStatus(appId, 'approved');
+            showToast('✅ Candidature approuvée');
+            switchAdminTab('applications');
+        }
+
+        function rejectApplication(appId) {
+            ApplicationManager.updateStatus(appId, 'rejected');
+            showToast('❌ Candidature rejetée');
+            switchAdminTab('applications');
+        }
+
+        function approveSubmission(subId) {
+            SubmissionManager.updateStatus(subId, 'approved');
+            showToast('✅ Demande approuvée');
+            switchAdminTab(adminTab);
+        }
+
+        function rejectSubmission(subId) {
+            SubmissionManager.updateStatus(subId, 'rejected');
+            showToast('❌ Demande rejetée');
+            switchAdminTab(adminTab);
+        }
+
+        function renderSettings() {
+            const settings = StorageManager.get(CONFIG.STORAGE_KEYS.SETTINGS, { siteName: 'Nouvelle Chance', contactEmail: 'contact@nouvellechance.fr', contactPhone: '01 53 59 22 22' });
+            return `
+                <div class="bg-white p-6 rounded-xl shadow-sm border">
+                    <h4 class="font-bold mb-4">Paramètres de la plateforme</h4>
+                    <div class="space-y-4">
+                        <div><label class="block text-xs font-semibold mb-1">Nom du site</label><input type="text" id="setting-site-name" value="${escapeHtml(settings.siteName)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Email de contact</label><input type="email" id="setting-email" value="${escapeHtml(settings.contactEmail)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <div><label class="block text-xs font-semibold mb-1">Téléphone</label><input type="text" id="setting-phone" value="${escapeHtml(settings.contactPhone)}" class="w-full px-3 py-2 border rounded-lg"></div>
+                        <button onclick="saveSettings()" class="bg-brand-olive text-white px-6 py-2 rounded-lg">Enregistrer</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function saveSettings() {
+            const settings = {
+                siteName: document.getElementById('setting-site-name')?.value,
+                contactEmail: document.getElementById('setting-email')?.value,
+                contactPhone: document.getElementById('setting-phone')?.value
+            };
+            StorageManager.set(CONFIG.STORAGE_KEYS.SETTINGS, settings);
+            showToast('✅ Paramètres enregistrés');
+        }
+
+        function renderPrivacyManagement() {
+            const policy = StorageManager.get(CONFIG.STORAGE_KEYS.PRIVACY_POLICY, defaultPrivacyPolicy);
+            const terms = StorageManager.get(CONFIG.STORAGE_KEYS.TERMS, defaultTerms);
+            return `
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <h4 class="font-bold mb-2">Politique de confidentialité (RGPD)</h4>
+                        <p class="text-xs text-gray-500 mb-3">Dernière mise à jour : ${policy.lastUpdated}</p>
+                        <textarea id="privacy-content" class="w-full px-3 py-2 border rounded-lg font-mono text-sm" rows="15">${escapeHtml(policy.content)}</textarea>
+                        <button onclick="savePrivacyPolicy()" class="mt-3 bg-brand-olive text-white px-6 py-2 rounded-lg">Enregistrer la politique</button>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <h4 class="font-bold mb-2">Conditions d'utilisation</h4>
+                        <p class="text-xs text-gray-500 mb-3">Dernière mise à jour : ${terms.lastUpdated}</p>
+                        <textarea id="terms-content" class="w-full px-3 py-2 border rounded-lg font-mono text-sm" rows="10">${escapeHtml(terms.content)}</textarea>
+                        <button onclick="saveTerms()" class="mt-3 bg-brand-olive text-white px-6 py-2 rounded-lg">Enregistrer les conditions</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function savePrivacyPolicy() {
+            const content = document.getElementById('privacy-content')?.value;
+            StorageManager.set(CONFIG.STORAGE_KEYS.PRIVACY_POLICY, { content, lastUpdated: new Date().toISOString() });
+            showToast('✅ Politique de confidentialité mise à jour');
+        }
+
+        function saveTerms() {
+            const content = document.getElementById('terms-content')?.value;
+            StorageManager.set(CONFIG.STORAGE_KEYS.TERMS, { content, lastUpdated: new Date().toISOString() });
+            showToast('✅ Conditions d\'utilisation mises à jour');
+        }
+
+        function updatePendingCount() {
+            const applications = ApplicationManager.getAll();
+            const pending = applications.filter(a => a.status === 'pending').length;
+            const badge = document.getElementById('pending-count');
+            if (badge) {
+                badge.textContent = pending;
+                badge.style.display = pending > 0 ? 'inline' : 'none';
+            }
+        }
+
+        // ==================== FORM HANDLING ====================
         function handleFormSubmit(event, type) {
             event.preventDefault();
-            
             if (!currentUser) {
-                showConfirm(
-                    currentLang === 'fr' ? 'Connexion requise' : (currentLang === 'ar' ? 'تسجيل الدخول مطلوب' : 'Login required'),
-                    currentLang === 'fr' ? 'Veuillez vous connecter pour envoyer ce formulaire.' : (currentLang === 'ar' ? 'يرجى تسجيل الدخول لإرسال هذا النموذج.' : 'Please login to submit this form.'),
-                    () => openAuthModal('login')
-                );
+                showToast('⚠️ Veuillez vous connecter d\'abord', 'warning');
+                return false;
+            }
+            if (currentUser.status !== 'approved' && currentUser.role !== 'admin') {
+                showToast('⚠️ Votre compte est en attente d\'approbation', 'warning');
                 return false;
             }
             
-            // Validation des champs
-            const nameInput = document.getElementById(`${type}-name`);
-            const phoneInput = document.getElementById(`${type}-phone`);
-            let isValid = true;
+            const formData = {
+                type,
+                userId: currentUser.id,
+                userEmail: currentUser.email,
+                name: document.getElementById(`${type}-name`)?.value || currentUser.name,
+                phone: document.getElementById(`${type}-phone`)?.value || '',
+                city: document.getElementById(`${type}-city`)?.value || '',
+                skills: document.getElementById(`${type}-skills`)?.value || '',
+                course: document.getElementById(`${type}-course`)?.value || '',
+                role: document.getElementById(`${type}-role`)?.value || '',
+                hours: document.getElementById(`${type}-hours`)?.value || ''
+            };
             
-            if (nameInput && !Validator.validateName(nameInput.value)) {
-                Validator.showError(nameInput);
-                isValid = false;
-            } else if (nameInput) {
-                Validator.clearError(nameInput);
-            }
-            
-            if (phoneInput && !Validator.validatePhone(phoneInput.value)) {
-                Validator.showError(phoneInput);
-                isValid = false;
-            } else if (phoneInput) {
-                Validator.clearError(phoneInput);
-            }
-            
-            if (!isValid) return false;
-            
-            showConfirm(
-                currentLang === 'fr' ? 'Vérification RGPD' : (currentLang === 'ar' ? 'التحقق من حماية البيانات' : 'GDPR Verification'),
-                currentLang === 'fr' ? 
-                    'Vos données sont protégées conformément au RGPD. Confirmez-vous l\'envoi ?' : 
-                    (currentLang === 'ar' ? 
-                        'بياناتك محمية وفقاً للقانون الأوروبي. هل تؤكد الإرسال؟' : 
-                        'Your data is protected under GDPR. Do you confirm submission?'),
-                () => {
-                    const formData = {
-                        type,
-                        userId: currentUser.id,
-                        userEmail: currentUser.email,
-                        date: new Date().toISOString(),
-                        name: nameInput?.value || '',
-                        phone: phoneInput?.value || ''
-                    };
-                    
-                    // Ajouter les champs spécifiques selon le type
-                    switch(type) {
-                        case 'seeker':
-                            formData.city = document.getElementById('seeker-city')?.value || '';
-                            formData.skills = document.getElementById('seeker-skills')?.value || '';
-                            break;
-                        case 'learning':
-                            formData.course = document.getElementById('learning-course')?.value || '';
-                            formData.goal = document.getElementById('learning-goal')?.value || '';
-                            break;
-                        case 'volunteer':
-                            formData.role = document.getElementById('volunteer-role')?.value || '';
-                            formData.hours = document.getElementById('volunteer-hours')?.value || '';
-                            break;
-                    }
-                    
-                    SubmissionManager.add(formData);
-                    
-                    showModal(
-                        '✅ ' + (currentLang === 'fr' ? 'Enregistrement réussi' : (currentLang === 'ar' ? 'تم التسجيل بنجاح' : 'Registration successful')),
-                        currentLang === 'fr' ? 
-                            'Merci ! Notre équipe traite votre demande sous 72h. Vous recevrez une confirmation.' : 
-                            (currentLang === 'ar' ? 
-                                'شكراً! فريقنا يعالج طلبك خلال 72 ساعة. ستتلقى تأكيداً.' : 
-                                'Thank you! Our team processes your request within 72 hours. You will receive a confirmation.')
-                    );
-                    
-                    // Réinitialiser le formulaire
-                    document.getElementById(`${type}-form`).reset();
-                    if (type === 'seeker') {
-                        const dropZone = document.getElementById('drop-zone');
-                        if (dropZone) {
-                            dropZone.innerHTML = `
-                                <i data-lucide="cloud-upload" class="w-10 h-10 mx-auto text-brand-olive mb-2"></i>
-                                <p class="text-sm font-bold text-gray-600" data-i18n="cv-drag">Déposez votre CV ou cliquez</p>
-                                <p class="text-xs text-gray-400">PDF, DOCX (max 5 Mo)</p>`;
-                            lucide.createIcons();
-                        }
-                    }
-                }
-            );
-            
+            SubmissionManager.add(formData);
+            showToast('✅ Demande envoyée avec succès !');
+            document.getElementById(`${type}-form`).reset();
             return false;
         }
 
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            const fileNameDisplay = document.getElementById('file-name');
-            
-            if (!file) return;
-            
-            if (!Validator.validateFile(file)) {
-                showToast('⚠️ ' + (currentLang === 'fr' ? 'Fichier trop volumineux (max 5 Mo)' : (currentLang === 'ar' ? 'الملف كبير جداً (الحد الأقصى 5 ميغا)' : 'File too large (max 5 MB)')), 'warning');
-                e.target.value = '';
+        function applyForJob(jobId) {
+            if (!currentUser) {
+                showToast('⚠️ Veuillez vous connecter', 'warning');
                 return;
             }
-            
-            const extension = '.' + file.name.split('.').pop().toLowerCase();
-            if (!CONFIG.ALLOWED_FILE_TYPES.includes(extension)) {
-                showToast('⚠️ ' + (currentLang === 'fr' ? 'Format non supporté (PDF, DOC, DOCX)' : (currentLang === 'ar' ? 'صيغة غير مدعومة (PDF, DOC, DOCX)' : 'Unsupported format (PDF, DOC, DOCX)')), 'warning');
-                e.target.value = '';
-                return;
+            const job = JobManager.getAll().find(j => j.id === jobId);
+            ApplicationManager.add({
+                jobId,
+                jobTitle: job?.title || '',
+                userId: currentUser.id,
+                userEmail: currentUser.email
+            });
+            showToast('✅ Candidature envoyée !');
+        }
+
+        // ==================== UI FUNCTIONS ====================
+        function renderJobs() {
+            const container = document.getElementById('jobs-container');
+            const jobs = JobManager.getAll().filter(j => j.status === 'active');
+            container.innerHTML = jobs.map(job => `
+                <div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md">
+                    <h4 class="text-lg font-bold text-brand-olive">${escapeHtml(job.title)}</h4>
+                    <p class="text-xs text-gray-400">${escapeHtml(job.company)} - ${escapeHtml(job.city)}</p>
+                    <p class="text-sm text-gray-500 my-2">${escapeHtml(job.description||'')}</p>
+                    <div class="flex justify-between items-center pt-3 border-t">
+                        <span class="text-sm font-bold text-brand-accent">💰 ${escapeHtml(job.salary)}</span>
+                        <button onclick="applyForJob('${job.id}')" class="bg-brand-olive text-white px-4 py-1.5 rounded-lg text-sm">Postuler</button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('counter-jobs').innerText = jobs.length;
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-message');
+            msg.textContent = message;
+            toast.className = 'toast px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 z-[10000]';
+            switch(type) {
+                case 'success': toast.classList.add('bg-green-500', 'text-white'); break;
+                case 'warning': toast.classList.add('bg-yellow-500', 'text-black'); break;
+                case 'error': toast.classList.add('bg-red-500', 'text-white'); break;
+                case 'info': toast.classList.add('bg-blue-500', 'text-white'); break;
             }
-            
-            if (fileNameDisplay) {
-                fileNameDisplay.textContent = `✓ ${file.name} (${(file.size / 1024).toFixed(1)} Ko)`;
-                fileNameDisplay.classList.remove('hidden');
-            }
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('auth-modal').classList.add('opacity-100'), 10);
+            document.getElementById('auth-modal-body').innerHTML = `
+                <div class="space-y-3">
+                    <button onclick="socialLogin('google')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border rounded-xl hover:bg-gray-50">🔵 Google</button>
+                    <button onclick="socialLogin('facebook')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border rounded-xl hover:bg-gray-50">🔵 Facebook</button>
+                    <div class="relative my-3"><div class="absolute inset-0 flex items-center"><div class="w-full border-t"></div></div><div class="relative flex justify-center text-xs"><span class="bg-white px-2 text-gray-500">ou</span></div></div>
+                    <button onclick="openEmailRegister()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-brand-olive text-brand-olive rounded-xl font-bold">📧 S'inscrire avec e-mail</button>
+                </div>
+            `;
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.remove('opacity-100');
+            setTimeout(() => document.getElementById('auth-modal').classList.add('hidden'), 300);
         }
 
         function switchTab(tab) {
             activeTab = tab;
             ['seeker', 'learning', 'volunteer'].forEach(t => {
-                const panel = document.getElementById(`panel-${t}`);
+                document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== tab);
                 const btn = document.getElementById(`tab-${t}`);
-                if (panel && btn) {
-                    panel.classList.toggle('hidden', t !== tab);
-                    btn.className = t === tab ? 
-                        "px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2" : 
-                        "px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2";
-                }
+                btn.className = t === tab ? 'px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2' : 'px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2';
             });
         }
 
-        // ==================== MODALES ====================
-        function showModal(title, msg) {
-            document.getElementById('modal-title').innerHTML = title;
-            document.getElementById('modal-message').innerHTML = msg;
-            const modal = document.getElementById('custom-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('opacity-100'), 10);
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('custom-modal');
-            modal.classList.remove('opacity-100');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
-        function showConfirm(title, msg, callback) {
-            pendingConfirmCallback = callback;
-            document.getElementById('confirm-title').innerHTML = title;
-            document.getElementById('confirm-message').innerHTML = msg;
-            const modal = document.getElementById('confirm-modal');
-            modal.classList.remove('hidden');
-            setTimeout(() => modal.classList.add('opacity-100'), 10);
-        }
-
-        function confirmAction(confirmed) {
-            const modal = document.getElementById('confirm-modal');
-            modal.classList.remove('opacity-100');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-            
-            if (confirmed && typeof pendingConfirmCallback === 'function') {
-                const callback = pendingConfirmCallback;
-                pendingConfirmCallback = null;
-                callback();
-            } else {
-                pendingConfirmCallback = null;
-            }
-        }
-
-        function openAuthModal(mode = 'login') {
-            document.getElementById('auth-modal').classList.remove('hidden');
-            setTimeout(() => {
-                document.getElementById('auth-modal').classList.add('opacity-100');
-                document.getElementById('auth-modal-content').classList.remove('scale-95');
-            }, 10);
-            
-            document.getElementById('auth-modal-body').innerHTML = `
-                <div class="space-y-3">
-                    <p class="text-center text-sm font-semibold text-gray-600 mb-2">
-                        ${currentLang === 'fr' ? 'Connectez-vous rapidement' : (currentLang === 'ar' ? 'سجل الدخول بسرعة' : 'Quick login')}
-                    </p>
-                    <button onclick="socialLogin('google')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border rounded-xl hover:bg-gray-50 transition auth-btn">
-                        <i data-lucide="chrome" class="w-5 h-5"></i> Google
-                    </button>
-                    <button onclick="socialLogin('facebook')" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border rounded-xl hover:bg-gray-50 transition auth-btn">
-                        <i data-lucide="facebook" class="w-5 h-5"></i> Facebook
-                    </button>
-                    <div class="relative my-3">
-                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t"></div></div>
-                        <div class="relative flex justify-center text-xs"><span class="bg-white px-2 text-gray-500">ou</span></div>
-                    </div>
-                    <button onclick="openEmailRegister()" class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border-2 border-brand-olive text-brand-olive rounded-xl hover:bg-brand-oliveLight transition auth-btn font-bold">
-                        <i data-lucide="mail" class="w-5 h-5"></i> 
-                        ${currentLang === 'fr' ? "S'inscrire avec e-mail" : (currentLang === 'ar' ? 'التسجيل بالبريد الإلكتروني' : 'Register with email')}
-                    </button>
-                </div>
-            `;
-            document.getElementById('auth-modal-title').innerHTML = 
-                currentLang === 'fr' ? 'Connexion / Inscription' : 
-                (currentLang === 'ar' ? 'تسجيل الدخول / إنشاء حساب' : 'Login / Register');
-            
-            lucide.createIcons();
-        }
-
-        function closeAuthModal() {
-            const modal = document.getElementById('auth-modal');
-            const content = document.getElementById('auth-modal-content');
-            modal.classList.remove('opacity-100');
-            content.classList.add('scale-95');
-            setTimeout(() => modal.classList.add('hidden'), 300);
-        }
-
         function showPrivacyPolicy() {
-            showModal(
-                "Politique de confidentialité (RGPD)",
-                "Conformité UE 2016/679. Vos données ne sont jamais partagées avec des tiers sans votre consentement explicite. Droit d'accès, rectification et effacement : contact@nouvellechance.fr. Délégué à la protection des données : dpo@nouvellechance.fr"
-            );
+            const policy = StorageManager.get(CONFIG.STORAGE_KEYS.PRIVACY_POLICY, defaultPrivacyPolicy);
+            alert(policy.content.substring(0, 500) + '...');
         }
 
         function showTerms() {
-            showModal(
-                "Conditions d'utilisation",
-                "Plateforme d'insertion professionnelle conforme au Code du travail français. Médiation possible en cas de litige. Tribunal compétent : Tribunal Judiciaire de Paris. Dernière mise à jour : Janvier 2026."
-            );
+            const terms = StorageManager.get(CONFIG.STORAGE_KEYS.TERMS, defaultTerms);
+            alert(terms.content.substring(0, 500) + '...');
         }
 
-        // ==================== TOAST NOTIFICATIONS ====================
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            const icon = toast.querySelector('i');
-            
-            toastMessage.textContent = message;
-            toast.classList.remove('hidden', 'bg-green-500', 'bg-red-500', 'bg-yellow-500', 'bg-blue-500');
-            
-            switch(type) {
-                case 'success':
-                    toast.classList.add('bg-green-500');
-                    if (icon) icon.setAttribute('data-lucide', 'check-circle');
-                    break;
-                case 'warning':
-                    toast.classList.add('bg-yellow-500', 'text-black');
-                    if (icon) icon.setAttribute('data-lucide', 'alert-triangle');
-                    break;
-                case 'error':
-                    toast.classList.add('bg-red-500');
-                    if (icon) icon.setAttribute('data-lucide', 'x-circle');
-                    break;
-                case 'info':
-                    toast.classList.add('bg-blue-500');
-                    if (icon) icon.setAttribute('data-lucide', 'info');
-                    break;
-            }
-            
-            lucide.createIcons();
-            
-            setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 4000);
-        }
-
-        // ==================== CHATBOT ====================
-        function toggleChat() {
-            document.getElementById('chat-window').classList.toggle('hidden');
-            if (!document.getElementById('chat-window').classList.contains('hidden')) {
-                document.getElementById('chat-input')?.focus();
-            }
-        }
-
-        function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const txt = input.value.trim();
-            if (!txt) return;
-            
-            const msgDiv = document.getElementById('chat-messages');
-            msgDiv.innerHTML += `
-                <div class="flex justify-end mb-2">
-                    <div class="bg-brand-olive text-white p-3 rounded-xl max-w-[80%] text-sm">
-                        ${escapeHtml(txt)}
-                    </div>
-                </div>`;
-            input.value = '';
-            msgDiv.scrollTop = msgDiv.scrollHeight;
-            
-            // Simuler une réponse
-            setTimeout(() => {
-                const response = getAutoReply(txt);
-                msgDiv.innerHTML += `
-                    <div class="flex items-start gap-2 mb-2">
-                        <div class="w-8 h-8 bg-brand-olive rounded-full flex items-center justify-center text-white text-xs flex-shrink-0">
-                            <i data-lucide="bot" class="w-4 h-4"></i>
-                        </div>
-                        <div class="bg-gray-200 p-3 rounded-xl max-w-[80%] text-sm">
-                            ${response}
-                        </div>
-                    </div>`;
-                lucide.createIcons();
-                msgDiv.scrollTop = msgDiv.scrollHeight;
-            }, 800);
-        }
-
-        function handleChatKeyPress(e) {
-            if (e.key === 'Enter') sendMessage();
-        }
-
-        function getAutoReply(msg) {
-            const lowerMsg = msg.toLowerCase();
-            
-            if (lowerMsg.includes('emploi') || lowerMsg.includes('travail') || lowerMsg.includes('job') || lowerMsg.includes('وظيفة') || lowerMsg.includes('عمل')) {
-                return currentLang === 'fr' ? 
-                    "Consultez notre section 'Offres d'emploi' ci-dessus. Nous avons des postes en CDI, CDD et Intérim dans toute la France. N'oubliez pas de vous connecter pour postuler !" : 
-                    (currentLang === 'ar' ? 
-                        "تصفح قسم 'فرص العمل' أعلاه. لدينا وظائف دائمة ومؤقتة في جميع أنحاء فرنسا. لا تنس تسجيل الدخول للتقديم!" : 
-                        "Check our 'Job Offers' section above. We have permanent, temporary and interim positions across France. Don't forget to login to apply!");
-            }
-            
-            if (lowerMsg.includes('formation') || lowerMsg.includes('cours') || lowerMsg.includes('تدريب') || lowerMsg.includes('تكوين')) {
-                return currentLang === 'fr' ? 
-                    "Nos formations gratuites : plomberie, cuisine, informatique, français FLE, électricité. Inscrivez-vous dans l'onglet 'Formation' de l'espace d'inscription." : 
-                    (currentLang === 'ar' ? 
-                        "تدريباتنا المجانية: السباكة، الطبخ، الحاسوب، الفرنسية، الكهرباء. سجل في قسم 'التكوين' من فضاء التسجيل." : 
-                        "Our free training courses: plumbing, cooking, IT, French FLE, electricity. Register in the 'Training' tab of the registration hub.");
-            }
-            
-            if (lowerMsg.includes('juridique') || lowerMsg.includes('avocat') || lowerMsg.includes('droit') || lowerMsg.includes('قانون') || lowerMsg.includes('محامي')) {
-                return currentLang === 'fr' ? 
-                    "Contactez La Cimade (01 53 59 22 22) ou France Terre d'Asile pour une consultation juridique gratuite. Consultez aussi notre section 'Ressources'." : 
-                    (currentLang === 'ar' ? 
-                        "اتصل بـ La Cimade (01 53 59 22 22) أو France Terre d'Asile لاستشارة قانونية مجانية. راجع أيضاً قسم 'الموارد'." : 
-                        "Contact La Cimade (01 53 59 22 22) or France Terre d'Asile for free legal consultation. Also check our 'Resources' section.");
-            }
-            
-            if (lowerMsg.includes('bonjour') || lowerMsg.includes('salut') || lowerMsg.includes('hello') || lowerMsg.includes('مرحبا') || lowerMsg.includes('سلام')) {
-                return currentLang === 'fr' ? 
-                    "Bonjour ! Comment puis-je vous aider aujourd'hui ? Je peux vous guider vers des offres d'emploi, des formations ou des ressources juridiques." : 
-                    (currentLang === 'ar' ? 
-                        "مرحباً! كيف يمكنني مساعدتك اليوم؟ يمكنني إرشادك نحو فرص العمل أو التدريبات أو الموارد القانونية." : 
-                        "Hello! How can I help you today? I can guide you to job offers, training courses or legal resources.");
-            }
-            
-            return currentLang === 'fr' ? 
-                "Je suis là pour vous aider ! Posez-moi des questions sur les emplois, les formations, ou l'aide juridique en France. Vous pouvez aussi contacter notre équipe au 01 53 59 22 22." : 
-                (currentLang === 'ar' ? 
-                    "أنا هنا لمساعدتك! اسألني عن الوظائف أو التدريبات أو المساعدة القانونية في فرنسا. يمكنك أيضاً الاتصال بفريقنا على 01 53 59 22 22." : 
-                    "I'm here to help! Ask me about jobs, training, or legal aid in France. You can also contact our team at 01 53 59 22 22.");
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            StorageManager.set(CONFIG.STORAGE_KEYS.DARK_MODE, document.body.classList.contains('dark-mode'));
         }
 
         function escapeHtml(str) {
@@ -1943,93 +1257,42 @@
             return div.innerHTML;
         }
 
-        // ==================== DARK MODE ====================
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDark = document.body.classList.contains('dark-mode');
-            StorageManager.set(CONFIG.STORAGE_KEYS.DARK_MODE, isDark);
-            
-            const darkModeBtn = document.getElementById('dark-mode-btn');
-            if (darkModeBtn) {
-                const icon = darkModeBtn.querySelector('i');
-                if (icon) {
-                    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
-                    lucide.createIcons();
-                }
-            }
+        function switchLanguage(lang) {
+            currentLang = lang;
+            StorageManager.set(CONFIG.STORAGE_KEYS.LANGUAGE, lang);
+            ['fr', 'ar', 'en'].forEach(l => {
+                const btn = document.getElementById(`lang-${l}`);
+                if (btn) btn.className = l === lang ? 'px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm' : 'px-2.5 py-1.5 rounded-lg text-gray-500';
+            });
         }
 
-        // ==================== INITIALISATION ====================
+        // ==================== INITIALIZATION ====================
         window.addEventListener('DOMContentLoaded', () => {
-            // Restaurer le mode sombre
-            if (StorageManager.get(CONFIG.STORAGE_KEYS.DARK_MODE, false)) {
+            if (!StorageManager.get(CONFIG.STORAGE_KEYS.JOBS)) {
+                StorageManager.set(CONFIG.STORAGE_KEYS.JOBS, defaultJobs);
+            }
+            if (!StorageManager.get(CONFIG.STORAGE_KEYS.PRIVACY_POLICY)) {
+                StorageManager.set(CONFIG.STORAGE_KEYS.PRIVACY_POLICY, defaultPrivacyPolicy);
+            }
+            if (!StorageManager.get(CONFIG.STORAGE_KEYS.TERMS)) {
+                StorageManager.set(CONFIG.STORAGE_KEYS.TERMS, defaultTerms);
+            }
+            
+            currentUser = UserManager.getCurrentUser();
+            renderJobs();
+            updateAuthUI();
+            document.getElementById('counter-jobs').innerText = JobManager.getAll().filter(j => j.status === 'active').length;
+            document.getElementById('counter-partners').innerText = '15';
+            
+            if (StorageManager.get(CONFIG.STORAGE_KEYS.DARK_MODE)) {
                 document.body.classList.add('dark-mode');
             }
             
-            // Restaurer la langue
-            currentLang = StorageManager.get(CONFIG.STORAGE_KEYS.LANGUAGE, 'fr');
-            
-            // Restaurer l'utilisateur
-            currentUser = UserManager.getCurrentUser();
-            if (currentUser) {
-                resetSessionTimeout();
-            }
-            
-            // Initialiser les composants
-            renderJobs();
-            renderStories();
-            updateTranslations();
-            updateAuthUI();
-            switchLanguage(currentLang);
             lucide.createIcons();
             
-            // Configurer le drop zone
-            const dropZone = document.getElementById('drop-zone');
-            if (dropZone) {
-                dropZone.addEventListener('click', () => document.getElementById('resume-file')?.click());
-                dropZone.addEventListener('dragover', (e) => e.preventDefault());
-                dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    const file = e.dataTransfer.files[0];
-                    if (file) {
-                        const input = document.getElementById('resume-file');
-                        if (input) {
-                            const dt = new DataTransfer();
-                            dt.items.add(file);
-                            input.files = dt.files;
-                            handleFileSelect({ target: { files: [file] } });
-                        }
-                    }
-                });
-            }
-            
-            // Mettre à jour les compteurs
-            document.getElementById('counter-jobs').innerText = jobsData.length;
-            document.getElementById('counter-partners').innerText = '15';
-            
-            // Écouter les clics en dehors des modales
-            document.getElementById('auth-modal')?.addEventListener('click', function(e) {
-                if (e.target === this) closeAuthModal();
-            });
-            document.getElementById('custom-modal')?.addEventListener('click', function(e) {
-                if (e.target === this) closeModal();
-            });
-            
-            // Empêcher la soumission par défaut des formulaires
-            document.querySelectorAll('form').forEach(f => {
-                f.addEventListener('submit', e => e.preventDefault());
-            });
-            
-            // Réinitialiser le timeout de session sur interaction
-            ['click', 'keypress', 'scroll', 'mousemove'].forEach(event => {
-                document.addEventListener(event, () => {
-                    if (currentUser) resetSessionTimeout();
-                }, { passive: true });
-            });
-            
-            console.log(`✅ ${CONFIG.APP_NAME} initialisé avec succès`);
-            console.log(`🌍 Langue: ${currentLang}`);
-            console.log(`👤 Utilisateur: ${currentUser ? currentUser.name : 'Non connecté'}`);
+            console.log('✅ Plateforme initialisée');
+            console.log('👤 Admin: ' + CONFIG.ADMIN_EMAIL + ' / ' + CONFIG.ADMIN_PASSWORD);
+            console.log('📋 Compte admin auto-approuvé lors de l\'inscription');
         });
     </script>
 </body>
