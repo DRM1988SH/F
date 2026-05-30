@@ -6,9 +6,7 @@
     <title>Nouvelle Chance | Plateforme d'insertion professionnelle France</title>
     <meta name="description" content="Plateforme d'insertion professionnelle pour migrants en France. Offres d'emploi sécurisées, formations gratuites, accompagnement juridique RGPD.">
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <script>
@@ -37,21 +35,18 @@
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #FDFBF7; opacity: 0; transition: opacity 0.3s ease; font-family: 'Inter', sans-serif; }
+        body { background-color: #FDFBF7; opacity: 0; transition: opacity 0.3s ease; }
         body.loaded { opacity: 1; }
         html[lang="ar"] body { font-family: 'Cairo', sans-serif; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #FDFBF7; }
         ::-webkit-scrollbar-thumb { background: #1B4332; border-radius: 4px; }
         *:focus-visible { outline: 2px solid #1B4332; outline-offset: 2px; border-radius: 4px; }
-        @media (prefers-color-scheme: dark) {
-            body:not(.light-mode) { background-color: #121212; }
-            body:not(.light-mode) .bg-white { background-color: #1E1E1E; }
-            body:not(.light-mode) .text-gray-600 { color: #B0B0B0; }
-        }
         .error-shake { animation: shake 0.3s ease-in-out; }
         @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
-        .transition-all { transition: all 0.3s ease; }
+        .hidden { display: none; }
+        .auth-btn { transition: all 0.2s ease; }
+        .auth-btn:hover { transform: translateY(-2px); }
     </style>
 </head>
 <body class="text-brand-dark flex flex-col min-h-screen">
@@ -62,7 +57,7 @@
             <div class="text-center max-w-md">
                 <div class="text-6xl mb-4">⚠️</div>
                 <h2 class="text-2xl font-bold text-red-600 mb-3">JavaScript est désactivé</h2>
-                <p class="text-gray-700 mb-4">Veuillez activer JavaScript pour accéder à toutes les fonctionnalités.</p>
+                <p class="text-gray-700 mb-4">Veuillez activer JavaScript pour accéder à toutes les fonctionnalités de la plateforme.</p>
                 <div class="bg-gray-100 p-4 rounded-lg">
                     <p class="text-sm font-semibold">Contact : contact@nouvellechance.fr</p>
                 </div>
@@ -70,7 +65,20 @@
         </div>
     </noscript>
 
-    <!-- Modales -->
+    <!-- Modale d'inscription / connexion -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="auth-modal-title" class="text-xl font-bold text-brand-olive">Connexion / Inscription</h3>
+                <button onclick="closeAuthModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div id="auth-modal-body" class="space-y-4">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale standard -->
     <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
         <div class="bg-white rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl border-t-4 border-brand-olive transform scale-95 transition-transform duration-300">
             <div class="flex items-center gap-3 text-brand-olive mb-4">
@@ -114,15 +122,26 @@
             </nav>
 
             <div class="flex items-center gap-3">
+                <!-- Langues -->
                 <div class="bg-gray-100 p-1 rounded-xl flex items-center gap-1 text-xs font-bold">
                     <button onclick="switchLanguage('fr')" id="lang-fr" class="px-2.5 py-1.5 rounded-lg transition-all bg-brand-olive text-white shadow-sm">FR</button>
                     <button onclick="switchLanguage('ar')" id="lang-ar" class="px-2.5 py-1.5 rounded-lg transition-all text-gray-500 hover:text-brand-dark">AR</button>
                     <button onclick="switchLanguage('en')" id="lang-en" class="px-2.5 py-1.5 rounded-lg transition-all text-gray-500 hover:text-brand-dark">EN</button>
                 </div>
-                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition" aria-label="Dark mode">
+                
+                <!-- Dark mode -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
                     <i data-lucide="moon" class="w-5 h-5 text-gray-600"></i>
                 </button>
-                <a href="#resources-section" class="hidden sm:flex bg-brand-olive text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition items-center gap-2">
+                
+                <!-- Auth status / Connexion -->
+                <div id="auth-status-container" class="flex items-center gap-2">
+                    <div id="user-info" class="hidden text-sm text-brand-olive font-semibold"></div>
+                    <button onclick="openAuthModal()" id="login-btn" class="bg-brand-olive text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition" data-i18n="btn-login">Connexion</button>
+                    <button onclick="logout()" id="logout-btn" class="hidden bg-gray-200 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-gray-300 transition" data-i18n="btn-logout">Déconnexion</button>
+                </div>
+
+                <a href="#resources-section" class="hidden sm:flex bg-brand-accent text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-opacity-90 transition items-center gap-2">
                     <i data-lucide="help-circle" class="w-4 h-4"></i>
                     <span data-i18n="btn-help">Aide juridique</span>
                 </a>
@@ -243,17 +262,17 @@
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 mb-1" data-i18n="search-city">Ville / Département</label>
                     <select id="filter-city" onchange="filterJobs()" class="w-full px-4 py-2 bg-gray-50 border rounded-xl text-sm">
-                        <option value="" data-i18n="all-cities">Toute la France</option>
-                        <option value="Paris">Paris (75)</option>
-                        <option value="Marseille">Marseille (13)</option>
-                        <option value="Lyon">Lyon (69)</option>
-                        <option value="Lille">Lille (59)</option>
+                        <option value="">Toute la France</option>
+                        <option value="Paris">Paris</option>
+                        <option value="Marseille">Marseille</option>
+                        <option value="Lyon">Lyon</option>
+                        <option value="Lille">Lille</option>
                     </select>
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-500 mb-1" data-i18n="search-type">Type de contrat</label>
                     <select id="filter-type" onchange="filterJobs()" class="w-full px-4 py-2 bg-gray-50 border rounded-xl text-sm">
-                        <option value="" data-i18n="all-types">Tous types</option>
+                        <option value="">Tous types</option>
                         <option value="CDI">CDI</option>
                         <option value="CDD">CDD</option>
                         <option value="Intérim">Intérim</option>
@@ -276,7 +295,26 @@
             <div class="bg-brand-olive p-6 text-white text-center space-y-4">
                 <h3 class="text-2xl sm:text-3xl font-extrabold" data-i18n="hub-title">Espace d'inscription sécurisé</h3>
                 <p class="text-brand-sky text-sm max-w-2xl mx-auto" data-i18n="hub-subtitle">Choisissez votre parcours et inscrivez-vous en toute confidentialité</p>
-                <div class="flex flex-wrap items-center justify-center gap-2 pt-2">
+                
+                <!-- Auth status indicator -->
+                <div id="auth-status-indicator" class="hidden bg-white/20 rounded-xl p-2 text-sm">
+                    <span id="auth-status-text"></span>
+                </div>
+                
+                <!-- Social Login Buttons -->
+                <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+                    <button onclick="socialLogin('google')" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
+                        <i data-lucide="chrome" class="w-4 h-4"></i> Google
+                    </button>
+                    <button onclick="socialLogin('facebook')" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
+                        <i data-lucide="facebook" class="w-4 h-4"></i> Facebook
+                    </button>
+                    <button onclick="openEmailLogin()" class="auth-btn flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-sm font-semibold transition">
+                        <i data-lucide="mail" class="w-4 h-4"></i> <span data-i18n="auth-email">E-mail</span>
+                    </button>
+                </div>
+                
+                <div class="flex flex-wrap items-center justify-center gap-2 pt-2 border-t border-white/20 mt-4">
                     <button onclick="switchTab('seeker')" id="tab-seeker" class="px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2">
                         <i data-lucide="briefcase" class="w-4 h-4"></i> <span data-i18n="tab-seeker">Candidat</span>
                     </button>
@@ -298,7 +336,7 @@
                 <form id="seeker-form" onsubmit="return handleFormSubmit(event, 'seeker')" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom (ou pseudonyme) *</label><input type="text" id="seeker-name" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm"></div>
-                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-city">Ville en France *</label><select id="seeker-city" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm"><option value="">Sélectionnez</option><option value="Paris">Paris</option><option value="Lyon">Lyon</option><option value="Marseille">Marseille</option></select></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-city">Ville en France *</label><select id="seeker-city" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm"><option value="">Sélectionnez</option><option value="Paris">Paris</option><option value="Lyon">Lyon</option><option value="Marseille">Marseille</option><option value="Lille">Lille</option><option value="Bordeaux">Bordeaux</option></select></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone (WhatsApp) *</label><input type="tel" id="seeker-phone" required pattern="^[\d\s\+\-\(\)]{8,20}$" placeholder="+33 6 XX XX XX XX" class="w-full px-4 py-3 bg-gray-50 border rounded-xl text-sm"></div>
@@ -310,19 +348,19 @@
                 </form>
             </div>
 
-            <!-- Panel Formation (similaire avec traductions) -->
+            <!-- Panel Formation -->
             <div id="panel-learning" class="p-8 md:p-12 space-y-8 hidden">
                 <div><h4 class="text-xl font-bold text-brand-olive" data-i18n="learning-title">Demande de formation gratuite</h4><p class="text-xs text-gray-500" data-i18n="learning-subtitle">France Relance - Dispositif inclusion</p></div>
                 <form id="learning-form" onsubmit="return handleFormSubmit(event, 'learning')" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom *</label><input type="text" id="learning-name" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
-                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-course">Formation souhaitée *</label><select id="learning-course" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Sélectionnez</option><option value="Plomberie">Plomberie</option><option value="Cuisine">Cuisine</option><option value="Informatique">Informatique</option></select></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-course">Formation souhaitée *</label><select id="learning-course" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Sélectionnez</option><option value="Plomberie / Chauffage">Plomberie / Chauffage</option><option value="Cuisine professionnelle">Cuisine professionnelle</option><option value="Informatique / Web">Informatique / Web</option><option value="Français FLE">Français FLE</option><option value="Électricité">Électricité</option></select></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone *</label><input type="tel" id="learning-phone" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-goal">Objectif *</label><input type="text" id="learning-goal" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
                     </div>
-                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition"><span data-i18n="learning-btn">S'inscrire à la formation</span></button>
+                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2"><i data-lucide="book-open" class="w-5 h-5"></i><span data-i18n="learning-btn">S'inscrire à la formation</span></button>
                 </form>
             </div>
 
@@ -332,13 +370,13 @@
                 <form id="volunteer-form" onsubmit="return handleFormSubmit(event, 'volunteer')" class="space-y-6">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-name">Nom *</label><input type="text" id="volunteer-name" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
-                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-role">Domaine *</label><select id="volunteer-role" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Choisissez</option><option value="Juridique">Soutien juridique</option><option value="Français">Cours de français</option></select></div>
+                        <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-role">Domaine *</label><select id="volunteer-role" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"><option value="">Choisissez</option><option value="Juridique">Soutien juridique (droit des étrangers)</option><option value="Français">Cours de français (FLE)</option><option value="Accompagnement social">Accompagnement social</option><option value="Médical">Soins / Médical</option><option value="Administratif">Aide administrative</option></select></div>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-phone">Téléphone *</label><input type="tel" id="volunteer-phone" required class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
                         <div><label class="block text-sm font-semibold text-gray-700 mb-1.5" data-i18n="label-hours">Disponibilité (h/semaine) *</label><input type="number" id="volunteer-hours" required min="1" max="40" class="w-full px-4 py-3 bg-gray-50 border rounded-xl"></div>
                     </div>
-                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition"><span data-i18n="volunteer-btn">Devenir bénévole</span></button>
+                    <button type="submit" class="w-full bg-brand-olive hover:bg-opacity-95 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition flex items-center justify-center gap-2"><i data-lucide="heart" class="w-5 h-5"></i><span data-i18n="volunteer-btn">Devenir bénévole</span></button>
                 </form>
             </div>
         </div>
@@ -352,9 +390,9 @@
                 <p class="text-gray-500 mt-2 text-sm" data-i18n="resources-subtitle">Associations, OFII, France Travail, et cours gratuits</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="graduation-cap" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-training">Formations</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.francetravail.fr" target="_blank" class="text-indigo-600">France Travail →</a></li><li><a href="https://www.ofii.fr" target="_blank" class="text-indigo-600">OFII (Cours de français) →</a></li></ul></div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="scale" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-legal">Associations & Droit</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.lacimade.fr" target="_blank" class="text-emerald-600">La Cimade →</a></li><li><a href="https://www.france-terre-asile.org" target="_blank" class="text-emerald-600">France Terre d'Asile →</a></li></ul></div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="heart" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-social">Aide sociale</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.restosducoeur.org" target="_blank" class="text-amber-600">Restos du Cœur →</a></li><li><a href="https://www.secours-catholique.org" target="_blank" class="text-amber-600">Secours Catholique →</a></li></ul></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="graduation-cap" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-training">Formations</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.francetravail.fr" target="_blank" class="text-indigo-600">France Travail →</a></li><li><a href="https://www.ofii.fr" target="_blank" class="text-indigo-600">OFII (Cours de français) →</a></li><li><a href="https://www.lefrancaisenligne.fr" target="_blank" class="text-indigo-600">Français en ligne →</a></li></ul></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="scale" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-legal">Associations & Droit</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.lacimade.fr" target="_blank" class="text-emerald-600">La Cimade →</a></li><li><a href="https://www.france-terre-asile.org" target="_blank" class="text-emerald-600">France Terre d'Asile →</a></li><li><a href="https://www.anafe.org" target="_blank" class="text-emerald-600">ANAFÉ →</a></li></ul></div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="text-lg font-bold text-brand-olive mb-4"><i data-lucide="heart" class="inline w-5 h-5 mr-2"></i> <span data-i18n="res-social">Aide sociale</span></h4><ul class="space-y-3 text-sm"><li><a href="https://www.restosducoeur.org" target="_blank" class="text-amber-600">Restos du Cœur →</a></li><li><a href="https://www.secours-catholique.org" target="_blank" class="text-amber-600">Secours Catholique →</a></li><li><a href="https://www.samusalternance.org" target="_blank" class="text-amber-600">Samu Alternance →</a></li></ul></div>
             </div>
         </div>
     </section>
@@ -372,10 +410,10 @@
     <div id="chat-widget-container" class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
         <div id="chat-window" class="hidden w-[380px] h-[550px] bg-white rounded-2xl shadow-2xl border flex flex-col overflow-hidden mb-4">
             <div class="bg-brand-olive text-white p-4 flex justify-between items-center"><div class="flex items-center gap-2"><i data-lucide="bot" class="w-6 h-6"></i><span class="font-bold" data-i18n="chat-title">Assistant France Insertion</span></div><button onclick="toggleChat()" class="text-white">✕</button></div>
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50"><div class="flex items-start gap-2"><div class="bg-brand-olive text-white p-2 rounded-xl max-w-[80%]" data-i18n="chat-welcome">Bonjour ! Je vous guide vers l'emploi, les formations et l'aide juridique en France.</div></div></div>
-            <div class="p-3 border-t flex gap-2"><input type="text" id="chat-input" onkeypress="handleChatKeyPress(event)" placeholder="Posez votre question..." class="flex-1 px-3 py-2 border rounded-xl text-sm"><button onclick="sendMessage()" class="bg-brand-olive text-white px-4 py-2 rounded-xl" data-i18n="chat-send">Envoyer</button></div>
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50"><div class="flex items-start gap-2"><div class="bg-brand-olive text-white p-2 rounded-xl max-w-[80%]" data-i18n="chat-welcome">Bonjour ! Je vous guide vers l'emploi, les formations et l'aide juridique en France. Conformité RGPD garantie.</div></div></div>
+            <div class="p-3 border-t flex gap-2"><input type="text" id="chat-input" onkeypress="handleChatKeyPress(event)" placeholder="Posez votre question..." class="flex-1 px-3 py-2 border rounded-xl text-sm"><button onclick="sendMessage()" class="bg-brand-olive text-white px-4 py-2 rounded-xl"><i data-lucide="send" class="w-4 h-4"></i></button></div>
         </div>
-        <button onclick="toggleChat()" class="bg-brand-olive text-white p-4 rounded-full shadow-2xl transition hover:scale-105"><i data-lucide="bot" class="w-6 h-6"></i></button>
+        <button onclick="toggleChat()" class="bg-brand-olive hover:bg-opacity-90 text-white p-4 rounded-full shadow-2xl transition hover:scale-105"><i data-lucide="bot" class="w-6 h-6"></i></button>
     </div>
 
     <!-- Footer -->
@@ -383,9 +421,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div><h4 class="text-lg font-bold mb-3" data-i18n="footer-title">Nouvelle Chance</h4><p class="text-sm text-gray-300" data-i18n="footer-desc">Plateforme solidaire conforme au droit français (RGPD, Code du travail).</p></div>
-                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-links">Liens utiles</h5><ul class="space-y-2 text-sm"><li><a href="#jobs-section" class="hover:text-white" data-i18n="nav-jobs">Offres d'emploi</a></li><li><a href="#register-hub" class="hover:text-white" data-i18n="nav-register">Inscription</a></li></ul></div>
-                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-partners">Partenaires</h5><ul class="space-y-2 text-xs text-gray-300"><li>La Cimade</li><li>France Terre d'Asile</li></ul></div>
-                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-contact">Contact</h5><p class="text-sm text-gray-300">📞 01 53 59 22 22</p><p class="text-sm text-gray-300">✉ contact@nouvellechance.fr</p></div>
+                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-links">Liens utiles</h5><ul class="space-y-2 text-sm"><li><a href="#jobs-section" class="hover:text-white" data-i18n="nav-jobs">Offres d'emploi</a></li><li><a href="#register-hub" class="hover:text-white" data-i18n="nav-register">Inscription</a></li><li><a href="#resources-section" class="hover:text-white" data-i18n="nav-resources">Ressources</a></li></ul></div>
+                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-partners">Partenaires</h5><ul class="space-y-2 text-xs text-gray-300"><li>La Cimade</li><li>France Terre d'Asile</li><li>France Travail</li></ul></div>
+                <div><h5 class="font-bold text-brand-sky mb-3" data-i18n="footer-contact">Contact</h5><p class="text-sm text-gray-300">📞 01 53 59 22 22</p><p class="text-sm text-gray-300">✉ contact@nouvellechance.fr</p><p class="text-xs text-gray-400 mt-2">75 rue de Lourmel, 75015 Paris</p></div>
             </div>
             <div class="border-t border-white border-opacity-10 pt-6 text-center text-xs text-gray-400">
                 <p data-i18n="footer-copyright">© 2026 Nouvelle Chance - Tous droits réservés - Conformité RGPD (UE 2016/679)</p>
@@ -399,7 +437,7 @@
         const translations = {
             fr: {
                 "logo-title": "Nouvelle Chance", "logo-subtitle": "Dignité & Travail en France",
-                "nav-jobs": "Offres d'emploi", "nav-register": "Inscription", "nav-resources": "Ressources", "nav-stories": "Témoignages", "btn-help": "Aide juridique",
+                "nav-jobs": "Offres d'emploi", "nav-register": "Inscription", "nav-resources": "Ressources", "nav-stories": "Témoignages", "btn-help": "Aide juridique", "btn-login": "Connexion", "btn-logout": "Déconnexion", "auth-email": "E-mail",
                 "hero-badge": "🔒 Conformité RGPD - Données confidentielles",
                 "hero-title": "La dignité humaine commence par un emploi juste et stable en France",
                 "hero-desc": "Nous croyons que les compétences n'ont pas besoin de papiers complexes. Nous vous connectons directement avec des employeurs solidaires.",
@@ -413,48 +451,48 @@
                 "jobs-title": "Offres d'emploi en France", "jobs-subtitle": "Entreprises solidaires engagées", "jobs-update": "Mise à jour quotidienne",
                 "search-skill": "Rechercher par compétence", "search-city": "Ville", "search-type": "Type de contrat", "all-cities": "Toute la France", "all-types": "Tous types",
                 "no-jobs-title": "Aucune offre trouvée", "no-jobs-desc": "Modifiez vos critères de recherche",
-                "hub-title": "Espace d'inscription sécurisé", "hub-subtitle": "Choisissez votre parcours", "tab-seeker": "Candidat", "tab-learning": "Formation", "tab-volunteer": "Bénévolat",
+                "hub-title": "Espace d'inscription sécurisé", "hub-subtitle": "Choisissez votre parcours et inscrivez-vous", "tab-seeker": "Candidat", "tab-learning": "Formation", "tab-volunteer": "Bénévolat",
                 "seeker-title": "Candidature spontanée", "seeker-subtitle": "Vos données sont protégées par le RGPD",
                 "label-name": "Nom (ou pseudonyme) *", "label-city": "Ville en France *", "label-phone": "Téléphone (WhatsApp) *", "label-skills": "Compétences *", "label-cv": "CV (optionnel)", "cv-drag": "Déposez votre CV ou cliquez", "agree-label": "J'accepte la protection de mes données (RGPD)", "btn-submit": "Envoyer ma candidature",
                 "learning-title": "Demande de formation gratuite", "learning-subtitle": "France Relance", "label-course": "Formation souhaitée *", "label-goal": "Objectif *", "learning-btn": "S'inscrire à la formation",
                 "volunteer-title": "Devenir bénévole", "volunteer-subtitle": "Engagement citoyen", "label-role": "Domaine *", "label-hours": "Disponibilité (h/semaine) *", "volunteer-btn": "Devenir bénévole",
                 "resources-title": "Ressources pour l'insertion", "resources-subtitle": "Associations, OFII, France Travail", "res-training": "Formations", "res-legal": "Associations & Droit", "res-social": "Aide sociale",
                 "stories-title": "Ils ont réussi en France", "stories-subtitle": "Des parcours exemplaires",
-                "chat-title": "Assistant France Insertion", "chat-welcome": "Bonjour ! Je vous guide vers l'emploi et les formations.", "chat-send": "Envoyer",
-                "footer-title": "Nouvelle Chance", "footer-desc": "Plateforme solidaire conforme au droit français", "footer-links": "Liens utiles", "footer-partners": "Partenaires", "footer-contact": "Contact", "footer-copyright": "© 2026 Nouvelle Chance - RGPD (UE 2016/679)", "footer-privacy": "Confidentialité", "footer-terms": "Conditions"
+                "chat-title": "Assistant France Insertion", "chat-welcome": "Bonjour ! Je vous guide vers l'emploi, les formations et l'aide juridique.", "chat-send": "Envoyer",
+                "footer-title": "Nouvelle Chance", "footer-desc": "Plateforme solidaire conforme au droit français", "footer-links": "Liens utiles", "footer-partners": "Partenaires", "footer-contact": "Contact", "footer-copyright": "© 2026 Nouvelle Chance - RGPD", "footer-privacy": "Confidentialité", "footer-terms": "Conditions"
             },
             ar: {
                 "logo-title": "فرصة جديدة", "logo-subtitle": "الكرامة والعمل في فرنسا",
-                "nav-jobs": "فرص العمل", "nav-register": "التسجيل", "nav-resources": "الموارد", "nav-stories": "قصص نجاح", "btn-help": "مساعدة قانونية",
+                "nav-jobs": "فرص العمل", "nav-register": "التسجيل", "nav-resources": "الموارد", "nav-stories": "قصص نجاح", "btn-help": "مساعدة قانونية", "btn-login": "تسجيل الدخول", "btn-logout": "تسجيل خروج", "auth-email": "البريد الإلكتروني",
                 "hero-badge": "🔒 الامتثال للقانون الأوروبي - بيانات سرية",
                 "hero-title": "الكرامة الإنسانية تبدأ بفرصة عمل عادلة ومستقرة في فرنسا",
-                "hero-desc": "نؤمن بأن المهارات لا تحتاج أوراقاً معقدة. نربطك مباشرة بأصحاب عمل متضامنين في فرنسا.",
+                "hero-desc": "نؤمن بأن المهارات لا تحتاج أوراقاً معقدة. نربطك مباشرة بأصحاب عمل متضامنين.",
                 "hero-btn-browse": "تصفح الوظائف", "hero-btn-register": "سجل الآن",
                 "stats-title": "مهمتنا", "stats-desc": "محاربة بطالة المهاجرين في فرنسا", "stats-jobs": "فرص نشطة", "stats-security": "سري", "stats-partners": "شركاء",
                 "gdpr-title": "حماية البيانات (RGPD):", "gdpr-desc": "لا يتم مشاركة أي بيانات مع السلطات. امتثال كامل.",
-                "services-title": "خدماتنا للإدماج في فرنسا", "services-subtitle": "دعم شامل ومجاني دون تمييز",
+                "services-title": "خدماتنا للإدماج", "services-subtitle": "دعم شامل ومجاني دون تمييز",
                 "card1-title": "تكوينات مهنية", "card1-desc": "دورات مجانية في الفرنسية والحاسوب والبناء.", "card1-link": "اكتشف ←",
                 "card2-title": "استشارات قانونية", "card2-desc": "مساعدة في التسوية والحصول على الإقامة.", "card2-link": "اعرف أكثر ←",
                 "card3-title": "شهادات ملهمة", "card3-desc": "قصص نجاح لأشخاص اندمجوا مهنياً.", "card3-link": "اقرأ ←",
                 "jobs-title": "فرص العمل في فرنسا", "jobs-subtitle": "شركات متضامنة ملتزمة", "jobs-update": "تحديث يومي",
                 "search-skill": "ابحث عن مهارة", "search-city": "المدينة", "search-type": "نوع العقد", "all-cities": "كل فرنسا", "all-types": "جميع الأنواع",
                 "no-jobs-title": "لا توجد عروض", "no-jobs-desc": "عدّل معايير البحث",
-                "hub-title": "فضاء التسجيل الآمن", "hub-subtitle": "اختر مسارك", "tab-seeker": "باحث عن عمل", "tab-learning": "تكوين", "tab-volunteer": "تطوع",
+                "hub-title": "فضاء التسجيل الآمن", "hub-subtitle": "اختر مسارك وسجل", "tab-seeker": "باحث عن عمل", "tab-learning": "تكوين", "tab-volunteer": "تطوع",
                 "seeker-title": "ترشيح تلقائي", "seeker-subtitle": "بياناتك محمية بموجب القانون الأوروبي",
                 "label-name": "الاسم *", "label-city": "المدينة في فرنسا *", "label-phone": "رقم الهاتف *", "label-skills": "المهارات *", "label-cv": "السيرة الذاتية", "cv-drag": "اسحب ملفك أو انقر", "agree-label": "أوافق على حماية بياناتي (RGPD)", "btn-submit": "إرسال ترشيحي",
                 "learning-title": "طلب تكوين مجاني", "learning-subtitle": "فرنسا تراكت", "label-course": "التكوين المطلوب *", "label-goal": "الهدف *", "learning-btn": "التسجيل في التكوين",
                 "volunteer-title": "تطوع", "volunteer-subtitle": "التزام مواطن", "label-role": "المجال *", "label-hours": "الساعات/أسبوعياً *", "volunteer-btn": "أصبح متطوعاً",
                 "resources-title": "موارد الإدماج", "resources-subtitle": "جمعيات، OFII، فرنسا العمل", "res-training": "تكوينات", "res-legal": "جمعيات وقانون", "res-social": "مساعدة اجتماعية",
                 "stories-title": "لقد نجحوا في فرنسا", "stories-subtitle": "مسارات نموذجية",
-                "chat-title": "المساعد الذكي", "chat-welcome": "مرحباً! أساعدك في البحث عن عمل وتكوينات.", "chat-send": "إرسال",
+                "chat-title": "المساعد الذكي", "chat-welcome": "مرحباً! أساعدك في البحث عن عمل وتكوينات واستشارات قانونية.", "chat-send": "إرسال",
                 "footer-title": "فرصة جديدة", "footer-desc": "منصة تضامنية متوافقة مع القانون الفرنسي", "footer-links": "روابط مفيدة", "footer-partners": "شركاؤنا", "footer-contact": "اتصل بنا", "footer-copyright": "© 2026 فرصة جديدة - RGPD", "footer-privacy": "سياسة الخصوصية", "footer-terms": "شروط الاستخدام"
             },
             en: {
                 "logo-title": "New Chance", "logo-subtitle": "Dignity & Work in France",
-                "nav-jobs": "Job Offers", "nav-register": "Register", "nav-resources": "Resources", "nav-stories": "Success Stories", "btn-help": "Legal Aid",
+                "nav-jobs": "Job Offers", "nav-register": "Register", "nav-resources": "Resources", "nav-stories": "Success Stories", "btn-help": "Legal Aid", "btn-login": "Login", "btn-logout": "Logout", "auth-email": "Email",
                 "hero-badge": "🔒 GDPR Compliant - Confidential Data",
                 "hero-title": "Human dignity begins with a fair and stable job in France",
-                "hero-desc": "We believe skills don't need complex papers. We connect you directly with supportive employers in France.",
+                "hero-desc": "We believe skills don't need complex papers. We connect you directly with supportive employers.",
                 "hero-btn-browse": "Browse Jobs", "hero-btn-register": "Register Now",
                 "stats-title": "Our Mission", "stats-desc": "Fighting migrant unemployment in France", "stats-jobs": "Active Jobs", "stats-security": "Confidential", "stats-partners": "Partners",
                 "gdpr-title": "GDPR Compliance:", "gdpr-desc": "No data shared with authorities. Full compliance.",
@@ -465,36 +503,140 @@
                 "jobs-title": "Job Offers in France", "jobs-subtitle": "Committed supportive companies", "jobs-update": "Daily update",
                 "search-skill": "Search by skill", "search-city": "City", "search-type": "Contract type", "all-cities": "All France", "all-types": "All types",
                 "no-jobs-title": "No offers found", "no-jobs-desc": "Modify your search criteria",
-                "hub-title": "Secure Registration Hub", "hub-subtitle": "Choose your path", "tab-seeker": "Job Seeker", "tab-learning": "Training", "tab-volunteer": "Volunteer",
+                "hub-title": "Secure Registration Hub", "hub-subtitle": "Choose your path and register", "tab-seeker": "Job Seeker", "tab-learning": "Training", "tab-volunteer": "Volunteer",
                 "seeker-title": "Job Application", "seeker-subtitle": "Your data is GDPR protected",
                 "label-name": "Name *", "label-city": "City in France *", "label-phone": "Phone number *", "label-skills": "Skills *", "label-cv": "CV (optional)", "cv-drag": "Drop your CV or click", "agree-label": "I agree to GDPR data protection", "btn-submit": "Submit my application",
                 "learning-title": "Free Training Request", "learning-subtitle": "France Relance", "label-course": "Desired training *", "label-goal": "Goal *", "learning-btn": "Register for training",
                 "volunteer-title": "Become a volunteer", "volunteer-subtitle": "Citizen commitment", "label-role": "Area *", "label-hours": "Hours/week *", "volunteer-btn": "Become a volunteer",
                 "resources-title": "Integration Resources", "resources-subtitle": "Associations, OFII, France Travail", "res-training": "Training", "res-legal": "Associations & Law", "res-social": "Social support",
                 "stories-title": "They succeeded in France", "stories-subtitle": "Exemplary journeys",
-                "chat-title": "Smart Assistant", "chat-welcome": "Hello! I guide you to jobs and training.", "chat-send": "Send",
+                "chat-title": "Smart Assistant", "chat-welcome": "Hello! I guide you to jobs, training, and legal aid.", "chat-send": "Send",
                 "footer-title": "New Chance", "footer-desc": "Solidarity platform compliant with French law", "footer-links": "Useful links", "footer-partners": "Partners", "footer-contact": "Contact", "footer-copyright": "© 2026 New Chance - GDPR", "footer-privacy": "Privacy Policy", "footer-terms": "Terms of Use"
             }
         };
 
-        // Données
+        // ==================== DONNÉES ====================
         const jobsData = [
-            { id: 1, title: "Plombier / Chauffagiste", company: "Urban Énergie", city: "Paris", type: "CDI", salary: "2100€/mois", skills: "plomberie chauffage", description: "Recherche plombier expérimenté. Titre de séjour accompagné." },
-            { id: 2, title: "Aide-cuisinier", company: "Restaurant Solidaire", city: "Lyon", type: "CDD", salary: "11.88€/heure", skills: "cuisine restauration", description: "Poste en contrat d'insertion." },
-            { id: 3, title: "Agent d'entretien", company: "Clean Service", city: "Marseille", type: "Intérim", salary: "11.65€/heure", skills: "ménage nettoyage", description: "20h/semaine." }
+            { id: 1, titleFr: "Plombier / Chauffagiste", titleAr: "سباك / تدفئة", titleEn: "Plumber / Heating", company: "Urban Énergie", city: "Paris", type: "CDI", salary: "2100€/mois", skills: "plomberie chauffage", descriptionFr: "Recherche plombier expérimenté. Titre de séjour accompagné.", descriptionAr: "نبحث عن سباك ذو خبرة. مساعدة في الحصول على الإقامة.", descriptionEn: "Experienced plumber needed. Residence permit assistance." },
+            { id: 2, titleFr: "Aide-cuisinier", titleAr: "مساعد طباخ", titleEn: "Kitchen Assistant", company: "Restaurant Solidaire", city: "Lyon", type: "CDD", salary: "11.88€/heure", skills: "cuisine restauration", descriptionFr: "Poste en contrat d'insertion.", descriptionAr: "عقد إدماج مهني.", descriptionEn: "Integration contract position." },
+            { id: 3, titleFr: "Agent d'entretien", titleAr: "عامل نظافة", titleEn: "Cleaner", company: "Clean Service", city: "Marseille", type: "Intérim", salary: "11.65€/heure", skills: "ménage nettoyage", descriptionFr: "20h/semaine, horaires flexibles.", descriptionAr: "20 ساعة/أسبوع، ساعات مرنة.", descriptionEn: "20h/week, flexible hours." }
         ];
 
         const storiesData = [
-            { name: "Ibrahim", role: "Plombier certifié", desc: "Arrivé sans papiers, j'ai obtenu un CDI à Paris.", meta: "Paris | 2 ans" },
-            { name: "Fatima", role: "Cheffe de projet", desc: "J'ai régularisé ma situation et travaille dans une association.", meta: "Lyon | 18 mois" }
+            { nameFr: "Ibrahim", nameAr: "إبراهيم", nameEn: "Ibrahim", roleFr: "Plombier certifié", roleAr: "سباك معتمد", roleEn: "Certified plumber", descFr: "Arrivé sans papiers, j'ai obtenu un CDI à Paris.", descAr: "وصلت بدون أوراق، حصلت على عقد دائم في باريس.", descEn: "Arrived without papers, got a permanent contract in Paris.", meta: "Paris | 2 ans" },
+            { nameFr: "Fatima", nameAr: "فاطمة", nameEn: "Fatima", roleFr: "Cheffe de projet", roleAr: "مديرة مشروع", roleEn: "Project Manager", descFr: "J'ai régularisé ma situation et travaille dans une association.", descAr: "سويت وضعي وأعمل في جمعية.", descEn: "Regularized my status and work at an NGO.", meta: "Lyon | 18 mois" }
         ];
 
+        // ==================== VARIABLES GLOBALES ====================
         let currentLang = 'fr';
         let activeTab = 'seeker';
+        let currentUser = null;
         let pendingConfirmCallback = null;
         let debounceTimer;
+        let usersDatabase = JSON.parse(localStorage.getItem('users')) || [];
 
-        // Fonction de traduction
+        // ==================== FONCTIONS D'AUTHENTIFICATION ====================
+        function saveUser(user) {
+            const existingIndex = usersDatabase.findIndex(u => u.email === user.email);
+            if (existingIndex >= 0) {
+                usersDatabase[existingIndex] = user;
+            } else {
+                usersDatabase.push(user);
+            }
+            localStorage.setItem('users', JSON.stringify(usersDatabase));
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            currentUser = user;
+            updateAuthUI();
+        }
+
+        function socialLogin(provider) {
+            const email = `${provider}_user_${Date.now()}@example.com`;
+            const name = `${provider.charAt(0).toUpperCase() + provider.slice(1)} User`;
+            const user = { email, name, provider, createdAt: new Date().toISOString() };
+            saveUser(user);
+            showModal("✅ Connexion réussie", `Bienvenue ${name}! Vous êtes maintenant connecté(e) avec ${provider}.`);
+            closeAuthModal();
+        }
+
+        function openEmailLogin() {
+            document.getElementById('auth-modal-title').innerHTML = currentLang === 'fr' ? "Connexion par e-mail" : (currentLang === 'ar' ? "تسجيل الدخول بالبريد" : "Email Login");
+            document.getElementById('auth-modal-body').innerHTML = `
+                <div class="space-y-4">
+                    <div><label class="block text-sm font-semibold mb-1">Email</label><input type="email" id="login-email" class="w-full px-4 py-2 border rounded-xl" placeholder="exemple@email.com"></div>
+                    <div><label class="block text-sm font-semibold mb-1">Nom</label><input type="text" id="login-name" class="w-full px-4 py-2 border rounded-xl" placeholder="Votre nom"></div>
+                    <button onclick="emailLogin()" class="w-full bg-brand-olive text-white py-2 rounded-xl">${currentLang === 'fr' ? 'Se connecter' : (currentLang === 'ar' ? 'تسجيل الدخول' : 'Login')}</button>
+                </div>
+            `;
+            document.getElementById('auth-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('auth-modal').classList.add('opacity-100'), 10);
+        }
+
+        function emailLogin() {
+            const email = document.getElementById('login-email')?.value;
+            const name = document.getElementById('login-name')?.value;
+            if (!email || !name) {
+                alert(currentLang === 'fr' ? "Veuillez remplir tous les champs" : (currentLang === 'ar' ? "يرجى ملء جميع الحقول" : "Please fill all fields"));
+                return;
+            }
+            const user = { email, name, provider: 'email', createdAt: new Date().toISOString() };
+            saveUser(user);
+            showModal("✅ Connexion réussie", `Bienvenue ${name}! Votre compte a été créé.`);
+            closeAuthModal();
+        }
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            currentUser = null;
+            updateAuthUI();
+            showModal("Déconnexion", "Vous avez été déconnecté(e) avec succès.");
+        }
+
+        function updateAuthUI() {
+            const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
+            const userInfo = document.getElementById('user-info');
+            const authIndicator = document.getElementById('auth-status-indicator');
+            const authStatusText = document.getElementById('auth-status-text');
+            
+            if (currentUser) {
+                loginBtn.classList.add('hidden');
+                logoutBtn.classList.remove('hidden');
+                userInfo.classList.remove('hidden');
+                userInfo.innerHTML = `<i data-lucide="user" class="w-4 h-4 inline"></i> ${currentUser.name}`;
+                if (authIndicator) {
+                    authIndicator.classList.remove('hidden');
+                    authStatusText.innerHTML = currentLang === 'fr' ? `✅ Connecté(e) en tant que ${currentUser.name}` : (currentLang === 'ar' ? `✅ مسجل كـ ${currentUser.name}` : `✅ Logged in as ${currentUser.name}`);
+                }
+            } else {
+                loginBtn.classList.remove('hidden');
+                logoutBtn.classList.add('hidden');
+                userInfo.classList.add('hidden');
+                if (authIndicator) authIndicator.classList.add('hidden');
+            }
+            lucide.createIcons();
+        }
+
+        function openAuthModal() {
+            document.getElementById('auth-modal-title').innerHTML = currentLang === 'fr' ? "Connexion / Inscription" : (currentLang === 'ar' ? "تسجيل الدخول / إنشاء حساب" : "Login / Register");
+            document.getElementById('auth-modal-body').innerHTML = `
+                <div class="space-y-3">
+                    <button onclick="socialLogin('google')" class="w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-xl hover:bg-gray-50 transition"><i data-lucide="chrome" class="w-5 h-5"></i> Google</button>
+                    <button onclick="socialLogin('facebook')" class="w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-xl hover:bg-gray-50 transition"><i data-lucide="facebook" class="w-5 h-5"></i> Facebook</button>
+                    <button onclick="openEmailLogin()" class="w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-xl hover:bg-gray-50 transition"><i data-lucide="mail" class="w-5 h-5"></i> ${currentLang === 'fr' ? 'E-mail' : (currentLang === 'ar' ? 'البريد الإلكتروني' : 'Email')}</button>
+                </div>
+            `;
+            document.getElementById('auth-modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('auth-modal').classList.add('opacity-100'), 10);
+            lucide.createIcons();
+        }
+
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal');
+            modal.classList.remove('opacity-100');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        // ==================== FONCTIONS DE TRADUCTION ====================
         function updateTranslations() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -508,6 +650,10 @@
                     }
                 }
             });
+            updateAuthUI();
+            renderJobs();
+            renderStories();
+            lucide.createIcons();
         }
 
         function switchLanguage(lang) {
@@ -515,21 +661,24 @@
             document.documentElement.setAttribute('lang', lang);
             document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
             
-            document.getElementById('lang-fr').className = lang === 'fr' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
-            document.getElementById('lang-ar').className = lang === 'ar' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
-            document.getElementById('lang-en').className = lang === 'en' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
+            const btnFr = document.getElementById('lang-fr');
+            const btnAr = document.getElementById('lang-ar');
+            const btnEn = document.getElementById('lang-en');
+            btnFr.className = lang === 'fr' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
+            btnAr.className = lang === 'ar' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
+            btnEn.className = lang === 'en' ? "px-2.5 py-1.5 rounded-lg bg-brand-olive text-white shadow-sm" : "px-2.5 py-1.5 rounded-lg text-gray-500";
             
             updateTranslations();
-            renderJobs();
-            renderStories();
-            lucide.createIcons();
         }
 
+        // ==================== AFFICHAGE DES DONNÉES ====================
         function renderJobs() {
             const container = document.getElementById('jobs-container');
             container.innerHTML = '';
             jobsData.forEach(job => {
-                container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md"><h4 class="text-lg font-bold text-brand-olive">${job.title}</h4><p class="text-xs text-gray-400">${job.company} - ${job.city}</p><p class="text-sm text-gray-500 my-2">${job.description}</p><div class="flex justify-between items-center pt-3 border-t"><span class="text-sm font-bold text-brand-accent">💰 ${job.salary}</span><button onclick="applyForJob(${job.id})" class="bg-brand-olive text-white px-4 py-1.5 rounded-lg">${translations[currentLang]['btn-submit'] || 'Postuler'}</button></div></div>`;
+                const title = job[`title${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || job.titleFr;
+                const description = job[`description${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || job.descriptionFr;
+                container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border hover:shadow-md"><h4 class="text-lg font-bold text-brand-olive">${title}</h4><p class="text-xs text-gray-400">${job.company} - ${job.city}</p><p class="text-sm text-gray-500 my-2">${description}</p><div class="flex justify-between items-center pt-3 border-t"><span class="text-sm font-bold text-brand-accent">💰 ${job.salary}</span><button onclick="applyForJob(${job.id})" class="bg-brand-olive text-white px-4 py-1.5 rounded-lg">${translations[currentLang]['btn-submit'] || 'Postuler'}</button></div></div>`;
             });
             document.getElementById('counter-jobs').innerText = jobsData.length;
             lucide.createIcons();
@@ -539,7 +688,10 @@
             const container = document.getElementById('stories-container');
             container.innerHTML = '';
             storiesData.forEach(s => {
-                container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border"><div class="flex items-center gap-3 mb-3"><div class="w-10 h-10 bg-brand-sky text-brand-olive rounded-full flex items-center justify-center font-bold">${s.name.charAt(0)}</div><div><h4 class="font-bold">${s.name}</h4><p class="text-xs text-emerald-600">${s.role}</p></div></div><p class="text-sm text-gray-500">${s.desc}</p><p class="text-xs text-gray-400 mt-3 pt-2 border-t">${s.meta}</p></div>`;
+                const name = s[`name${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || s.nameFr;
+                const role = s[`role${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || s.roleFr;
+                const desc = s[`desc${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || s.descFr;
+                container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border"><div class="flex items-center gap-3 mb-3"><div class="w-10 h-10 bg-brand-sky text-brand-olive rounded-full flex items-center justify-center font-bold">${name.charAt(0)}</div><div><h4 class="font-bold">${name}</h4><p class="text-xs text-emerald-600">${role}</p></div></div><p class="text-sm text-gray-500">${desc}</p><p class="text-xs text-gray-400 mt-3 pt-2 border-t">${s.meta}</p></div>`;
             });
             lucide.createIcons();
         }
@@ -553,57 +705,199 @@
             if(filtered.length === 0) { document.getElementById('no-jobs-message').classList.remove('hidden'); container.innerHTML = ''; return; }
             document.getElementById('no-jobs-message').classList.add('hidden');
             container.innerHTML = '';
-            filtered.forEach(job => { container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="font-bold">${job.title}</h4><p>${job.city}</p><button onclick="applyForJob(${job.id})" class="mt-2 bg-brand-olive text-white px-3 py-1 rounded">${translations[currentLang]['btn-submit'] || 'Postuler'}</button></div>`; });
+            filtered.forEach(job => {
+                const title = job[`title${currentLang.charAt(0).toUpperCase() + currentLang.slice(1)}`] || job.titleFr;
+                container.innerHTML += `<div class="bg-white p-6 rounded-2xl shadow-sm border"><h4 class="font-bold">${title}</h4><p>${job.city}</p><button onclick="applyForJob(${job.id})" class="mt-2 bg-brand-olive text-white px-3 py-1 rounded">${translations[currentLang]['btn-submit'] || 'Postuler'}</button></div>`;
+            });
             lucide.createIcons();
         }
 
         function debouncedFilterJobs() { clearTimeout(debounceTimer); debounceTimer = setTimeout(filterJobs, 300); }
-        function applyForJob(id) { showConfirm("Confirmation", "Postuler à cette offre ?", () => showModal("✅ Candidature envoyée", "Un conseiller vous recontactera sous 48h.")); }
+        
+        function applyForJob(id) { 
+            if (!currentUser) {
+                showConfirm("Connexion requise", "Veuillez vous connecter pour postuler.", () => openAuthModal());
+                return;
+            }
+            showConfirm("Confirmation", "Postuler à cette offre ?", () => {
+                const applications = JSON.parse(localStorage.getItem('applications')) || [];
+                applications.push({ jobId: id, userId: currentUser.email, date: new Date().toISOString() });
+                localStorage.setItem('applications', JSON.stringify(applications));
+                showModal("✅ Candidature envoyée", "Votre candidature a été enregistrée. Un conseiller vous recontactera sous 48h.");
+            }); 
+        }
 
+        // ==================== GESTION DES FORMULAIRES ====================
         function handleFormSubmit(event, type) {
             event.preventDefault();
+            if (!currentUser) {
+                showConfirm("Connexion requise", "Veuillez vous connecter pour envoyer ce formulaire.", () => openAuthModal());
+                return false;
+            }
+            
             const phone = document.getElementById(`${type}-phone`).value.trim();
-            if(!/^[\d\s\+\-\(\)]{8,20}$/.test(phone)) { alert("Numéro invalide (ex: +33 6 XX XX XX XX)"); return false; }
+            if(!/^[\d\s\+\-\(\)]{8,20}$/.test(phone)) { 
+                alert(currentLang === 'fr' ? "Numéro invalide (ex: +33 6 XX XX XX XX)" : (currentLang === 'ar' ? "رقم هاتف غير صحيح" : "Invalid phone number")); 
+                return false; 
+            }
+            
             showConfirm("Vérification RGPD", "Vos données sont protégées. Confirmez-vous l'envoi ?", () => {
-                showModal("✅ Enregistrement réussi", "Merci ! Notre équipe traite votre demande.");
+                const formData = {
+                    type, userId: currentUser.email, date: new Date().toISOString(),
+                    name: document.getElementById(`${type}-name`)?.value,
+                    city: document.getElementById(`${type}-city`)?.value,
+                    phone: phone,
+                    skills: document.getElementById(`${type}-skills`)?.value,
+                    course: document.getElementById(`${type}-course`)?.value,
+                    goal: document.getElementById(`${type}-goal`)?.value,
+                    role: document.getElementById(`${type}-role`)?.value,
+                    hours: document.getElementById(`${type}-hours`)?.value
+                };
+                const submissions = JSON.parse(localStorage.getItem('submissions')) || [];
+                submissions.push(formData);
+                localStorage.setItem('submissions', JSON.stringify(submissions));
+                
+                showModal("✅ Enregistrement réussi", "Merci ! Notre équipe traite votre demande sous 72h.");
                 document.getElementById(`${type}-form`).reset();
+                if (type === 'seeker') {
+                    const dropZone = document.getElementById('drop-zone');
+                    if(dropZone) dropZone.innerHTML = '<i data-lucide="cloud-upload" class="w-10 h-10 mx-auto text-brand-olive mb-2"></i><p class="text-sm font-bold text-gray-600">Déposez votre CV ou cliquez</p><p class="text-xs text-gray-400">PDF, DOCX (max 5 Mo)</p>';
+                }
             });
             return false;
         }
 
-        function handleFileSelect(e) { const f = e.target.files[0]; if(f && f.size > 5*1024*1024) alert("Fichier trop volumineux"); else alert(`✓ ${f.name} reçu`); }
+        function handleFileSelect(e) { 
+            const f = e.target.files[0]; 
+            if(f && f.size > 5*1024*1024) alert("Fichier trop volumineux (max 5 Mo)"); 
+            else if(f) alert(`✓ ${f.name} reçu`); 
+        }
 
         function switchTab(tab) {
             activeTab = tab;
-            ['seeker','learning','volunteer'].forEach(t => document.getElementById(`panel-${t}`).classList.add('hidden'));
+            document.getElementById('panel-seeker').classList.add('hidden');
+            document.getElementById('panel-learning').classList.add('hidden');
+            document.getElementById('panel-volunteer').classList.add('hidden');
             document.getElementById(`panel-${tab}`).classList.remove('hidden');
-            ['seeker','learning','volunteer'].forEach(t => {
-                const btn = document.getElementById(`tab-${t}`);
-                btn.className = t===tab ? "px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2" : "px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2";
-            });
+            
+            const seekerBtn = document.getElementById('tab-seeker');
+            const learningBtn = document.getElementById('tab-learning');
+            const volunteerBtn = document.getElementById('tab-volunteer');
+            seekerBtn.className = tab === 'seeker' ? "px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2" : "px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2";
+            learningBtn.className = tab === 'learning' ? "px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2" : "px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2";
+            volunteerBtn.className = tab === 'volunteer' ? "px-5 py-2.5 rounded-xl text-sm font-bold bg-white text-brand-olive shadow flex items-center gap-2" : "px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-white hover:text-brand-olive text-white flex items-center gap-2";
         }
 
-        function showModal(title, msg) { document.getElementById('modal-title').innerHTML = title; document.getElementById('modal-message').innerHTML = msg; const modal = document.getElementById('custom-modal'); modal.classList.remove('hidden'); setTimeout(()=>modal.classList.add('opacity-100'),10); }
-        function closeModal() { const modal = document.getElementById('custom-modal'); modal.classList.remove('opacity-100'); setTimeout(()=>modal.classList.add('hidden'),300); }
-        function showConfirm(title, msg, cb) { pendingConfirmCallback = cb; document.getElementById('confirm-title').innerHTML = title; document.getElementById('confirm-message').innerHTML = msg; const modal = document.getElementById('confirm-modal'); modal.classList.remove('hidden'); setTimeout(()=>modal.classList.add('opacity-100'),10); }
-        function confirmAction(v) { closeConfirm(); if(v && pendingConfirmCallback) { pendingConfirmCallback(); pendingConfirmCallback=null; } }
-        function closeConfirm() { const modal = document.getElementById('confirm-modal'); modal.classList.remove('opacity-100'); setTimeout(()=>modal.classList.add('hidden'),300); }
-        function showPrivacyPolicy() { showModal("Politique de confidentialité (RGPD)","Conformité UE 2016/679. Droit d'accès, rectification et effacement: contact@nouvellechance.fr."); }
-        function showTerms() { showModal("Conditions d'utilisation","Plateforme d'insertion professionnelle - Conformité au Code du travail français."); }
+        // ==================== MODALES ====================
+        function showModal(title, msg) { 
+            document.getElementById('modal-title').innerHTML = title; 
+            document.getElementById('modal-message').innerHTML = msg; 
+            const modal = document.getElementById('custom-modal'); 
+            modal.classList.remove('hidden'); 
+            setTimeout(()=>modal.classList.add('opacity-100'),10); 
+        }
+        
+        function closeModal() { 
+            const modal = document.getElementById('custom-modal'); 
+            modal.classList.remove('opacity-100'); 
+            setTimeout(()=>modal.classList.add('hidden'),300); 
+        }
+        
+        function showConfirm(title, msg, cb) { 
+            pendingConfirmCallback = cb; 
+            document.getElementById('confirm-title').innerHTML = title; 
+            document.getElementById('confirm-message').innerHTML = msg; 
+            const modal = document.getElementById('confirm-modal'); 
+            modal.classList.remove('hidden'); 
+            setTimeout(()=>modal.classList.add('opacity-100'),10); 
+        }
+        
+        function confirmAction(v) { 
+            closeConfirm(); 
+            if(v && pendingConfirmCallback) { 
+                pendingConfirmCallback(); 
+                pendingConfirmCallback = null; 
+            } 
+        }
+        
+        function closeConfirm() { 
+            const modal = document.getElementById('confirm-modal'); 
+            modal.classList.remove('opacity-100'); 
+            setTimeout(()=>modal.classList.add('hidden'),300); 
+        }
+        
+        function showPrivacyPolicy() { 
+            showModal("Politique de confidentialité (RGPD)","Conformité UE 2016/679. Vos données ne sont jamais partagées. Droit d'accès, rectification et effacement: contact@nouvellechance.fr."); 
+        }
+        
+        function showTerms() { 
+            showModal("Conditions d'utilisation","Plateforme d'insertion professionnelle - Conformité au Code du travail français. Médiation possible en cas de litige."); 
+        }
 
-        function toggleChat() { document.getElementById('chat-window').classList.toggle('hidden'); }
-        function sendMessage() { const input = document.getElementById('chat-input'); const txt = input.value.trim(); if(!txt) return; const msgDiv = document.getElementById('chat-messages'); msgDiv.innerHTML += `<div class="flex justify-end mb-2"><div class="bg-brand-olive text-white p-2 rounded-xl">${txt}</div></div>`; input.value = ''; setTimeout(()=>{ msgDiv.innerHTML += `<div class="flex items-start gap-2 mb-2"><div class="bg-gray-200 p-2 rounded-xl">Merci ! Visitez notre section emploi ou formations. Besoin d'aide juridique ? Contactez le 01 53 59 22 22</div></div>`; msgDiv.scrollTop = msgDiv.scrollHeight; },500); }
+        // ==================== CHATBOT ====================
+        function toggleChat() { 
+            document.getElementById('chat-window').classList.toggle('hidden'); 
+        }
+        
+        function sendMessage() { 
+            const input = document.getElementById('chat-input'); 
+            const txt = input.value.trim(); 
+            if(!txt) return; 
+            const msgDiv = document.getElementById('chat-messages'); 
+            msgDiv.innerHTML += `<div class="flex justify-end mb-2"><div class="bg-brand-olive text-white p-2 rounded-xl">${escapeHtml(txt)}</div></div>`; 
+            input.value = ''; 
+            setTimeout(()=>{ 
+                const response = getAutoReply(txt);
+                msgDiv.innerHTML += `<div class="flex items-start gap-2 mb-2"><div class="bg-gray-200 p-2 rounded-xl">${response}</div></div>`; 
+                msgDiv.scrollTop = msgDiv.scrollHeight; 
+            },500); 
+        }
+        
         function handleChatKeyPress(e) { if(e.key==='Enter') sendMessage(); }
-        function toggleDarkMode() { document.body.classList.toggle('light-mode'); localStorage.setItem('darkMode', document.body.classList.contains('light-mode')); }
+        
+        function getAutoReply(msg) {
+            const lowerMsg = msg.toLowerCase();
+            if(lowerMsg.includes('emploi') || lowerMsg.includes('travail') || lowerMsg.includes('job')) 
+                return "Consultez la section 'Offres d'emploi' ci-dessus. N'oubliez pas de vous connecter pour postuler !";
+            if(lowerMsg.includes('formation') || lowerMsg.includes('cours')) 
+                return "Nos formations gratuites : plomberie, cuisine, informatique, français FLE. Inscrivez-vous dans l'onglet 'Formation'.";
+            if(lowerMsg.includes('juridique') || lowerMsg.includes('avocat') || lowerMsg.includes('droit')) 
+                return "Contactez La Cimade (01 53 59 22 22) ou France Terre d'Asile pour une consultation juridique gratuite.";
+            return "Je suis là pour vous aider ! Posez-moi des questions sur les emplois, les formations, ou l'aide juridique en France.";
+        }
+        
+        function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
 
+        // ==================== DARK MODE ====================
+        function toggleDarkMode() { 
+            document.body.classList.toggle('light-mode'); 
+            localStorage.setItem('darkMode', document.body.classList.contains('light-mode')); 
+        }
+
+        // ==================== INITIALISATION ====================
         window.onload = () => {
             document.body.classList.add('loaded');
-            renderJobs(); renderStories(); lucide.createIcons();
+            
+            const savedUser = localStorage.getItem('currentUser');
+            if(savedUser) currentUser = JSON.parse(savedUser);
+            
+            renderJobs(); 
+            renderStories(); 
+            lucide.createIcons();
             updateTranslations();
+            
             if(localStorage.getItem('darkMode') === 'true') document.body.classList.add('light-mode');
+            
             document.querySelectorAll('form').forEach(f=>f.addEventListener('submit',e=>e.preventDefault()));
-            const drop = document.getElementById('drop-zone'); if(drop){ drop.addEventListener('click',()=>document.getElementById('resume-file').click()); drop.addEventListener('dragover',e=>e.preventDefault()); drop.addEventListener('drop',e=>{ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleFileSelect({target:{files:[f]}}); }); }
-            document.getElementById('counter-partners').innerText = "12";
+            
+            const dropZone = document.getElementById('drop-zone');
+            if(dropZone){ 
+                dropZone.addEventListener('click',()=>document.getElementById('resume-file')?.click()); 
+                dropZone.addEventListener('dragover',e=>e.preventDefault()); 
+                dropZone.addEventListener('drop',e=>{ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) handleFileSelect({target:{files:[f]}}); }); 
+            }
+            
+            document.getElementById('counter-partners').innerText = "15";
         };
     </script>
 </body>
